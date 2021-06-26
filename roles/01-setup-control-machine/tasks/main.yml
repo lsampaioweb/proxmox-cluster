@@ -1,3 +1,6 @@
 ---
 - name: Installing required packages
   import_tasks: "01-install-packages.yml"
+
+- name: Adding the IP and URL of each host into the hosts file
+  import_tasks: "02-hosts-file.yml"

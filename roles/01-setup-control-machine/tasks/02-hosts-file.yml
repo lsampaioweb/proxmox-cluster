@@ -1,0 +1,8 @@
+---
+- name: Adding the IP and URL of each host into the hosts file
+  become: True
+  lineinfile:
+    path: "/etc/hosts"
+    line: "{{ hostvars[item].ansible_host }} {{ item }}.{{ domain }} {{ item }}"
+    state: "present"
+  loop: "{{ groups['Proxmox'] }}"
