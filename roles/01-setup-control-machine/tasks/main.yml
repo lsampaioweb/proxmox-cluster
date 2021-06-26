@@ -4,3 +4,6 @@
 
 - name: Adding the IP and URL of each host into the hosts file
   import_tasks: "02-hosts-file.yml"
+
+- name: Adding the fingerprint of each host into the know_hosts file
+  import_tasks: "03-known-hosts.yml"

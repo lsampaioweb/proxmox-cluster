@@ -15,6 +15,11 @@ Run the command in the terminal:
     192.168.0.5 host02.aprendendo.com.br host02
     192.168.0.6 host03.aprendendo.com.br host03
 
+## 3. Add the fingerprint of each host into the ~/.ssh/known_hosts file:
+    host01.aprendendo.com.br,host01,192.168.0.4 ecdsa-sha2-nistp256 ...
+    host02.aprendendo.com.br,host02,192.168.0.5 ecdsa-sha2-nistp256 ...
+    host03.aprendendo.com.br,host03,192.168.0.6 ecdsa-sha2-nistp256 ...
+
 # Created by: 
 
 1. Luciano Sampaio.
