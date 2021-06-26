@@ -1,0 +1,7 @@
+[ControlMachine]
+localhost ansible_connection=local ansible_python_interpreter=/usr/local/bin/python3
+
+[Proxmox]
+host01
+host02
+host03
