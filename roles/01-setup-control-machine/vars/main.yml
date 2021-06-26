@@ -1,0 +1,7 @@
+---
+sshpass :
+  name: "sshpass"
+  zip_name: "sshpass-1.09.tar.gz"
+  url: "https://sourceforge.net/projects/sshpass/files/sshpass/1.09/sshpass-1.09.tar.gz"
+  folder_path: "~/.ansible/tmp/"
+  folder_name: "sshpass-1.09"

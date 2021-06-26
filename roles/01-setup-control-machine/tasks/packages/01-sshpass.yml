@@ -1,0 +1,41 @@
+---
+- name: Checking if {{ sshpass.name }} is installed
+  command: "which {{ sshpass.name }}"
+  register: "sshpass_output"
+  failed_when: false
+  changed_when: false
+
+- name: Creating variable should_install_sshpass
+  set_fact:
+    should_install_sshpass: "{{ sshpass_output.rc != 0 }}"
+
+- name: Downloading the latest version of the sshpass application
+  get_url:
+    url: "{{ sshpass.url }}"
+    dest: "{{ sshpass.folder_path }}"
+  when: should_install_sshpass
+
+- name: Unarchiving the compressed file
+  command: "tar xvzf '{{ sshpass.folder_path }}{{ sshpass.zip_name }}'"
+  args:
+    warn: false
+  when: should_install_sshpass
+
+- name: Compiling and installing
+  shell: "{{ item }}"
+  args:
+    chdir: "{{ sshpass.folder_name }}"
+  loop:
+    - "./configure"
+    - "make"
+    - "make install"
+  when: should_install_sshpass
+
+- name: Deleting the installation files
+  file:
+    path: "{{ item }}"
+    state: "absent"
+  loop:
+    - "{{ sshpass.folder_path }}{{ sshpass.zip_name }}"
+    - "{{ sshpass.folder_name }}"
+  when: should_install_sshpass

@@ -1,0 +1,8 @@
+---
+- name: Setting up the control machine to run Ansible scripts
+  hosts: "ControlMachine"
+  become: True
+  become_user: "{{ lookup('env', 'USER') }}"
+
+  roles:
+    - 01-setup-control-machine

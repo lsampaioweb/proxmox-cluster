@@ -3,7 +3,7 @@
 The playbook can setup one or more servers running Proxmox Virtual Environment (PVE) 6.4.
 
 # Roles you can execute:
-1. [Setup](roles/XXX/README.md) control machine to run Ansible scripts.
+1. [Setup](roles/01-setup-control-machine/README.md) control machine to run Ansible scripts.
 
 # Links:
 
