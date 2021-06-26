@@ -1,3 +1,9 @@
 ---
 # The domain name of our HomeLab.
 domain: "aprendendo.com.br"
+
+# The id that will be used to retrieve the proxmox's root password saved in the MacOSX Keychain. It will be the same for all hosts.
+proxmox_root_password_id: "proxmox-root-password"
+
+# The id that will be used to retrieve the proxmox's SMTP password saved in the MacOSX Keychain. It will be the same for all hosts.
+proxmox_smtp_password_id: "proxmox-smtp-password"

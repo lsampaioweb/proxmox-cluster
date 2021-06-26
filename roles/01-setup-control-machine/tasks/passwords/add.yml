@@ -1,0 +1,4 @@
+---
+- name: Adding the "{{ password_id }}" password into the Secret Manager
+  command: security add-generic-password -U -a $USER -s "{{ password_id }}" -j "{{ password_id }}" -w "{{ password }}"
+  no_log: True

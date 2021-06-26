@@ -1,9 +1,12 @@
 ---
 - name: Installing required packages
-  import_tasks: "01-install-packages.yml"
+  import_tasks: "01-packages.yml"
 
 - name: Adding the IP and URL of each host into the hosts file
   import_tasks: "02-hosts-file.yml"
 
 - name: Adding the fingerprint of each host into the know_hosts file
   import_tasks: "03-known-hosts.yml"
+
+- name: Adding passwords into the Secret Manager
+  import_tasks: "04-passwords.yml"

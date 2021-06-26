@@ -20,6 +20,10 @@ Run the command in the terminal:
     host02.aprendendo.com.br,host02,192.168.0.5 ecdsa-sha2-nistp256 ...
     host03.aprendendo.com.br,host03,192.168.0.6 ecdsa-sha2-nistp256 ...
 
+## 4. Adding passwords into the Secret Manager (Keychain):
+  1. *proxmox-root-password*. All the hosts will need to have the same root password in order to create the cluster.
+  1. *proxmox-smtp-password*. The password that will be used to authenticate when sending email notifications.
+
 # Created by: 
 
 1. Luciano Sampaio.
