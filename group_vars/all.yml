@@ -7,3 +7,10 @@ proxmox_root_password_id: "proxmox-root-password"
 
 # The id that will be used to retrieve the proxmox's SMTP password saved in the MacOSX Keychain. It will be the same for all hosts.
 proxmox_smtp_password_id: "proxmox-smtp-password"
+
+# The id that will be used to retrieve the Ansible user's password saved in the MacOSX Keychain. It will be the same for all hosts.
+ansible_password_id: "ansible-password"
+
+# The user account that Ansible will use to connect and run commands into each host.
+ansible_user: "usr_ansible"
+

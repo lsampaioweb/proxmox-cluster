@@ -1,0 +1,15 @@
+---
+# The name of the root user used in Proxmox.
+proxmox_root_user: "root"
+
+# The password of the root user used in Proxmox.
+proxmox_root_password: "{{ lookup('pipe', 'security find-generic-password -a $USER -s {{ proxmox_root_password_id }} -w') }}"
+
+# The user that will be used to connect on each host.
+ansible_user: "{{ proxmox_root_user }}"
+
+# At this point we don't have a SSH Keypair yet. So it is necessary to connect using the root's password.
+ansible_password: "{{ proxmox_root_password }}"
+
+# The size of the password that will be created.
+ansible_password_size: 30

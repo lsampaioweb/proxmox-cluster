@@ -1,0 +1,6 @@
+---
+- name: Setting up the Ansible user to run Ansible scripts
+  hosts: "Proxmox"
+
+  roles:
+    - 02-setup-ansible-user
