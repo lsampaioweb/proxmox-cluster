@@ -1,4 +1,4 @@
-# Setup control machine to run Ansible scripts
+# Setup the control machine to run Ansible scripts
 
 Run the command in the terminal:
 ```bash
