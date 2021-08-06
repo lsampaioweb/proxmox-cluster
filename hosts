@@ -2,6 +2,6 @@
 localhost ansible_connection=local ansible_python_interpreter=/usr/local/bin/python3
 
 [Proxmox]
-host01 ansible_host=192.168.0.4
-host02 ansible_host=192.168.0.5
-host03 ansible_host=192.168.0.6
+host01 ansible_host=192.168.0.21
+host02 ansible_host=192.168.0.22
+host03 ansible_host=192.168.0.23

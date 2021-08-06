@@ -1,5 +1,5 @@
 ---
-# The domain name of our HomeLab.
+# The domain name of the HomeLab.
 domain: "aprendendo.com.br"
 
 # The id that will be used to retrieve the proxmox's root password saved in the MacOSX Keychain. It will be the same for all hosts.
