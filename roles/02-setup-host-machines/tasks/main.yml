@@ -1,0 +1,15 @@
+---
+- name: Removing unnecessary and installing required packages
+  import_tasks: 01-packages.yml
+
+- name: Setting up Brazilian timezone
+  import_tasks: 02-timezone.yml
+
+- name: Setting up Brazilian NTP Servers
+  import_tasks: 03-ntp-servers.yml
+
+- name: Creating the Ansible user account
+  import_tasks: 04-users.yml
+
+- name: Setting up the network interfaces
+  import_tasks: 05-network.yml

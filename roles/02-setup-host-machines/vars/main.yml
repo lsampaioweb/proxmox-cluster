@@ -13,3 +13,14 @@ ansible_password: "{{ proxmox_root_password }}"
 
 # The size of the password that will be created.
 ansible_password_size: 30
+
+# All servers are located in Aracaju - Brazil. Maceio is the closest city.
+timezone: "America/Maceio"
+
+# Brazilian NTP Servers.
+ntp_servers: "0.br.pool.ntp.org 1.br.pool.ntp.org 2.br.pool.ntp.org 3.br.pool.ntp.org"
+
+# The default gateway of the servers is the TP-Link Switch.
+pve_gateway: "192.168.0.3"
+management_ip_and_netmask: "{{ management_ip }}/24"
+internal_ip_and_netmask: "{{ internal_ip }}/24"

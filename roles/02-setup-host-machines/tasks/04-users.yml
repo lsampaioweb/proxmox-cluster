@@ -15,7 +15,7 @@
     groups: 
       - "sudo"
     state: "present"
-  register: "creating_user_output"
+  register: creating_user_output
 
 - name: Saving the password in the secret manager
   run_once: true

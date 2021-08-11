@@ -1,3 +1,0 @@
----
-- name: Creating the Ansible user account
-  import_tasks: "01-users.yml"

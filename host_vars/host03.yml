@@ -1,0 +1,13 @@
+---
+bond_slaves: "eth1 eth2 eth3 eth4"
+management_nic: "eth0"
+management_ip: "{{ ansible_host }}"
+internal_ip: "10.1.0.23"
+
+ethtool_command_eth0: |
+
+  post-up /sbin/ethtool -s $IFACE wol g
+  post-down /sbin/ethtool -s $IFACE wol g
+ethtool_command_eth4: ""
+
+bond0_pre_up: ""

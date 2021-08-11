@@ -1,0 +1,20 @@
+---
+- name: Reconfiguring Timezone
+  command: "dpkg-reconfigure --frontend noninteractive tzdata"
+
+- name: Restarting Systemd-Timesyncd
+  service:
+    name: "systemd-timesyncd"
+    state: "restarted"
+
+- name: Generating Grub File
+  command: "update-grub"
+
+- name: Rebooting Server
+  reboot:
+    msg: "Reboot initiated by Ansible."
+    connect_timeout: 5
+    reboot_timeout: 45
+    pre_reboot_delay: 0
+    post_reboot_delay: 15
+    test_command: "whoami"
