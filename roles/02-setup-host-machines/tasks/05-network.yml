@@ -10,5 +10,5 @@
     regexp: '^GRUB_CMDLINE_LINUX='
     line: 'GRUB_CMDLINE_LINUX="net.ifnames=0 biosdevname=0"'
   notify:
-    - Generating Grub File
-    - Rebooting Server
+    - "Generating Grub File"
+    - "Rebooting Server"

@@ -5,5 +5,4 @@
     regexp: "NTP="
     line: "NTP={{ ntp_servers }}"
     state: "present"
-  notify:
-    - "Restarting Systemd-Timesyncd"
+  notify: "Restarting Systemd-Timesyncd"

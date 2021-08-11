@@ -3,5 +3,4 @@
   become: True
   timezone:
     name: "{{ timezone }}"
-  notify:
-    - "Reconfiguring Timezone"
+  notify: "Reconfiguring Timezone"

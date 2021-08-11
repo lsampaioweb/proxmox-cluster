@@ -1,6 +1,5 @@
 ---
 - name: Adding the internal IP and url of all hosts into the 'hosts' file
-  become: True
   lineinfile:
     path: "/etc/hosts"
     line: "{{ hostvars[item].internal_ip }} {{ item }}.{{ domain }} {{ item }}"

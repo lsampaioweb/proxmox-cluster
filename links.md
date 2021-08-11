@@ -14,4 +14,6 @@
 
 1. [Changing boot options (Common Kernel Options) permanently.](https://help.ubuntu.com/community/BootOptions#Changing_boot_options_Permanently_for_an_Existing_Installation)
 
+1. [How you can set up the email notification on Proxmox](https://swart.ninja/blog/proxmox/2020/10/19/how-to-setup-email-notification-on-proxmox/)
+
 1. [Creating Proxmox templates with packer](https://dev.to/aaronktberry/creating-proxmox-templates-with-packer-1b35)
