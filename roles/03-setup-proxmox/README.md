@@ -10,12 +10,12 @@ Run the command in the terminal:
 ## 1. Add the internal IP and url of all hosts into the 'hosts' file.
   1. Add the internal IP and url of all hosts into the 'hosts' file.
 
-## 1. Setup email notification with Postfix.
+## 2. Setup email notification with Postfix.
   1. Add the SMTP server, user name and password into the sasl_passwd file.
-  2. Add relayhost into the main.cf file.
-  3. Add SASL authentication into the main.cf file.
+  1. Add relayhost into the main.cf file.
+  1. Add SASL authentication into the main.cf file.
 
-## 1. Remove the no subscription popup.
+## 3. Remove the no subscription popup.
   1. Replace the verification with a if (false).
 
 # Created by: 

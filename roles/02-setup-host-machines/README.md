@@ -22,7 +22,7 @@ Run the command in the terminal:
 
 ## 5. Setup the network interfaces.
   1. Copy the network config file to the host.
-  2. Edit the grub file so the network cards (NIC) are named as eth0 - ethX.
+  1. Edit the grub file so the network cards (NIC) are named as eth0 - ethX.
 
 # Created by: 
 
