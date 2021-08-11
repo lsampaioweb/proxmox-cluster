@@ -15,6 +15,9 @@ Run the command in the terminal:
   2. Add relayhost into the main.cf file.
   3. Add SASL authentication into the main.cf file.
 
+## 1. Remove the no subscription popup.
+  1. Replace the verification with a if (false).
+
 # Created by: 
 
 1. Luciano Sampaio.

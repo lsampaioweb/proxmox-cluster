@@ -1,6 +1,9 @@
 ---
-#- name: Adding the internal IP and url of all hosts into the 'hosts' file
-#  import_tasks: 01-hosts.yml
+- name: Adding the internal IP and url of all hosts into the 'hosts' file
+  import_tasks: 01-hosts.yml
 
 - name: Setting email notification with Postfix
   import_tasks: 02-email-notification.yml
+
+- name: Removing the no subscription popup
+  import_tasks: 03-subscription-popup.yml

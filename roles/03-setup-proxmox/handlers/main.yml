@@ -6,3 +6,8 @@
   service:
     name: "postfix"
     state: "restarted"
+
+- name: Restarting PVEProxy
+  service:
+    name: "pveproxy"
+    state: "restarted"
