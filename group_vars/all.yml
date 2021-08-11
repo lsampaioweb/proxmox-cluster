@@ -14,5 +14,5 @@ ansible_password_id: "ansible-password"
 # The user account that Ansible will use to connect and run commands into each host.
 ansible_user: "usr_ansible"
 
-# The password of the Ansible user used in Proxmox.
+# The password that Ansible will use to connect and run commands into each host.
 ansible_password: "{{ lookup('pipe', 'security find-generic-password -a $USER -s {{ ansible_password_id }} -w') }}"

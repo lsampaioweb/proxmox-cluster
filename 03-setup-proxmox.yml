@@ -1,0 +1,6 @@
+---
+- name: Setting up the Proxmox
+  hosts: "Proxmox"
+
+  roles:
+    - 03-setup-proxmox
