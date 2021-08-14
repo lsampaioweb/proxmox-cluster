@@ -13,3 +13,6 @@
 
 # - name: Remove all nodes from the cluster
 #   import_tasks: XX-destroy-cluster.yml
+
+- name: Setting up the network for all migrations in the cluster
+  import_tasks: 05-migration-network.yml

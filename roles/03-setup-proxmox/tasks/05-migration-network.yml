@@ -1,0 +1,6 @@
+---
+- name: Setting up the network for all migrations in the cluster
+  template:
+    src: "../templates/datacenter.j2"
+    dest: "/etc/pve/datacenter.cfg"
+  when: ansible_hostname == cluster_master_node

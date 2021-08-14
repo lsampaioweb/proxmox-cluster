@@ -1,8 +1,4 @@
 ---
-- name: Creating variable cluster_master_node
-  set_fact:
-    cluster_master_node: "{{ groups['Proxmox'][0] }}"
-
 - name: Checking if the cluster already exists
   stat:
     path: "/etc/pve/corosync.conf"

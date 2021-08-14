@@ -28,6 +28,10 @@ Run the command in the terminal:
     host03.aprendendo.com.br ecdsa-sha2-nistp256 ...
   ```
 
+## 5. Set the network for all migrations in the cluster.
+  1. Add the ip address that should be used for all migrations into the /etc/pve/datacenter.cfg file.
+
+
 # Created by: 
 
 1. Luciano Sampaio.
