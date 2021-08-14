@@ -22,9 +22,11 @@ Run the command in the terminal:
   1. Create the cluster.
   1. Add nodes to the cluster.
   1. Add the fingerprint of each host into the ~/.ssh/known_hosts file:
+  ```bash
     host01.aprendendo.com.br ecdsa-sha2-nistp256 ...
     host02.aprendendo.com.br ecdsa-sha2-nistp256 ...
     host03.aprendendo.com.br ecdsa-sha2-nistp256 ...
+  ```
 
 # Created by: 
 
