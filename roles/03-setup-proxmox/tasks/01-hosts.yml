@@ -6,5 +6,5 @@
     insertbefore: '^\s*$' #Empty line
     firstmatch: yes
     state: "present"
+  when: ansible_hostname != item
   loop: "{{ groups['Proxmox'] }}"
-  when: item != ansible_hostname

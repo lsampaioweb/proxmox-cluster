@@ -6,3 +6,9 @@ smtp_server: "smtp.gmail.com"
 smtp_port: "587"
 smtp_email: "lsampaioweb@gmail.com"
 smtp_password: "{{ lookup('pipe', 'security find-generic-password -a $USER -s {{ proxmox_smtp_password_id }} -w') }}"
+
+# The name of the HomeLab Cluster.
+cluster_name: "HomeLab"
+
+# The password of the root user used in Proxmox.
+proxmox_root_password: "{{ lookup('pipe', 'security find-generic-password -a $USER -s {{ proxmox_root_password_id }} -w') }}"

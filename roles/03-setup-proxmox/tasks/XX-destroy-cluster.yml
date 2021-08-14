@@ -1,0 +1,52 @@
+---
+- name: Creating variable cluster_master_node
+  set_fact:
+    cluster_master_node: "{{ groups['Proxmox'][0] }}"
+
+- name: Checking if the cluster already exists
+  stat:
+    path: "/etc/pve/corosync.conf"
+  register: corosync
+
+- name: Removing the fingerprint of each host into the know_hosts file
+  known_hosts:
+    name: "{{ item }}.{{ domain }}"
+    key: "{{ lookup('pipe', 'ssh-keyscan -t ecdsa {{ item }}.{{ domain }},{{ item }},{{ hostvars[item].ansible_host }},{{ hostvars[item].internal_ip }}') }}"
+    state: "absent"
+  when: ansible_hostname != item
+  loop: "{{ groups['Proxmox'] }}"
+
+- name: Removing nodes from the cluster
+  command: "pvecm delnode {{ item }}"
+  when: ansible_hostname == cluster_master_node and ansible_hostname != item and corosync.stat.exists
+  loop: "{{ groups['Proxmox'] }}"
+  failed_when: false
+
+- name: Destroying the cluster
+  throttle: 1
+  shell: "{{ item }}"
+  loop:
+    - "systemctl stop pvestatd.service"
+    - "systemctl stop pvedaemon.service"
+    - "systemctl stop pve-cluster"
+    - "systemctl stop corosync"
+    - "pmxcfs -l"
+    - "sqlite3 /var/lib/pve-cluster/config.db \"delete from tree where name = 'corosync.conf';\""
+    - "rm -f /var/lib/pve-cluster/.pmxcfs.lockfile"
+    - "rm /etc/pve/corosync.conf"
+    - "rm -rf /etc/corosync/*"
+    - "rm -rf /var/lib/corosync/*"
+    - "killall pmxcfs"
+    - "systemctl start pve-cluster"
+    - "systemctl start pvedaemon.service"
+    - "systemctl start pvestatd.service"
+    - "pvecm updatecerts"
+  #when: corosync.stat.exists
+  failed_when: false
+
+- name: Removing nodes from the Web UI
+  throttle: 1
+  command: "rm -rf /etc/pve/nodes/{{ item }}"
+  when: ansible_hostname != item
+  loop: "{{ groups['Proxmox'] }}"
+  failed_when: false

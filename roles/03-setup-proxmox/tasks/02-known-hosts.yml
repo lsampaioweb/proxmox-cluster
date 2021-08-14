@@ -1,0 +1,7 @@
+---
+- name: Adding the fingerprint of each host into the know_hosts file
+  known_hosts:
+    name: "{{ item }}.{{ domain }}"
+    key: "{{ lookup('pipe', 'ssh-keyscan -t ecdsa {{ item }}.{{ domain }},{{ item }},{{ hostvars[item].ansible_host }},{{ hostvars[item].internal_ip }}') }}"
+  when: ansible_hostname != item
+  loop: "{{ groups['Proxmox'] }}"

@@ -2,7 +2,7 @@
 bond_slaves: "eth1 eth2 eth3 eth4"
 management_nic: "eth0"
 management_ip: "{{ ansible_host }}"
-internal_ip: "10.1.0.22"
+internal_ip: "192.168.0.32"
 
 ethtool_command_eth0: |
 
