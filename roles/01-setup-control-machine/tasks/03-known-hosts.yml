@@ -1,6 +1,4 @@
 ---
-- name: Adding the fingerprint of each host into the know_hosts file
-  known_hosts:
-    name: "{{ item }}.{{ domain }}"
-    key: "{{ lookup('pipe', 'ssh-keyscan -t ecdsa {{ item }}.{{ domain }},{{ hostvars[item].ansible_host }}') }}"
+- name: Adding the fingerprint of the hosts into the know_hosts file
+  include_tasks: "03-proxmox-known-hosts.yml"
   loop: "{{ groups['Proxmox'] }}"
