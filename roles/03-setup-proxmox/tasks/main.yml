@@ -9,10 +9,13 @@
   import_tasks: 03-subscription-popup.yml
 
 - name: Creating the cluster and join the nodes into it
-  import_tasks: 04-cluster.yml
+  import_tasks: 04-01-cluster.yml
 
-# - name: Remove all nodes from the cluster
-#   import_tasks: XX-destroy-cluster.yml
+## - name: Remove all nodes from the cluster
+##   import_tasks: XX-destroy-cluster.yml
 
 - name: Setting up the network for all migrations in the cluster
   import_tasks: 05-migration-network.yml
+
+- name: Formatting the HDD, SSD and NVME drives
+  import_tasks: 06-01-local-storage.yml

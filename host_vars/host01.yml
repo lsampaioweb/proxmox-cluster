@@ -15,3 +15,5 @@ bond0_pre_up: |
   mtu 9000
   pre-up (/sbin/ip link set mtu 9000 eth0 && /sbin/ip link set mtu 9000 eth1 && /sbin/ip link set mtu 9000 eth2 && /sbin/ip link set mtu 9000 eth3)
   up /sbin/ip link set mtu 9000 bond0
+
+lvm: []

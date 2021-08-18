@@ -1,0 +1,11 @@
+---
+- name: Removing the volume group {{ item.volume_group }}
+  lvg:
+    vg: "{{ item.volume_group }}"
+    pvs: "/dev/{{ partition.1 }}"
+    state: "absent"
+    force: yes
+
+- name: Removing the physical volume
+  shell: "pvremove /dev/{{ partition.1 }}"
+  failed_when: false

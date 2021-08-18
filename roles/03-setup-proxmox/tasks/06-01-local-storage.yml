@@ -1,0 +1,15 @@
+---
+- name: Extending the "pve-data" partition to fill all available space on the disc
+  lvol:
+    vg: "pve"
+    lv: "data"
+    size: "+100%FREE"
+    resizefs: true
+
+- name: Creating new partitions, volume groups and logical volumes on the local disks
+  include_tasks: "06-02-local-storage-partition.yml"
+  loop: "{{ lvm }}"
+
+## - name: Removing the partitions, volume groups and logical volumes from the local disks
+##   include_tasks: "XX-01-remove-local-storage-partition.yml"
+##   loop: "{{ lvm }}"

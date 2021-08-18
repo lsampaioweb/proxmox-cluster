@@ -32,6 +32,7 @@
     - "ethtool" # To enable Wake-on-Lan.
     - "libsasl2-modules" # Necessary to Postfix.
     - "ifupdown2" # To enable make changes on the network configuration and don't require server reboot.
+    - "parted" # To format hard disks (HDD, SSD and NVME).
     - "qrencode" # To enable two-factor authentication (2FA)
 
 - name: Installing pip packages

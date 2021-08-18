@@ -1,0 +1,58 @@
+---
+- name: Creating a new partition on the disk(s)
+  parted:
+    device: "{{ device }}"
+    number: 1
+    label: "gpt"
+    flags: [ "lvm" ]
+    state: "present"
+  loop: "{{ item.devices }}"
+  loop_control:
+    loop_var: "device"
+
+- name: Getting the name of the primary partition of the disk
+  shell: "lsblk -nr {{ device }} | grep part | cut -d' ' -f1"
+  register: disk_partitions
+  loop: "{{ item.devices }}"
+  loop_control:
+    loop_var: "device"
+  failed_when: disk_partitions.rc != 0 or disk_partitions.stdout == ''
+  changed_when: false
+
+- name: Concatenating each partition with the '/dev/???' prefix
+  set_fact:
+    partition_name: "/dev/{{ partition.1 }}"
+  register: partition_list
+  loop: "{{ disk_partitions.results | subelements('stdout_lines') }}"
+  loop_control:
+    loop_var: "partition"
+    label: "{{ partition_name }}"
+
+- name: Converting the array to a string so it can be used to create volume groups
+  set_fact:
+    partitions_single_line: "{{ partition_list.results | map(attribute='ansible_facts.partition_name') | join(',') }}"
+
+- name: Creating the volume group {{ item.volume_group }}
+  lvg:
+    vg: "{{ item.volume_group }}"
+    pvs: "{{ partitions_single_line }}"
+    pvresize: yes
+
+- name: Creating the logical volume {{ item.logical_volume }}
+  lvol:
+    thinpool: "{{ item.logical_volume }}"
+    vg: "{{ item.volume_group }}"
+    size: "100%FREE"
+    resizefs: true
+    shrink: no
+
+- name: Creating an {{ item.filesystem_type }} filesystem on the LVM /dev/mapper/{{ item.volume_group }}-{{ item.logical_volume }}
+  filesystem:
+    fstype: "{{ item.filesystem_type }}"
+    dev: "/dev/mapper/{{ item.volume_group }}-{{ item.logical_volume }}"
+
+- name: Adding a LVM-Thin to the cluster
+  shell: "pvesm add lvmthin {{ item.name }} --vgname {{ item.volume_group }} --thinpool {{ item.logical_volume }} --nodes {{ ansible_hostname }}"
+  register: lvmthin_output
+  changed_when: lvmthin_output.rc == 0
+  failed_when: (lvmthin_output.rc != 0) and ' already defined' not in lvmthin_output.stderr

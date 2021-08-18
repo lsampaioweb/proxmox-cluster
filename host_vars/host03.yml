@@ -11,3 +11,7 @@ ethtool_command_eth0: |
 ethtool_command_eth4: ""
 
 bond0_pre_up: ""
+
+lvm:
+  - { name: "gold_03"  , logical_volume: "lv_gold"  , volume_group: "vg_gold"  , filesystem_type: "ext4", devices: ["/dev/nvme0n1"] }
+  - { name: "silver_03", logical_volume: "lv_silver", volume_group: "vg_silver", filesystem_type: "ext4", devices: ["/dev/sdb", "/dev/sdc"] }

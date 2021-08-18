@@ -31,6 +31,10 @@ Run the command in the terminal:
 ## 5. Set the network for all migrations in the cluster.
   1. Add the ip address that should be used for all migrations into the /etc/pve/datacenter.cfg file.
 
+## 6. Format the HDD, SSD and NVME disks.
+  1. Extend the data partition to 100% of the free space.
+  1. Remove partitions from disks.
+  1. Create new partitions, volume groups and logical volumes on the local disks.
 
 # Created by: 
 
