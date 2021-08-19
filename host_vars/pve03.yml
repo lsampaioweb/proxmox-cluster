@@ -10,7 +10,11 @@ ethtool_command_eth0: |
   post-down /sbin/ethtool -s $IFACE wol g
 ethtool_command_eth4: ""
 
-bond0_pre_up: ""
+bond0_pre_up: |
+
+  mtu 9000
+  pre-up (/sbin/ip link set mtu 9000 eth1 && /sbin/ip link set mtu 9000 eth2 && /sbin/ip link set mtu 9000 eth3 && /sbin/ip link set mtu 9000 eth4)
+  up /sbin/ip link set mtu 9000 bond0
 
 lvm:
   - { name: "gold_03"  , logical_volume: "lv_gold"  , volume_group: "vg_gold"  , filesystem_type: "ext4", devices: ["/dev/nvme0n1"] }
