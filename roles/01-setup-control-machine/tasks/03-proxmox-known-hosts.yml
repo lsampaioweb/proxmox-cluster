@@ -2,6 +2,8 @@
 - name: Adding the fingerprint of host {{ item }} into the know_hosts file
   include_tasks: "roles/common/tasks/known_hosts/add.yml"
   loop:
-    - { name: "{{ item }}.{{ domain }}", key: "{{ item }}.{{ domain }},{{ hostvars[item].ansible_host }}" }
+    - { name: "{{ item }}"                        , key: "{{ item }}" }
+    - { name: "{{ item }}.{{ domain }}"           , key: "{{ item }}.{{ domain }}" }
+    - { name: "{{ hostvars[item].ansible_host }}" , key: "{{ hostvars[item].ansible_host }}" }
   loop_control:
     loop_var: host
