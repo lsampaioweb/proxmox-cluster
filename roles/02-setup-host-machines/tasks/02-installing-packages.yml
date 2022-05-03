@@ -1,0 +1,56 @@
+---
+- name: Removing the pve-enterprise repository from sources list
+  apt_repository:
+    repo: "deb https://enterprise.proxmox.com/debian/pve bullseye pve-enterprise"
+    state: "absent"
+
+- name: Adding the pve-no-subscription repository into sources list
+  apt_repository:
+    repo: "deb http://download.proxmox.com/debian/pve bullseye pve-no-subscription"
+    state: "present"
+
+- name: Updating apt repository and cache
+  apt:
+    update_cache: yes
+
+- name: Upgrading full distro packages
+  apt:
+    upgrade: "dist"
+
+- name: Installing apt packages
+  import_tasks: "roles/common/tasks/packages/apt.yml"
+  vars:
+    packages:
+      - { name: "sudo" } # To enable elevated command.
+      - { name: "python3-pip" } # To enable ansible scripts.
+      - { name: "systemd-timesyncd" } # To enable time synchronization.
+      - { name: "ethtool" } # To enable Wake-on-Lan.
+      - { name: "libsasl2-modules" } # Necessary to Postfix.
+      - { name: "ifupdown2" } # To enable make changes on the network configuration and don't require server reboot.
+      - { name: "parted" } # To format hard disks (HDD, SSD and NVME).
+      - { name: "qrencode" } # To enable two-factor authentication (2FA)
+
+- name: Installing pip packages
+  import_tasks: "roles/common/tasks/packages/pip.yml"
+  vars:
+    packages:
+      - { name: "pip" } # To install other python applications.
+      - { name: "proxmoxer" } # To enable ansible scripts.
+      - { name: "requests" } # To enable ansible scripts.
+      - { name: "pexpect" } # To enable ansible scripts that use the expect module.
+
+- name: Checking if a reboot is needed
+  stat: 
+    path: "/var/run/reboot-required"
+    get_md5: "no"
+  register: "reboot_required"
+
+- name: Rebooting the host if kernel was updated
+  reboot:
+    msg: "Reboot initiated by Ansible for kernel updates."
+    connect_timeout: 5
+    reboot_timeout: 40
+    pre_reboot_delay: 0
+    post_reboot_delay: 20
+    test_command: "whoami"
+  when: reboot_required.stat.exists

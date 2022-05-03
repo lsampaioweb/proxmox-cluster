@@ -4,9 +4,8 @@
     name: "pip"
     state: "latest"
 
-- name: Installing all the required Python packages
+- name: Managing python packages
   pip:
-    name: "{{ item }}"
-    state: "latest"
-  loop:
-    - "passlib"
+    name: "{{ item.name }}"
+    state: "{{ item.state | default(omit) }}"
+  loop: "{{ packages }}"

@@ -2,8 +2,8 @@
 - name: Creating a random password with {{ ansible_password_size }} characters
   run_once: true
   delegate_to: "{{ groups['ControlMachine'][0] }}"
-  set_fact:    
-    usr_ansible_password: "{{ lookup('pipe', 'openssl rand -base64 {{ ansible_password_size }} | tr -d \"=+/\" | colrm {{ ansible_password_size + 1 }}') }}"
+  set_fact:
+    usr_ansible_password: '{{ lookup(''pipe'', ''openssl rand -base64 {{ ansible_password_size }} | tr -d "=+/" | colrm {{ ansible_password_size + 1 }}'') }}'
 
 - name: Creating the Ansible user account
   user:
@@ -12,9 +12,9 @@
     password: "{{ usr_ansible_password | password_hash('sha512') }}"
     update_password: "on_create"
     shell: "/bin/bash"
-    groups: 
+    groups:
       - "sudo"
-    state: "present"
+    state: "absent"
   register: creating_user_output
 
 - name: Saving the password in the secret manager
@@ -22,7 +22,7 @@
   delegate_to: "{{ groups['ControlMachine'][0] }}"
   import_tasks: "roles/common/tasks/passwords/add.yml"
   vars:
-    password_id : "{{ ansible_password_id }}"
+    password_id: "{{ ansible_password_id }}"
     password: "{{ usr_ansible_password }}"
   when: not creating_user_output.failed and creating_user_output.changed
-  no_log: true
+  # no_log: true

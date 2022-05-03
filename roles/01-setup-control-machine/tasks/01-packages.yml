@@ -1,6 +1,14 @@
 ---
+- name: Installing apt packages
+  import_tasks: "roles/common/tasks/packages/apt.yml"
+  vars:
+    packages:
+      - { name: "pip" }
+      - { name: "sshpass" }
+      - { name: "libsecret-tools" }
+
 - name: Installing pip packages
   import_tasks: "roles/common/tasks/packages/pip.yml"
-
-- name: Installing SSHPass
-  import_tasks: "roles/common/tasks/packages/sshpass.yml"
+  vars:
+    packages:
+      - { name: "passlib" }

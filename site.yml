@@ -1,0 +1,4 @@
+---
+- import_playbook: "01-setup-control-machine.yml"
+- import_playbook: "02-setup-host-machines.yml"
+- import_playbook: "03-setup-proxmox.yml"

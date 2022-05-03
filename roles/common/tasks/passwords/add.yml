@@ -1,4 +1,13 @@
 ---
+- name: Trying to retrieve the password of "{{ password_id }}" in order to verify if already exists or it has changed
+  import_tasks: "roles/common/tasks/passwords/get.yml"
+  # no_log: True
+
 - name: Adding the "{{ password_id }}" password into the Secret Manager
-  command: security add-generic-password -U -a $USER -s "{{ password_id }}" -j "{{ password_id }}" -w "{{ password }}"
-  no_log: True
+  become: False
+  command: "secret-tool store --label='{{ password_id }}' password {{ password_id }}"
+  args:
+    stdin: "{{ password }}"
+    stdin_add_newline: false
+  when: (output.rc == 1 or output.stdout != password)
+  # no_log: True

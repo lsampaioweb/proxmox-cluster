@@ -1,0 +1,6 @@
+---
+- name: Managing apt packages
+  apt:
+    name: "{{ item.name }}"
+    state: "{{ item.state | default(omit) }}"
+  loop: "{{ packages }}"

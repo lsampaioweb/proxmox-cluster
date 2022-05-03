@@ -1,6 +1,5 @@
 ---
 - name: Setting timezone to {{ timezone }}
-  become: True
   timezone:
     name: "{{ timezone }}"
   notify: "Reconfiguring Timezone"
