@@ -1,7 +1,7 @@
 ---
 - name: Trying to retrieve the password of "{{ password_id }}" in order to verify if already exists or it has changed
   import_tasks: "roles/common/tasks/passwords/get.yml"
-  # no_log: True
+  no_log: True
 
 - name: Adding the "{{ password_id }}" password into the Secret Manager
   become: False
@@ -10,4 +10,4 @@
     stdin: "{{ password }}"
     stdin_add_newline: false
   when: (output.rc == 1 or output.stdout != password)
-  # no_log: True
+  no_log: True

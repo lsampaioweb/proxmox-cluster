@@ -14,7 +14,7 @@
     shell: "/bin/bash"
     groups:
       - "sudo"
-    state: "absent"
+    state: "present"
   register: creating_user_output
 
 - name: Saving the password in the secret manager
@@ -25,4 +25,4 @@
     password_id: "{{ ansible_password_id }}"
     password: "{{ usr_ansible_password }}"
   when: not creating_user_output.failed and creating_user_output.changed
-  # no_log: true
+  no_log: true
