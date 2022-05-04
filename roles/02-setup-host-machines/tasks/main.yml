@@ -14,8 +14,8 @@
 # - name: Setting up Brazilian NTP Servers
 #   import_tasks: 05-ntp-servers.yml
 
-- name: Creating the Ansible user account
-  import_tasks: 06-users.yml
+# - name: Creating the Ansible user account
+#   import_tasks: 06-users.yml
 
-# - name: Setting up the network interfaces
-#   import_tasks: 07-network.yml
+- name: Setting up the network interfaces
+  import_tasks: 07-network.yml

@@ -1,14 +1,22 @@
 ---
 - name: Copying the network config file
   template:
-    src: "../templates/network.j2"
+    src: "network.j2"
     dest: "/etc/network/interfaces"
+  register: "network_output"
 
 - name: Renaming network cards to start with eth0-ethX
   lineinfile:
     path: "/etc/default/grub"
-    regexp: '^GRUB_CMDLINE_LINUX='
+    regexp: "^GRUB_CMDLINE_LINUX="
     line: 'GRUB_CMDLINE_LINUX="net.ifnames=0 biosdevname=0"'
+  register: "network_rename_output"    
   notify:
     - "Generating Grub File"
     - "Rebooting Server"
+
+- name: Restarting network
+  service:
+    name: "networking"
+    state: "restarted"
+  when: not network_rename_output.changed and network_output.changed

@@ -1,1 +1,21 @@
 ---
+ethtool_command_eth0: ""
+ethtool_command_eth1: |
+
+  post-up /sbin/ethtool -s $IFACE wol g
+  post-down /sbin/ethtool -s $IFACE wol g
+bond0_nic: "eth2 eth3 eth4"
+
+management_nic: "eth1"
+management_ip: "{{ ansible_host }}"
+management_netmask: "28"
+management_ip_and_netmask: "{{ management_ip }}/{{ management_netmask }}"
+management_gateway: "10.0.3.1"
+
+cluster_ip: "10.0.4.9"
+cluster_netmask: "28"
+cluster_ip_and_netmask: "{{ cluster_ip }}/{{ cluster_netmask }}"
+
+# lvm:
+#   - { name: "gold_03"  , logical_volume: "lv_gold"  , volume_group: "vg_gold"  , filesystem_type: "ext4", devices: ["/dev/nvme0n1"] }
+#   - { name: "silver_03", logical_volume: "lv_silver", volume_group: "vg_silver", filesystem_type: "ext4", devices: ["/dev/sdb", "/dev/sdc"] }
