@@ -1,8 +1,8 @@
 ---
-- name: Adding the internal IP and url of all hosts into the 'hosts' file
+- name: Adding the internal IP and name of all hosts into the 'hosts' file
   lineinfile:
     path: "/etc/hosts"
-    line: "{{ hostvars[item].internal_ip }} {{ item }}.{{ domain }} {{ item }}"
+    line: "{{ hostvars[item].cluster_ip }} {{ item }}.{{ domain }} {{ item }}"
     insertbefore: '^\s*$' #Empty line
     firstmatch: yes
     state: "present"

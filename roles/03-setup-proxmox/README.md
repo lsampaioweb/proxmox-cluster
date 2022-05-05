@@ -7,7 +7,7 @@ Run the command in the terminal:
 
 # Tasks:
 
-## 1. Add the internal IP and url of all hosts into the 'hosts' file.
+## 1. Add the internal IP and name of all hosts into the 'hosts' file.
   1. Add the internal IP and url of all hosts into the 'hosts' file.
 
 ## 2. Setup email notification with Postfix.
@@ -23,9 +23,9 @@ Run the command in the terminal:
   1. Add nodes to the cluster.
   1. Add the fingerprint of each host into the ~/.ssh/known_hosts file:
   ```bash
-    pve01.aprendendo.com.br ecdsa-sha2-nistp256 ...
-    pve02.aprendendo.com.br ecdsa-sha2-nistp256 ...
-    pve03.aprendendo.com.br ecdsa-sha2-nistp256 ...
+    kvm01.homelab ecdsa-sha2-nistp256 ...
+    kvm02.homelab ecdsa-sha2-nistp256 ...
+    kvm03.homelab ecdsa-sha2-nistp256 ...
   ```
 
 ## 5. Set the network for all migrations in the cluster.

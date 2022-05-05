@@ -1,16 +1,21 @@
 ---
-# The password that Ansible will use to connect and run commands into each host.
-ansible_become_password: "{{ lookup('pipe', 'security find-generic-password -a $USER -s {{ ansible_password_id }} -w') }}"
+# The user account that Ansible will use to connect and run commands into each host.
+ansible_user: "usr_ansible"
 
-smtp_server: "smtp.gmail.com"
-smtp_port: "587"
-smtp_email: "lsampaioweb@gmail.com"
-smtp_password: "{{ lookup('pipe', 'security find-generic-password -a $USER -s {{ proxmox_smtp_password_id }} -w') }}"
+# The password that Ansible will use to connect and run commands into each host.
+ansible_password: "{{ lookup('pipe', 'secret-tool lookup password {{ ansible_password_id }}') }}"
+
+# The password that Ansible will use when running sudo commands.
+ansible_become_password: "{{ ansible_password }}"
+
+# # The password of the root user used in Proxmox.
+# proxmox_root_password: "{{ lookup('pipe', 'secret-tool lookup password {{ proxmox_root_password_id }}') }}"
+
+# smtp_server: "smtp.gmail.com"
+# smtp_port: "587"
+# smtp_email: "lsampaioweb@gmail.com"
+# smtp_password: "{{ lookup('pipe', 'secret-tool lookup password {{ proxmox_smtp_password_id }}') }}"
 
 # The name of the HomeLab Cluster.
-cluster_name: "HomeLab"
-
-# The password of the root user used in Proxmox.
-proxmox_root_password: "{{ lookup('pipe', 'security find-generic-password -a $USER -s {{ proxmox_root_password_id }} -w') }}"
-
-cluster_master_node: "{{ groups['Proxmox'][0] }}"
+# cluster_name: "HomeLab"
+# cluster_master_node: "{{ groups['Proxmox'][0] }}"
