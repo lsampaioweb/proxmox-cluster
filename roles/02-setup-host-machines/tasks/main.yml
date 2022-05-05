@@ -1,21 +1,21 @@
 ---
-# - name: Disabling IPV6 on the server
-#   import_tasks: 01-disable-ipv6.yml
+- name: Disabling IPV6 on the server
+  import_tasks: 01-disable-ipv6.yml
 
-# - name: Installing required packages
-#   import_tasks: 02-installing-packages.yml
+- name: Installing required packages
+  import_tasks: 02-installing-packages.yml
 
-# - name: Removing unnecessary packages
-#   import_tasks: 03-removing-packages.yml
+- name: Removing unnecessary packages
+  import_tasks: 03-removing-packages.yml
 
-# - name: Setting up Brazilian timezone
-#   import_tasks: 04-timezone.yml
+- name: Setting up Brazilian timezone
+  import_tasks: 04-timezone.yml
 
-# - name: Setting up Brazilian NTP Servers
-#   import_tasks: 05-ntp-servers.yml
+- name: Setting up Brazilian NTP Servers
+  import_tasks: 05-ntp-servers.yml
 
-# - name: Creating the Ansible user account
-#   import_tasks: 06-users.yml
+- name: Creating the Ansible user account
+  import_tasks: 06-users.yml
 
 - name: Setting up the network interfaces
   import_tasks: 07-network.yml

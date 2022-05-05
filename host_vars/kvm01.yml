@@ -1,16 +1,23 @@
 ---
-ethtool_command_eth0: ""
-ethtool_command_eth1: |
+template_network_type: "master"
+
+ethtool_command_eth1: ""
+ethtool_command_eth0: |
 
   post-up /sbin/ethtool -s $IFACE wol g
   post-down /sbin/ethtool -s $IFACE wol g
 bond0_nic: "eth2 eth3 eth4"
 
-management_nic: "eth1"
-management_ip: "{{ ansible_host }}"
-management_netmask: "28"
-management_ip_and_netmask: "{{ management_ip }}/{{ management_netmask }}"
-management_gateway: "10.0.3.1"
+wan_management_nic: "eth0"
+wan_management_ip: "{{ ansible_host }}"
+wan_management_netmask: "28"
+wan_management_ip_and_netmask: "{{ wan_management_ip }}/{{ wan_management_netmask }}"
+wan_management_gateway: "192.168.0.2"
+
+lan_management_nic: "eth1"
+lan_management_ip: "10.0.3.4"
+lan_management_netmask: "28"
+lan_management_ip_and_netmask: "{{ lan_management_ip }}/{{ lan_management_netmask }}"
 
 cluster_ip: "10.0.4.4"
 cluster_netmask: "28"

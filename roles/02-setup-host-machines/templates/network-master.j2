@@ -38,22 +38,14 @@ iface bond0 inet manual
 
 auto vmbr0
 iface vmbr0 inet static
-        bridge-ports {{ management_nic }}
+        address {{ wan_management_ip_and_netmask }}
+        gateway {{ wan_management_gateway }}
+        bridge-ports {{ wan_management_nic }}
         bridge-stp off
         bridge-fd 0
         bridge-vlan-aware yes
         bridge-vids 2-4094
-
-auto vmbr0.3
-iface vmbr0.3 inet static
-        address {{ management_ip_and_netmask }}
-        gateway {{ management_gateway }}
-#Management NIC.
-
-auto vmbr0.4
-iface vmbr0.4 inet static
-        address {{ cluster_ip_and_netmask }}
-#Cluster NIC.
+#Wan Management NIC.
 
 auto vmbr1
 iface vmbr1 inet static
@@ -63,3 +55,22 @@ iface vmbr1 inet static
         bridge-vlan-aware yes
         bridge-vids 2-4094
 #Vms NIC.
+
+auto vmbr2
+iface vmbr2 inet static
+        bridge-ports {{ lan_management_nic }}
+        bridge-stp off
+        bridge-fd 0
+        bridge-vlan-aware yes
+        bridge-vids 2-4094
+#Lan Management NIC.
+
+auto vmbr2.3
+iface vmbr2.3 inet static
+        address {{ lan_management_ip_and_netmask }}
+#Lan Management NIC.
+
+auto vmbr2.4
+iface vmbr2.4 inet static
+        address {{ cluster_ip_and_netmask }}
+#Cluster NIC.

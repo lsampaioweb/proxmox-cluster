@@ -1,7 +1,7 @@
 ---
 - name: Copying the network config file
   template:
-    src: "network.j2"
+    src: "network-{{ template_network_type }}.j2"
     dest: "/etc/network/interfaces"
   register: "network_output"
 
