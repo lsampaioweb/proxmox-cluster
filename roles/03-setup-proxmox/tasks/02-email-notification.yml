@@ -1,7 +1,7 @@
 ---
 - name: Adding SMTP server, user name and password into the sasl_passwd file
   template:
-    src: "../templates/sasl_passwd.j2"
+    src: "sasl_passwd.j2"
     dest: "/etc/postfix/sasl_passwd"
     mode: "0600"
   notify: "Updating Postfix table management"

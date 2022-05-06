@@ -1,1 +1,1 @@
-{{ smtp_server }}:{{ smtp_port }} {{ smtp_email }}:{{ smtp_password }}
+{{ smtp_server }}:{{ smtp_port }} {{ smtp_email | b64decode }}:{{ smtp_password }}
