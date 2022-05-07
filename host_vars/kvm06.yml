@@ -2,7 +2,7 @@
 template_network_type: "worker"
 
 ethtool_command_eth0: ""
-ethtool_command_eth1: |
+ethtool_command_eth1: |-
 
   post-up /sbin/ethtool -s $IFACE wol g
   post-down /sbin/ethtool -s $IFACE wol g

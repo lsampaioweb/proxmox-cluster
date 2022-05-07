@@ -1,0 +1,16 @@
+---
+- name: Creating .ssh directory
+  file:
+    path: "~/.ssh/"
+    state: "directory"
+
+- name: Adding the fingerprint of host {{ item }} into the know_hosts file  
+  include_tasks: "roles/common/tasks/known_hosts/add.yml"
+  loop:
+    - { name: "{{ item }}"                                            , key: "{{ item }}" }
+    - { name: "{{ item }}.{{ domain }}"                               , key: "{{ item }}.{{ domain }}" }
+    - { name: "{{ hostvars[item].wan_management_ip | default('') }}"  , key: "{{ hostvars[item].wan_management_ip | default('') }}" }
+    - { name: "{{ hostvars[item].lan_management_ip }}"                , key: "{{ hostvars[item].lan_management_ip }}" }
+    - { name: "{{ hostvars[item].cluster_ip }}"                       , key: "{{ hostvars[item].cluster_ip }}" }
+  loop_control:
+    loop_var: host

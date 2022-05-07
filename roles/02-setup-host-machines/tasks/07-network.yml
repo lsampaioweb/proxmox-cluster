@@ -5,12 +5,20 @@
     dest: "/etc/network/interfaces"
   register: "network_output"
 
+- name: Copying the 99-default.link file to inform the OS to always put the same name in the network cards based on the MAC address
+  copy:
+    src: "99-default.link"
+    dest: "/etc/systemd/network/"
+  notify:
+    - "Generating Grub File"
+    - "Rebooting Server"
+
 - name: Renaming network cards to start with eth0-ethX
   lineinfile:
     path: "/etc/default/grub"
     regexp: "^GRUB_CMDLINE_LINUX="
-    line: 'GRUB_CMDLINE_LINUX="net.ifnames=0 biosdevname=0"'
-  register: "network_rename_output"    
+    line: 'GRUB_CMDLINE_LINUX="net.ifnames=0 biosdevname=1"'
+  register: "network_rename_output"
   notify:
     - "Generating Grub File"
     - "Rebooting Server"
@@ -19,4 +27,11 @@
   service:
     name: "networking"
     state: "restarted"
+  poll: 0
+  async: 10
+  when: not network_rename_output.changed and network_output.changed
+
+- name: Wait for the network device to reload
+  wait_for_connection:
+    delay: 1
   when: not network_rename_output.changed and network_output.changed

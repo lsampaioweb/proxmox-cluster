@@ -6,6 +6,7 @@
     state: "directory"
 
 - name: Adding the fingerprint of host {{ item }} into the know_hosts file
+  become: False
   include_tasks: "roles/common/tasks/known_hosts/add.yml"
   loop:
     - { name: "{{ item }}"                        , key: "{{ item }}" }
