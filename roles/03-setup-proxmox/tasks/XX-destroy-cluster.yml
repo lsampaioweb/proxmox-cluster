@@ -11,7 +11,7 @@
   failed_when: false
 
 - name: Destroying the cluster
-  shell: "{{ item }}"
+  command: "{{ item }}"
   loop:
     - "systemctl stop pvestatd"
     - "systemctl stop pvedaemon"
@@ -19,10 +19,20 @@
     - "systemctl stop corosync"
     - "pmxcfs -l"
     - "sqlite3 /var/lib/pve-cluster/config.db \"delete from tree where name = 'corosync.conf';\""
+  failed_when: false
+
+- name: Destroying the cluster
+  command: "{{ item }}"
+  loop:
     - "rm -f /var/lib/pve-cluster/.pmxcfs.lockfile"
     - "rm -f /etc/pve/corosync.conf"
     - "rm -rf /etc/corosync/*"
     - "rm -rf /var/lib/corosync/*"
+  failed_when: false
+
+- name: Destroying the cluster
+  command: "{{ item }}"
+  loop:
     - "killall pmxcfs"
     - "systemctl start pve-cluster"
     - "systemctl restart pveproxy"
