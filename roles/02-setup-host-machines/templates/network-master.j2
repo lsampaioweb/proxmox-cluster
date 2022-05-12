@@ -34,7 +34,7 @@ iface bond0 inet manual
         bond-mode 802.3ad
         bond-xmit-hash-policy layer2+3
         bond-min-links 1
-#Bond NIC.
+#Bond Interface.
 
 auto vmbr0
 iface vmbr0 inet static
@@ -45,33 +45,32 @@ iface vmbr0 inet static
         bridge-fd 0
         bridge-vlan-aware yes
         bridge-vids 2-4094
-#Wan Management NIC.
+#Wan Management Interface.
 
 auto vmbr1
-iface vmbr1 inet static
-        bridge-ports {{ lan_management_nic }}
-        bridge-stp off
-        bridge-fd 0
-        bridge-vlan-aware yes
-        bridge-vids 2-4094
-#Lan Management NIC.
-
-auto vmbr1.3
-iface vmbr1.3 inet static
-        address {{ lan_management_ip_and_netmask }}
-#Lan Management NIC.
-
-auto vmbr1.4
-iface vmbr1.4 inet static
-        address {{ cluster_ip_and_netmask }}
-#Cluster NIC.
-
-auto vmbr2
-iface vmbr2 inet static
+iface vmbr1 inet manual
         bridge-ports bond0
         bridge-stp off
         bridge-fd 0
         bridge-vlan-aware yes
         bridge-vids 2-4094
-#Vms NIC.
-  
+#Vms Interface.
+
+auto vmbr1.3
+iface vmbr1.3 inet static
+        address {{ lan_management_ip_and_netmask }}
+#Lan Management Interface.
+
+auto vmbr2
+iface vmbr2 inet manual
+        bridge-ports {{ cluster_management_nic }}
+        bridge-stp off
+        bridge-fd 0
+        bridge-vlan-aware yes
+        bridge-vids 2-4094
+#Cluster Interface.
+
+auto vmbr2.4
+iface vmbr2.4 inet static
+        address {{ cluster_ip_and_netmask }}
+#Cluster Interface.
