@@ -13,19 +13,19 @@ auto lo
 iface lo inet loopback
 
 auto eth0
-iface eth0 inet manual {{ ethtool_command_eth0 | indent(width=8) }}
+iface eth0 inet manual {{ ethtool_command_eth0 | default('') | indent(width=8) }}
 
 auto eth1
-iface eth1 inet manual {{ ethtool_command_eth1 | indent(width=8) }}
+iface eth1 inet manual {{ ethtool_command_eth1 | default('') | indent(width=8) }}
 
 auto eth2
-iface eth2 inet manual
+iface eth2 inet manual {{ ethtool_command_eth2 | default('') | indent(width=8) }}
 
 auto eth3
-iface eth3 inet manual
+iface eth3 inet manual {{ ethtool_command_eth3 | default('') | indent(width=8) }}
 
 auto eth4
-iface eth4 inet manual
+iface eth4 inet manual {{ ethtool_command_eth4 | default('') | indent(width=8) }}
 
 auto bond0
 iface bond0 inet manual
@@ -58,6 +58,7 @@ iface vmbr1 inet manual
         bridge-fd 0
         bridge-vlan-aware yes
         bridge-vids 2-4094
+        mtu 9000
 #Cluster Interface.
 
 auto vmbr1.4
