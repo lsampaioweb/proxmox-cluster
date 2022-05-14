@@ -1,11 +1,13 @@
 ---
 template_network_type: "master"
 
-ethtool_command_eth1: ""
 ethtool_command_eth0: |-
 
   post-up /sbin/ethtool -s $IFACE wol g
   post-down /sbin/ethtool -s $IFACE wol g
+ethtool_command_eth4: |-
+
+  mtu 9000  
 bond0_nic: "eth1 eth2 eth3"
 
 wan_management_nic: "eth0"

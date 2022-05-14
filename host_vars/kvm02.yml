@@ -1,11 +1,13 @@
 ---
 template_network_type: "worker"
 
-ethtool_command_eth0: ""
 ethtool_command_eth1: |-
 
   post-up /sbin/ethtool -s $IFACE wol g
   post-down /sbin/ethtool -s $IFACE wol g
+ethtool_command_eth4: |-
+
+  mtu 9000
 bond0_nic: "eth1 eth2 eth3"
 
 lan_management_ip: "{{ ansible_host }}"

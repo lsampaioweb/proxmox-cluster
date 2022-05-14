@@ -9,3 +9,8 @@
     state: "present"    
   ignore_errors: True
   when: host.name | length > 0
+  register: output
+
+# - name: debug
+#   debug:
+#     var: output
