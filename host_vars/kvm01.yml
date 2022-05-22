@@ -1,16 +1,16 @@
 ---
 template_network_type: "master"
 
-ethtool_command_eth0: |-
+ethtool_command_eth4: |-
 
   post-up /sbin/ethtool -s $IFACE wol g
   post-down /sbin/ethtool -s $IFACE wol g
-ethtool_command_eth4: |-
+ethtool_command_eth0: |-
 
   mtu 9000  
 bond0_nic: "eth1 eth2 eth3"
 
-wan_management_nic: "eth0"
+wan_management_nic: "eth4"
 wan_management_ip: "{{ ansible_host }}"
 wan_management_netmask: "24"
 wan_management_ip_and_netmask: "{{ wan_management_ip }}/{{ wan_management_netmask }}"
@@ -20,7 +20,7 @@ lan_management_ip: "10.0.3.4"
 lan_management_netmask: "28"
 lan_management_ip_and_netmask: "{{ lan_management_ip }}/{{ lan_management_netmask }}"
 
-cluster_management_nic: "eth4"
+cluster_management_nic: "eth0"
 cluster_ip: "10.0.4.4"
 cluster_netmask: "28"
 cluster_ip_and_netmask: "{{ cluster_ip }}/{{ cluster_netmask }}"
