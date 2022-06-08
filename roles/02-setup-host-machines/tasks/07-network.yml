@@ -17,7 +17,7 @@
   lineinfile:
     path: "/etc/default/grub"
     regexp: "^GRUB_CMDLINE_LINUX="
-    line: 'GRUB_CMDLINE_LINUX="net.ifnames=0 biosdevname=1"'
+    line: 'GRUB_CMDLINE_LINUX="net.ifnames=0 biosdevname=0"'
   register: "network_rename_output"
   notify:
     - "Generating Grub File"
