@@ -12,7 +12,7 @@
 - name: Adding the fingerprint of all other hosts into the know_hosts file
   include_tasks: "04.1-cluster-known-hosts.yml"
   vars:
-    ansible_become: False
+    ansible_become: false
   when: ansible_hostname != item
   loop: "{{ groups['Proxmox'] }}"
 

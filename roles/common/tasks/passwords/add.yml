@@ -4,7 +4,7 @@
   no_log: True
 
 - name: Adding the "{{ password_id }}" password into the Secret Manager
-  become: False
+  become: false
   command: "secret-tool store --label='{{ password_id }}' password {{ password_id }}"
   args:
     stdin: "{{ password }}"

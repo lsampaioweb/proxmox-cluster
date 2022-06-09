@@ -1,6 +1,6 @@
 ---
 - name: Trying to retrieve the password of "{{ password_id }}" in order to verify if already exists or it has changed
-  become: False
+  become: false
   command: "secret-tool lookup password {{ password_id }}"
   register: "output"
   failed_when: false

@@ -1,7 +1,7 @@
 ---
 - name: Setting up the control machine to run Ansible scripts
   hosts: "ControlMachine"
-  become: True
+  become: yes
   vars_prompt:
     - name: "proxmox_root_password"
       prompt: "What is the Proxmox's root password? (empty to skip) "

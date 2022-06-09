@@ -1,6 +1,6 @@
 ---
 - name: Creating .ssh directory
-  become: False
+  become: false
   file:
     path: "~/.ssh/"
     state: "directory"
@@ -14,4 +14,4 @@
   loop_control:
     loop_var: "host"
   vars:
-    ansible_become: False
+    ansible_become: false
