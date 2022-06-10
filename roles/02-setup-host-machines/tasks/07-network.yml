@@ -5,14 +5,6 @@
     dest: "/etc/network/interfaces"
   register: "network_output"
 
-- name: Copying the 99-default.link file to inform the OS to always put the same name in the network cards based on the MAC address
-  copy:
-    src: "99-default.link"
-    dest: "/etc/systemd/network/"
-  notify:
-    - "Generating Grub File"
-    - "Rebooting Server"
-
 - name: Renaming network cards to start with eth0-ethX
   lineinfile:
     path: "/etc/default/grub"
