@@ -12,22 +12,16 @@
 auto lo
 iface lo inet loopback
 
-auto eth0
-iface eth0 inet manual {{ ethtool_command_eth0 | default('') | indent(width=8) }}
+iface board0 inet manual {{ ethtool_command_board0 | default('') | indent(width=8) }}
 
-auto eth1
-iface eth1 inet manual {{ ethtool_command_eth1 | default('') | indent(width=8) }}
+iface lagg0 inet manual {{ ethtool_command_lagg0 | default('') | indent(width=8) }}
 
-auto eth2
-iface eth2 inet manual {{ ethtool_command_eth2 | default('') | indent(width=8) }}
+iface lagg1 inet manual {{ ethtool_command_lagg1 | default('') | indent(width=8) }}
 
-auto eth3
-iface eth3 inet manual {{ ethtool_command_eth3 | default('') | indent(width=8) }}
+iface lagg2 inet manual {{ ethtool_command_lagg2 | default('') | indent(width=8) }}
 
-auto eth4
-iface eth4 inet manual {{ ethtool_command_eth4 | default('') | indent(width=8) }}
+iface sync0 inet manual {{ ethtool_command_sync0 | default('') | indent(width=8) }}
 
-auto bond0
 iface bond0 inet manual
         bond-slaves {{ bond0_nic }}
         bond-miimon 100
