@@ -12,3 +12,4 @@
   vars:
     packages:
       - { name: "passlib" }
+      - { name: "ansible" }

@@ -1,0 +1,5 @@
+---
+- name: Copying the DNS config file
+  template:
+    src: "dns-resolve.j2"
+    dest: "/etc/resolv.conf"

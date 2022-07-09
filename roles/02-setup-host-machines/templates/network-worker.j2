@@ -12,15 +12,23 @@
 auto lo
 iface lo inet loopback
 
-iface board0 inet manual {{ ethtool_command_board0 | default('') | indent(width=8) }}
+iface enp1board0 inet manual {{ ethtool_command_board0 | default('') | indent(width=8) }}
 
-iface lagg0 inet manual {{ ethtool_command_lagg0 | default('') | indent(width=8) }}
+iface enp2lagg0 inet manual {{ ethtool_command_lagg0 | default('') | indent(width=8) }}
 
-iface lagg1 inet manual {{ ethtool_command_lagg1 | default('') | indent(width=8) }}
+iface enp3lagg1 inet manual {{ ethtool_command_lagg1 | default('') | indent(width=8) }}
 
-iface lagg2 inet manual {{ ethtool_command_lagg2 | default('') | indent(width=8) }}
+iface enp4lagg2 inet manual {{ ethtool_command_lagg2 | default('') | indent(width=8) }}
 
-iface sync0 inet manual {{ ethtool_command_sync0 | default('') | indent(width=8) }}
+iface enp5sync0 inet manual {{ ethtool_command_sync0 | default('') | indent(width=8) }}
+
+{% if ethtool_command_sync1 is defined %}
+iface enp5sync1 inet manual {{ ethtool_command_sync1 | default('') | indent(width=8) }}
+{% endif %}
+
+{% if ethtool_command_sync2 is defined %}
+iface enp5sync2 inet manual {{ ethtool_command_sync2 | default('') | indent(width=8) }}
+{% endif %}
 
 iface bond0 inet manual
         bond-slaves {{ bond0_nic }}

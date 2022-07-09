@@ -1,15 +1,15 @@
 ---
-# - name: Adding the internal IP and url of all hosts into the 'hosts' file
-#   import_tasks: 01-hosts.yml
+- name: Adding the internal IP and url of all hosts into the 'hosts' file
+  import_tasks: 01-hosts.yml
 
-# - name: Setting up email notification with Postfix
-#   import_tasks: 02-email-notification.yml
+- name: Setting up email notification with Postfix
+  import_tasks: 02-email-notification.yml
 
-# - name: Removing the no subscription popup
-#   import_tasks: 03-subscription-popup.yml
+- name: Removing the no subscription popup
+  import_tasks: 03-subscription-popup.yml
 
-- name: Creating the cluster and join the nodes into it
-  import_tasks: 04-cluster.yml
+# - name: Creating the cluster and join the nodes into it
+#   import_tasks: 04-cluster.yml
 
 # - name: Setting up the network for all migrations in the cluster
 #   import_tasks: 05-migration-network.yml

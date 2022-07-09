@@ -1,19 +1,14 @@
 [ControlMachine]
 localhost ansible_connection=local
 
-[ProxmoxMasterServer]
-kvm01 ansible_host=192.168.0.10
-
-[ProxmoxMasterServer:vars]
-ansible_python_interpreter=/usr/bin/python3.9
-
 [Proxmox]
-# kvm01 ansible_host=10.0.3.4
-# kvm02 ansible_host=10.0.3.5
-# kvm03 ansible_host=10.0.3.6
-# kvm04 ansible_host=10.0.3.7
-# kvm05 ansible_host=10.0.3.8
-# kvm06 ansible_host=10.0.3.9
+kvm-01 ansible_host=192.168.0.10
+#kvm-01 ansible_host=10.0.3.5
+kvm-02 ansible_host=10.0.3.6
+kvm-03 ansible_host=10.0.3.7
+kvm-04 ansible_host=10.0.3.8
+kvm-05 ansible_host=10.0.3.9
+# kvm-06 ansible_host=10.0.3.10
 
-# [Proxmox:vars]
-# ansible_python_interpreter=/usr/bin/python3.9
+[Proxmox:vars]
+ansible_python_interpreter=/usr/bin/python3.9
