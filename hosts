@@ -8,7 +8,7 @@ kvm-02 ansible_host=10.0.3.6
 kvm-03 ansible_host=10.0.3.7
 kvm-04 ansible_host=10.0.3.8
 kvm-05 ansible_host=10.0.3.9
-# kvm-06 ansible_host=10.0.3.10
+kvm-06 ansible_host=10.0.3.10
 
 [Proxmox:vars]
 ansible_python_interpreter=/usr/bin/python3.9
