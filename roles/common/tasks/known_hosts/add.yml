@@ -1,14 +1,18 @@
-- name: Creating variables with the default content
-  set_fact:
-    type: "{{ '-t ' + ( host.type | default('ecdsa') ) }}"
+---
+# - name: debug {{ host.name }}
+#   debug:
+#     msg:
+#       - "{{ host.name }}"
+#       - "{{ host.key }}"
 
 - name: Adding the fingerprint of host {{ host.name }} into the know_hosts file
   known_hosts:
     name: "{{ host.name }}"
-    key: "{{ lookup('pipe', 'ssh-keyscan {{ type }} {{ host.key }}') }}"
-    state: "present"    
+    key: "{{ host.key }}"
+    state: "present"
+    # hash_host: yes
   ignore_errors: True
-  when: host.name | length > 0
+  when: host.name | length > 0 and host.key | length > 0
   register: output
 
 # - name: debug

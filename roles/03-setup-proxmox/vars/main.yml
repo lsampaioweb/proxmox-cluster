@@ -19,3 +19,4 @@ smtp_password: "{{ lookup('pipe', 'secret-tool lookup password {{ proxmox_smtp_p
 # The name of the HomeLab Cluster.
 cluster_name: "HomeLab"
 cluster_master_node: "{{ groups['Proxmox'][0] }}"
+migration_network: "10.0.4.0/28"

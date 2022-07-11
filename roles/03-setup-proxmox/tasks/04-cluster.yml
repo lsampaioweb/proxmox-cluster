@@ -1,30 +1,34 @@
 ---
-- name: Checking if the cluster already exists
+- name: Checking if the cluster already exists (on each and every node)
   stat:
     path: "/etc/pve/corosync.conf"
   register: "corosync"
 
-- name: Creating cluster (only on {{ cluster_master_node }})
-  command: "pvecm create {{ cluster_name }} -link0 address={{ cluster_ip }},priority=0"
-  register: "create_cluster"
-  when: ansible_hostname == cluster_master_node and not corosync.stat.exists
-
-- name: Adding the fingerprint of all other hosts into the know_hosts file
+- name: Adding the fingerprints of all hosts into the know_hosts file
   include_tasks: "04.1-cluster-known-hosts.yml"
   vars:
-    ansible_become: false
-  when: ansible_hostname != item
-  loop: "{{ groups['Proxmox'] }}"
+    hosts: "{{ groups['Proxmox'] }}"
+  when: not corosync.stat.exists
+
+- name: Creating cluster (only on {{ cluster_master_node }})
+  run_once: true
+  command: "pvecm create {{ cluster_name }} -link0 address={{ cluster_ip }},priority=0 -link1 address={{ lan_management_ip }},priority=1"
+  register: "create_cluster"
+  when: ansible_hostname == cluster_master_node and not corosync.stat.exists
 
 - name: Adding nodes to cluster
   throttle: 1
   expect:
-    command: "pvecm add {{ hostvars[cluster_master_node].wan_management_ip }} -link0 address={{ cluster_ip }},priority=0 -force"
+    command: "pvecm add {{ hostvars[cluster_master_node].wan_management_ip }} -link0 address={{ cluster_ip }},priority=0 -link1 address={{ lan_management_ip }},priority=1 -force"
     responses:
-      'Please enter': "{{ proxmox_root_password }}"
-      'Are you sure': "yes"
+      "Please enter": "{{ proxmox_root_password }}"
+      "Are you sure": "yes"
     echo: yes
   timeout: 30
-  no_log: true
+  # no_log: true
   register: "join_cluster"
   when: ansible_hostname != cluster_master_node and not corosync.stat.exists
+
+# - name: debug
+#   debug:
+#     var: join_cluster
