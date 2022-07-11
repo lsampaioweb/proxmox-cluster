@@ -1,4 +1,5 @@
 ---
 - name: Adding the fingerprint of the hosts into the know_hosts file
-  include_tasks: "03-proxmox-known-hosts.yml"
-  loop: "{{ groups['Proxmox'] }}"
+  include_tasks: "03.1-known-hosts.yml"
+  vars:
+    hosts: "{{ groups['Proxmox'] }}"
