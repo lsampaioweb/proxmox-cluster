@@ -1,0 +1,30 @@
+---
+mac_bind:
+  - { mac_address: "00:e0:0c:a6:70:79", nic_name: "enp1board0" }
+  - { mac_address: "a0:36:9f:c8:9c:ac", nic_name: "enp2lagg0" }
+  - { mac_address: "a0:36:9f:c8:9c:ad", nic_name: "enp3lagg1" }
+  - { mac_address: "a0:36:9f:c8:9c:ae", nic_name: "enp4lagg2" }
+  - { mac_address: "a0:36:9f:c8:9c:af", nic_name: "enp5sync0" }
+
+template_network_type: "worker-small"
+
+ethtool_command_lagg0: |-
+
+  post-up /sbin/ethtool -s $IFACE wol g
+  post-down /sbin/ethtool -s $IFACE wol g
+ethtool_command_sync0: |-
+
+  mtu 9000
+bond0_nic: "enp1board0"
+lan_management_ip: "{{ ansible_host }}"
+lan_management_netmask: "28"
+lan_management_ip_and_netmask: "{{ lan_management_ip }}/{{ lan_management_netmask }}"
+lan_management_gateway: "10.0.3.1"
+
+cluster_management_nic: ""
+cluster_ip: "10.0.4.11"
+cluster_netmask: "28"
+cluster_ip_and_netmask: "{{ cluster_ip }}/{{ cluster_netmask }}"
+# lvm:
+#   - { name: "gold_03"  , logical_volume: "lv_gold"  , volume_group: "vg_gold"  , filesystem_type: "ext4", devices: ["/dev/nvme0n1"] }
+#   - { name: "silver_03", logical_volume: "lv_silver", volume_group: "vg_silver", filesystem_type: "ext4", devices: ["/dev/sdb", "/dev/sdc"] }

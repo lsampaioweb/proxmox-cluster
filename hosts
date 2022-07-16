@@ -9,6 +9,7 @@ DC-BR-SE-AJU-KVM-03 ansible_host=10.0.3.7
 DC-BR-SE-AJU-KVM-04 ansible_host=10.0.3.8
 DC-BR-SE-AJU-KVM-05 ansible_host=10.0.3.9
 DC-BR-SE-AJU-KVM-06 ansible_host=10.0.3.10
+DC-BR-SE-AJU-KVM-07 ansible_host=10.0.3.11
 
 [Proxmox:vars]
 ansible_python_interpreter=/usr/bin/python3.9
