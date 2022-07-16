@@ -23,11 +23,11 @@ iface enp4lagg2 inet manual {{ ethtool_command_lagg2 | default('') | indent(widt
 iface enp5sync0 inet manual {{ ethtool_command_sync0 | default('') | indent(width=8) }}
 
 {% if ethtool_command_sync1 is defined %}
-iface enp5sync1 inet manual {{ ethtool_command_sync1 | default('') | indent(width=8) }}
+iface enp6sync1 inet manual {{ ethtool_command_sync1 | default('') | indent(width=8) }}
 {% endif %}
 
 {% if ethtool_command_sync2 is defined %}
-iface enp5sync2 inet manual {{ ethtool_command_sync2 | default('') | indent(width=8) }}
+iface enp7sync2 inet manual {{ ethtool_command_sync2 | default('') | indent(width=8) }}
 {% endif %}
 
 iface bond0 inet manual
