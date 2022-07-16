@@ -2,9 +2,9 @@
 localhost ansible_connection=local
 
 [Proxmox]
-DC-BR-SE-AJU-KVM-01 ansible_host=192.168.0.10
-# DC-BR-SE-AJU-KVM-01 ansible_host=10.0.3.5
-# DC-BR-SE-AJU-KVM-02 ansible_host=10.0.3.6
+# DC-BR-SE-AJU-KVM-01 ansible_host=192.168.0.10
+DC-BR-SE-AJU-KVM-01 ansible_host=10.0.3.5
+DC-BR-SE-AJU-KVM-02 ansible_host=10.0.3.6
 DC-BR-SE-AJU-KVM-03 ansible_host=10.0.3.7
 DC-BR-SE-AJU-KVM-04 ansible_host=10.0.3.8
 DC-BR-SE-AJU-KVM-05 ansible_host=10.0.3.9
