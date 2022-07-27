@@ -6,10 +6,53 @@
     size: "+100%FREE"
     resizefs: true
 
-# - name: Creating new partitions, volume groups and logical volumes on the local disks
-#   include_tasks: "06.1-local-storage-partition.yml"
-#   loop: "{{ lvm }}"
+- name: Creating the ZFS pool and datasets on the local disks
+  include_tasks: "06.1-local-storage.yml"
+  vars:
+    zfs_pool_name: "{{ item.name | default('') }}"
+    zfs_pool_mode: "{{ item.mode | default('') }}"
+    zfs_pool_mountpoint: "{{ item.mountpoint | default('') }}"
+    zfs_pool_compression: "{{ item.compression | default('') }}"
+    zfs_pool_devices: "{{ item.devices | default('') }}"
+  loop: "{{ zfs | default([]) }}"
 
-# - name: Removing the partitions, volume groups and logical volumes from the local disks
-#   include_tasks: "XX-01-remove-local-storage-partition.yml"
-#   loop: "{{ lvm }}"
+- name: Merging all zfs pool lists in just on big dictionary
+  run_once: true
+  set_fact:
+    zfs_pool_dict: "{{ zfs_pool_dict | default({}) | combine(hostvars[item].zfs_pool_dict | default({}), list_merge='append') }}"
+  loop: "{{ groups['Proxmox'] }}"
+
+- name: Adding the ZFS pool to the PVE Cluster
+  run_once: true
+  command: "pvesm add zfspool {{ item.key }} -pool {{ item.key }} --sparse true --nodes {{ item.value | join(',') }}"
+  register: "output_zfs_pool_cluster"
+  changed_when: output_zfs_pool_cluster.rc == 0
+  failed_when: (output_zfs_pool_cluster.rc != 0) and ' already defined' not in output_zfs_pool_cluster.stderr
+  loop: "{{ zfs_pool_dict | dict2items }}"
+
+- name: Setting up e-mail notification for ZFS events
+  lineinfile:
+    path: "/etc/zfs/zed.d/zed.rc"
+    regexp: "ZED_EMAIL_ADDR="
+    line: 'ZED_EMAIL_ADDR="root"'
+    state: "present"
+
+- name: Adding the ZFS pool as a directory to the PVE Cluster
+  run_once: true
+  command: "pvesm add dir {{ dir_name }} --path /mnt/{{ item.key }} --content vztmpl,backup,iso --nodes {{ item.value | join(',') }}"
+  register: "output_dir_cluster"
+  changed_when: output_dir_cluster.rc == 0
+  failed_when: (output_dir_cluster.rc != 0) and ' already defined' not in output_dir_cluster.stderr
+  vars:
+    dir_name: "{{ item.key | replace('zfs' , 'dir') }}"
+  loop: "{{ zfs_pool_dict | dict2items }}"
+
+# - name: Removing zfs pool and datasets from the local disks
+#   include_tasks: "XX-remove-local-storage.yml"
+#   vars:
+#     zfs_pool_name: "{{ item.name | default('') }}"
+#     zfs_pool_mode: "{{ item.mode | default('') }}"
+#     zfs_pool_mountpoint: "{{ item.mountpoint | default('') }}"
+#     zfs_pool_compression: "{{ item.compression | default('') }}"
+#     zfs_pool_devices: "{{ item.devices | default('') }}"
+#   loop: "{{ zfs | default([]) }}"

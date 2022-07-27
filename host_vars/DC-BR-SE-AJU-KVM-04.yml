@@ -26,6 +26,3 @@ cluster_management_nic: "enp5sync0"
 cluster_ip: "10.0.4.8"
 cluster_netmask: "28"
 cluster_ip_and_netmask: "{{ cluster_ip }}/{{ cluster_netmask }}"
-# lvm:
-#   - { name: "gold_03"  , logical_volume: "lv_gold"  , volume_group: "vg_gold"  , filesystem_type: "ext4", devices: ["/dev/nvme0n1"] }
-#   - { name: "silver_03", logical_volume: "lv_silver", volume_group: "vg_silver", filesystem_type: "ext4", devices: ["/dev/sdb", "/dev/sdc"] }

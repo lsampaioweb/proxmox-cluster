@@ -1,0 +1,30 @@
+---
+- name: Checking if the ZFS pool already exists
+  command: "zpool list -Ho name {{ zfs_pool_name }}"
+  register: "output_pool_properties"
+  ignore_errors: true
+  changed_when: false
+
+- name: Creating the ZFS pool
+  command: >-
+    zpool create -f -o ashift=12
+    {{ '-m ' + zfs_pool_mountpoint + zfs_pool_name if zfs_pool_mountpoint else '' }}
+    {{ zfs_pool_name }}
+    {{ zfs_pool_mode if zfs_pool_mode else '' }}
+    {{ zfs_pool_devices | join(' ') }}
+  register: "output_zpool_create"
+  when: "output_pool_properties.rc == 1"
+
+- name: Activating compression on the ZFS pool
+  command: "zfs set compression={{ zfs_pool_compression }} {{ zfs_pool_name }}"
+  register: "output_pool_compression"
+  when: "output_zpool_create.changed"
+
+- name: Exporting the ZFS pool and importing back with /dev/disk/by-id
+  shell: "zpool export {{ zfs_pool_name }} && zpool import -d /dev/disk/by-id {{ zfs_pool_name }}"
+  register: "output_add_pool_by_id"
+  when: "output_zpool_create.changed"
+
+- name: Preparing the zfs pool list of elements
+  set_fact:
+    zfs_pool_dict: "{{ zfs_pool_dict | default({}) | combine({ zfs_pool_name: [ansible_hostname] }, list_merge='append') }}"

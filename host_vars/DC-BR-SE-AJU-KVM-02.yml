@@ -15,7 +15,7 @@ ethtool_command_board0: |-
   post-up /sbin/ethtool -s $IFACE wol g
   post-down /sbin/ethtool -s $IFACE wol g
   mtu 9000
-  
+
 ethtool_command_sync1: ""
 ethtool_command_sync2: ""
 bond0_nic: "enp6sync1 enp7sync2"
@@ -28,6 +28,3 @@ cluster_management_nic: "enp1board0"
 cluster_ip: "10.0.4.6"
 cluster_netmask: "28"
 cluster_ip_and_netmask: "{{ cluster_ip }}/{{ cluster_netmask }}"
-# lvm:
-#   - { name: "gold_03"  , logical_volume: "lv_gold"  , volume_group: "vg_gold"  , filesystem_type: "ext4", devices: ["/dev/nvme0n1"] }
-#   - { name: "silver_03", logical_volume: "lv_silver", volume_group: "vg_silver", filesystem_type: "ext4", devices: ["/dev/sdb", "/dev/sdc"] }
