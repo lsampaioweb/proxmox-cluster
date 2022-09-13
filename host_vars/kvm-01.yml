@@ -1,10 +1,10 @@
 ---
 mac_bind:
-  - { mac_address: "b4:2e:99:ad:b0:c0", nic_name: "enp1board0" }
-  - { mac_address: "a0:36:9f:c8:98:80", nic_name: "enp2lagg0" }
-  - { mac_address: "a0:36:9f:c8:98:81", nic_name: "enp3lagg1" }
-  - { mac_address: "a0:36:9f:c8:98:82", nic_name: "enp4lagg2" }
-  - { mac_address: "a0:36:9f:c8:98:83", nic_name: "enp5sync0" }
+  - {mac_address: "b4:2e:99:ad:b0:c0", nic_name: "enp1board0"}
+  - {mac_address: "a0:36:9f:c8:98:80", nic_name: "enp2lagg0"}
+  - {mac_address: "a0:36:9f:c8:98:81", nic_name: "enp3lagg1"}
+  - {mac_address: "a0:36:9f:c8:98:82", nic_name: "enp4lagg2"}
+  - {mac_address: "a0:36:9f:c8:98:83", nic_name: "enp5sync0"}
 
 template_network_type: "master"
 
@@ -32,10 +32,4 @@ cluster_netmask: "28"
 cluster_ip_and_netmask: "{{ cluster_ip }}/{{ cluster_netmask }}"
 
 zfs:
-  - {
-      name: "local-zfs-120",
-      mode: "",
-      mountpoint: "/mnt/",
-      compression: "lz4",
-      devices: ["/dev/sda"],
-    }
+  - {name: "local-zfs-120", mode: "", mountpoint: "/mnt/", compression: "lz4", devices: ["/dev/sda"]}

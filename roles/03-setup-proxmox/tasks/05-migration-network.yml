@@ -10,4 +10,5 @@
   template:
     src: "datacenter.j2"
     dest: "/etc/pve/datacenter.cfg"
+    mode: "preserve"
     force: "{{ (datacenter.stat.exists) | ternary('yes', 'no') }}"

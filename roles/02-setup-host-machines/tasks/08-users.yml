@@ -5,7 +5,7 @@
   import_tasks: "roles/common/tasks/passwords/get.yml"
   vars:
     password_id: "{{ ansible_password_id }}"
-  no_log: True
+  no_log: true
 
 - name: Creating a random password with {{ ansible_password_size }} characters if the password does not exist
   run_once: true
@@ -15,7 +15,7 @@
   vars:
     saved_password: "{{ (output.rc == 1) | ternary('', output.stdout) }}"
     new_password: '{{ lookup(''pipe'', ''openssl rand -base64 {{ ansible_password_size }} | tr -d "=+/" | colrm {{ ansible_password_size + 1 }}'') }}'
-  no_log: True
+  no_log: true
 
 - name: Creating the Ansible user account
   user:

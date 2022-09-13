@@ -19,6 +19,8 @@
     - "systemctl stop corosync"
     - "pmxcfs -l"
     - "sqlite3 /var/lib/pve-cluster/config.db \"delete from tree where name = 'corosync.conf';\""
+  register: "output"
+  # failed_when: output.rc != 0
   failed_when: false
 
 - name: Destroying the cluster
@@ -28,6 +30,8 @@
     - "rm -f /etc/pve/corosync.conf"
     - "rm -rf /etc/corosync/*"
     - "rm -rf /var/lib/corosync/*"
+  register: "output"
+  # failed_when: output.rc != 0
   failed_when: false
 
 - name: Destroying the cluster
@@ -39,10 +43,16 @@
     - "systemctl start pvedaemon"
     - "systemctl start pvestatd"
     - "pvecm updatecerts"
+  register: "output"
+  # failed_when: output.rc != 0
   failed_when: false
 
-- name: Removing nodes from the Web UI
-  command: "rm -rf /etc/pve/nodes/{{ item }}"
+- name: Recursively remove directory
+  file:
+    path: "/etc/pve/nodes/{{ item }}"
+    state: "absent"
   when: ansible_hostname != item
   loop: "{{ groups['Proxmox'] }}"
+  register: "output"
+  # failed_when: output.rc != 0
   failed_when: false

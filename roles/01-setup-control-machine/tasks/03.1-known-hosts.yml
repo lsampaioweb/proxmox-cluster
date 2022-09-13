@@ -4,6 +4,7 @@
   file:
     path: "~/.ssh/"
     state: "directory"
+    mode: "preserve"
 
 - name: Retrieving the fingerprint of the hosts
   set_fact:

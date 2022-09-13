@@ -2,7 +2,7 @@
 - name: Installing and upgrading the pip package
   pip:
     name: "pip"
-    state: "latest"
+    state: "present"
 
 - name: Managing python packages
   pip:

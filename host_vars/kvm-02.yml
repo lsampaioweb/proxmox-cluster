@@ -1,12 +1,12 @@
 ---
 mac_bind:
-  - { mac_address: "00:e0:4c:49:fb:b7", nic_name: "enp1board0" }
-  # - { mac_address: "a0:36:9f:c8:9c:ac", nic_name: "enp2lagg0" }
-  # - { mac_address: "a0:36:9f:c8:9c:ad", nic_name: "enp3lagg1" }
-  # - { mac_address: "a0:36:9f:c8:9c:ae", nic_name: "enp4lagg2" }
-  # - { mac_address: "a0:36:9f:c8:9c:af", nic_name: "enp5sync0" }
-  - { mac_address: "a0:36:9f:40:3d:60", nic_name: "enp6sync1" }
-  - { mac_address: "a0:36:9f:40:3d:62", nic_name: "enp7sync2" }
+  - {mac_address: "00:e0:4c:49:fb:b7", nic_name: "enp1board0"}
+  # - { mac_address: "a0:36:9f:c8:9c:ac", nic_name: "enp2lagg0"}
+  # - { mac_address: "a0:36:9f:c8:9c:ad", nic_name: "enp3lagg1"}
+  # - { mac_address: "a0:36:9f:c8:9c:ae", nic_name: "enp4lagg2"}
+  # - { mac_address: "a0:36:9f:c8:9c:af", nic_name: "enp5sync0"}
+  - {mac_address: "a0:36:9f:40:3d:60", nic_name: "enp6sync1"}
+  - {mac_address: "a0:36:9f:40:3d:62", nic_name: "enp7sync2"}
 
 template_network_type: "worker"
 

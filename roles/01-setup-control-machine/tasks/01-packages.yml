@@ -3,13 +3,13 @@
   import_tasks: "roles/common/tasks/packages/apt.yml"
   vars:
     packages:
-      - { name: "pip" }
-      - { name: "sshpass" }
-      - { name: "libsecret-tools" }
+      - {name: "pip"}
+      - {name: "sshpass"}
+      - {name: "libsecret-tools"}
 
 - name: Installing pip packages
   import_tasks: "roles/common/tasks/packages/pip.yml"
   vars:
     packages:
-      - { name: "passlib" }
-      - { name: "ansible" }
+      - {name: "passlib"}
+      - {name: "ansible"}

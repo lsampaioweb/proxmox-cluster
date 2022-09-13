@@ -7,6 +7,8 @@
 
 - name: Destroying the ZFS pool
   command: "zpool destroy {{ zfs_pool_name }}"
+  register: "output"
+  changed_when: output.rc != 0
 
 - name: Read device information (always use unit when probing)
   parted:
@@ -28,7 +30,11 @@
     label: "{{ partition.0.disk.dev }}"
 
 - name: Initializing disk with GPT
-  shell: /bin/echo -e "d\no\nY\nw\nY\n" | gdisk "{{ device }}"
+  shell: |
+    set -e -o pipefail
+    /bin/echo -e "d\no\nY\nw\nY\n" | gdisk "{{ device }}"
+  # register: "gpt_info"
+  # changed_when: gpt_info.rc != 0
   loop: "{{ item.devices }}"
   loop_control:
     loop_var: "device"

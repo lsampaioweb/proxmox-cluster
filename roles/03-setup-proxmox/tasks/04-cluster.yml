@@ -19,11 +19,15 @@
 - name: Adding nodes to cluster
   throttle: 1
   expect:
-    command: "pvecm add {{ hostvars[cluster_master_node].wan_management_ip }} -link0 address={{ cluster_ip }},priority=0 -link1 address={{ lan_management_ip }},priority=1 -force"
+    command: >-
+      pvecm add {{ hostvars[cluster_master_node].wan_management_ip }}
+      -link0 address={{ cluster_ip }},priority=0
+      -link1 address={{ lan_management_ip }},priority=1
+      -force
     responses:
       "Please enter": "{{ proxmox_root_password }}"
       "Are you sure": "yes"
-    echo: yes
+    echo: true
   timeout: 30
   # no_log: true
   register: "join_cluster"

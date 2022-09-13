@@ -3,11 +3,13 @@
   copy:
     src: "99-default.link"
     dest: "/etc/systemd/network/"
+    mode: "preserve"
 
 - name: Copying the .link rule file to inform the OS to always put the same name in the network cards based on the MAC address
   template:
     src: "network-mac-bind.j2"
     dest: "/etc/systemd/network/10-{{ item.nic_name }}.link"
+    mode: "preserve"
   vars:
     mac_address: "{{ item.mac_address }}"
     nic_name: "{{ item.nic_name }}"
@@ -18,6 +20,7 @@
   template:
     src: "network-{{ template_network_type }}.j2"
     dest: "/etc/network/interfaces"
+    mode: "preserve"
   register: "network_config_file_output"
 
 - name: Rebooting the host because the name of some network adapter has changed

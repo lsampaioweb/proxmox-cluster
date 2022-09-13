@@ -5,4 +5,4 @@
   register: "output"
   failed_when: false
   changed_when: false
-  no_log: True
+  no_log: true

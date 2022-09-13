@@ -1,10 +1,10 @@
 ---
 mac_bind:
-  - { mac_address: "8c:94:b9:99:9a:85", nic_name: "enp1board0" }
-  - { mac_address: "00:e0:4c:87:1e:94", nic_name: "enp2lagg0" }
-  - { mac_address: "00:e0:4c:87:1e:96", nic_name: "enp3lagg1" }
-  - { mac_address: "00:e0:4c:87:1e:97", nic_name: "enp4lagg2" }
-  - { mac_address: "00:e0:4c:87:1e:95", nic_name: "enp5sync0" }
+  - {mac_address: "18:c0:4d:f1:fe:c9", nic_name: "enp1board0"}
+  - {mac_address: "00:e0:4c:68:62:71", nic_name: "enp2lagg0"}
+  - {mac_address: "00:e0:4c:68:62:73", nic_name: "enp3lagg1"}
+  - {mac_address: "00:e0:4c:68:62:74", nic_name: "enp4lagg2"}
+  - {mac_address: "00:e0:4c:68:62:72", nic_name: "enp5sync0"}
 
 template_network_type: "worker"
 
@@ -22,15 +22,9 @@ lan_management_ip_and_netmask: "{{ lan_management_ip }}/{{ lan_management_netmas
 lan_management_gateway: "10.0.3.1"
 
 cluster_management_nic: "enp5sync0"
-cluster_ip: "10.0.4.10"
+cluster_ip: "10.0.4.7"
 cluster_netmask: "28"
 cluster_ip_and_netmask: "{{ cluster_ip }}/{{ cluster_netmask }}"
 
 zfs:
-  - {
-      name: "local-zfs-120",
-      mode: "",
-      mountpoint: "/mnt/",
-      compression: "lz4",
-      devices: ["/dev/sda"],
-    }
+  - {name: "local-zfs-120", mode: "", mountpoint: "/mnt/", compression: "lz4", devices: ["/dev/sda"]}

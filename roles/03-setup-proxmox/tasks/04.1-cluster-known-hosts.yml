@@ -3,6 +3,7 @@
   file:
     path: "~/.ssh/"
     state: "directory"
+    mode: "0700"
 
 - name: Retrieving the fingerprint of the hosts
   run_once: true

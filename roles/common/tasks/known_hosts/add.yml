@@ -10,8 +10,8 @@
     name: "{{ host.name }}"
     key: "{{ host.key }}"
     state: "present"
-    # hash_host: yes
-  ignore_errors: True
+    # hash_host: true
+  ignore_errors: true
   when: host.name | length > 0 and host.key | length > 0
   register: output
 

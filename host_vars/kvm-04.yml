@@ -1,11 +1,12 @@
 ---
 mac_bind:
-  - { mac_address: "18:c0:4d:f1:fe:c9", nic_name: "enp1board0" }
-  - { mac_address: "00:e0:4c:68:62:71", nic_name: "enp2lagg0" }
-  - { mac_address: "00:e0:4c:68:62:73", nic_name: "enp3lagg1" }
-  - { mac_address: "00:e0:4c:68:62:74", nic_name: "enp4lagg2" }
-  - { mac_address: "00:e0:4c:68:62:72", nic_name: "enp5sync0" }
-
+  - {mac_address: "00:e0:4c:56:a1:3d", nic_name: "enp1board0"}
+  - {mac_address: "a0:36:9f:c8:98:91", nic_name: "enp2lagg0"}
+  - {mac_address: "a0:36:9f:c8:98:92", nic_name: "enp3lagg1"}
+  - {mac_address: "a0:36:9f:c8:98:93", nic_name: "enp4lagg2"}
+  - {mac_address: "a0:36:9f:c8:98:90", nic_name: "enp5sync0"}
+  - {mac_address: "a0:36:9f:40:3d:58", nic_name: "enp6sync1"}
+  - {mac_address: "a0:36:9f:40:3d:5a", nic_name: "enp7sync2"}
 template_network_type: "worker"
 
 ethtool_command_lagg0: |-
@@ -22,15 +23,6 @@ lan_management_ip_and_netmask: "{{ lan_management_ip }}/{{ lan_management_netmas
 lan_management_gateway: "10.0.3.1"
 
 cluster_management_nic: "enp5sync0"
-cluster_ip: "10.0.4.7"
+cluster_ip: "10.0.4.8"
 cluster_netmask: "28"
 cluster_ip_and_netmask: "{{ cluster_ip }}/{{ cluster_netmask }}"
-
-zfs:
-  - {
-      name: "local-zfs-120",
-      mode: "",
-      mountpoint: "/mnt/",
-      compression: "lz4",
-      devices: ["/dev/sda"],
-    }

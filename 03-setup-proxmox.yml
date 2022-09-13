@@ -1,7 +1,7 @@
 ---
 - name: Setting up the Proxmox
   hosts: "Proxmox"
-  become: yes
+  become: true
 
   roles:
     - 03-setup-proxmox
