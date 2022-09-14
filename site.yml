@@ -1,4 +1,9 @@
 ---
-- import_playbook: "control_machine.yml"
-- import_playbook: "host_machines.yml"
-- import_playbook: "proxmox.yml"
+- name: Run the control machine role
+  import_playbook: "control_machine.yml"
+
+- name: Run the host machines role
+  import_playbook: "host_machines.yml"
+
+- name: Run the proxmox role
+  import_playbook: "proxmox.yml"
