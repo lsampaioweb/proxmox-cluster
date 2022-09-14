@@ -1,0 +1,8 @@
+---
+- name: Reconfigure Timezone
+  ansible.builtin.command: "dpkg-reconfigure --frontend noninteractive tzdata"
+
+- name: Restart Systemd-Timesyncd
+  ansible.builtin.service:
+    name: "systemd-timesyncd"
+    state: "restarted"

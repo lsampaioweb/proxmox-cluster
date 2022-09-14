@@ -1,0 +1,8 @@
+---
+- name: Setting up Brazilian NTP servers
+  ansible.builtin.lineinfile:
+    path: "/etc/systemd/timesyncd.conf"
+    regexp: "NTP="
+    line: "NTP={{ ntp_servers }}"
+    state: "present"
+  notify: "Restart Systemd-Timesyncd"

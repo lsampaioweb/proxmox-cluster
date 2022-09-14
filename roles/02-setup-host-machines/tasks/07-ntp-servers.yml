@@ -1,8 +1,0 @@
----
-- name: Setting up Brazilian NTP servers
-  lineinfile:
-    path: "/etc/systemd/timesyncd.conf"
-    regexp: "NTP="
-    line: "NTP={{ ntp_servers }}"
-    state: "present"
-  notify: "Restarting Systemd-Timesyncd"

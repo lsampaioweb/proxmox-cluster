@@ -1,6 +1,0 @@
----
-- name: Copying the disable IPV6 config file to the server
-  copy:
-    src: "disable-ipv6.conf"
-    dest: "/etc/sysctl.d/disable-ipv6.conf"
-    mode: "preserve"

@@ -1,0 +1,14 @@
+---
+- name: Checking if the /etc/pve/datacenter.cfg file already exists
+  run_once: true
+  ansible.builtin.stat:
+    path: "/etc/pve/datacenter.cfg"
+  register: "datacenter"
+
+- name: Setting up the network for all migrations in the cluster
+  run_once: true
+  ansible.builtin.template:
+    src: "datacenter.j2"
+    dest: "/etc/pve/datacenter.cfg"
+    mode: "preserve"
+    force: "{{ (datacenter.stat.exists) | ternary('yes', 'no') }}"

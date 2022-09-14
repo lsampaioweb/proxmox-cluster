@@ -1,0 +1,6 @@
+---
+- name: Copying the DNS config file
+  ansible.builtin.template:
+    src: "dns-resolve.j2"
+    dest: "/etc/resolv.conf"
+    mode: "preserve"

@@ -1,0 +1,40 @@
+---
+- name: Trying to retrieve the password of "{{ ansible_password_id }}" in order to verify if already exists
+  run_once: true
+  delegate_to: "{{ groups['ControlMachine'][0] }}"
+  import_tasks: "roles/common/tasks/passwords/get.yml"
+  vars:
+    password_id: "{{ ansible_password_id }}"
+  no_log: true
+
+- name: Creating a random password with {{ ansible_password_size }} characters if the password does not exist
+  run_once: true
+  delegate_to: "{{ groups['ControlMachine'][0] }}"
+  ansible.builtin.set_fact:
+    usr_ansible_password: "{{ (saved_password != '') | ternary(saved_password, new_password) }}"
+  vars:
+    saved_password: "{{ (output.rc == 1) | ternary('', output.stdout) }}"
+    new_password: '{{ lookup(''pipe'', ''openssl rand -base64 {{ ansible_password_size }} | tr -d "=+/" | colrm {{ ansible_password_size + 1 }}'') }}'
+  no_log: true
+
+- name: Creating the Ansible user account
+  ansible.builtin.user:
+    name: "usr_ansible"
+    comment: "Ansible User"
+    password: "{{ usr_ansible_password | password_hash('sha512') }}"
+    update_password: "on_create"
+    shell: "/bin/bash"
+    groups:
+      - "sudo"
+    state: "present"
+  register: creating_user_output
+
+- name: Saving the password in the secret manager
+  run_once: true
+  delegate_to: "{{ groups['ControlMachine'][0] }}"
+  import_tasks: "roles/common/tasks/passwords/add.yml"
+  vars:
+    password_id: "{{ ansible_password_id }}"
+    password: "{{ usr_ansible_password }}"
+  when: creating_user_output.changed and not creating_user_output.failed
+  no_log: true

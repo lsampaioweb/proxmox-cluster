@@ -5,7 +5,7 @@
 
 - name: Adding the "{{ password_id }}" password into the Secret Manager
   become: false
-  command: "secret-tool store --label='{{ password_id }}' password {{ password_id }}"
+  ansible.builtin.command: "secret-tool store --label='{{ password_id }}' password {{ password_id }}"
   args:
     stdin: "{{ password }}"
     stdin_add_newline: false

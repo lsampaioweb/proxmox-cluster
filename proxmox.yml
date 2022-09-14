@@ -1,0 +1,7 @@
+---
+- name: Setting up the Proxmox
+  hosts: "Proxmox"
+  become: true
+
+  roles:
+    - proxmox

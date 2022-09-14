@@ -6,7 +6,7 @@
 #       - "{{ host.key }}"
 
 - name: Adding the fingerprint of host {{ host.name }} into the know_hosts file
-  known_hosts:
+  ansible.builtin.known_hosts:
     name: "{{ host.name }}"
     key: "{{ host.key }}"
     state: "present"

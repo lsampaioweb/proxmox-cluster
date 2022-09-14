@@ -1,8 +1,0 @@
----
-- name: Reconfiguring Timezone
-  command: "dpkg-reconfigure --frontend noninteractive tzdata"
-
-- name: Restarting Systemd-Timesyncd
-  service:
-    name: "systemd-timesyncd"
-    state: "restarted"

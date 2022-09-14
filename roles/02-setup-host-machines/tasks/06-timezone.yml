@@ -1,5 +1,0 @@
----
-- name: Setting timezone to {{ timezone }}
-  timezone:
-    name: "{{ timezone }}"
-  notify: "Reconfiguring Timezone"

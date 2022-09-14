@@ -1,11 +1,11 @@
 ---
 - name: Installing and upgrading the pip package
-  pip:
+  ansible.builtin.pip:
     name: "pip"
     state: "present"
 
 - name: Managing python packages
-  pip:
+  ansible.builtin.pip:
     name: "{{ item.name }}"
     state: "{{ item.state | default(omit) }}"
   loop: "{{ packages }}"

@@ -1,0 +1,10 @@
+---
+- name: Adding the internal IP and name of all hosts into the 'hosts' file
+  ansible.builtin.lineinfile:
+    path: "/etc/hosts"
+    line: "{{ hostvars[item].cluster_ip }} {{ item }}.{{ domain }} {{ item }}"
+    insertbefore: '^\s*$' # Empty line
+    firstmatch: true
+    state: "present"
+  when: ansible_hostname != item
+  loop: "{{ groups['Proxmox'] }}"

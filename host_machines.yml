@@ -1,0 +1,6 @@
+---
+- name: Setting up the host machines
+  hosts: "Proxmox"
+
+  roles:
+    - host_machines

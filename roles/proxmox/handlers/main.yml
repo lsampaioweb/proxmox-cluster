@@ -1,0 +1,13 @@
+---
+- name: Updating Postfix table management
+  ansible.builtin.command: "postmap /etc/postfix/sasl_passwd"
+
+- name: Restarting Postfix
+  ansible.builtin.service:
+    name: "postfix"
+    state: "restarted"
+
+- name: Restarting PVEProxy
+  ansible.builtin.service:
+    name: "pveproxy"
+    state: "restarted"

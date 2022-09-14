@@ -1,6 +1,0 @@
----
-- name: Setting up the host machines
-  hosts: "Proxmox"
-
-  roles:
-    - 02-setup-host-machines
