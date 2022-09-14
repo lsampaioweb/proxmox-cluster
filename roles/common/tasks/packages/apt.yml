@@ -1,6 +1,0 @@
----
-- name: Managing apt packages
-  ansible.builtin.apt:
-    name: "{{ item.name }}"
-    state: "{{ item.state | default(omit) }}"
-  loop: "{{ packages }}"

@@ -1,6 +1,0 @@
----
-- name: Adding non-free repositories into sources list
-  ansible.builtin.replace:
-    path: "/etc/apt/sources.list"
-    regexp: "main contrib$"
-    replace: "main contrib non-free"

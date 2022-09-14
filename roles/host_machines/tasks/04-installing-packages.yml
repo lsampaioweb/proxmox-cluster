@@ -10,7 +10,10 @@
     state: "present"
 
 - name: Adding non-free repositories into sources list
-  import_tasks: "roles/common/tasks/packages/non-free.yml"
+  ansible.builtin.replace:
+    path: "/etc/apt/sources.list"
+    regexp: "main contrib$"
+    replace: "main contrib non-free"
 
 - name: Updating apt repository and cache
   ansible.builtin.apt:
