@@ -1,4 +1,7 @@
 ---
+# Specify if more messages should be displayed during the executions.
+debug: false
+
 # The domain name of the HomeLab.
 domain: "homelab"
 
@@ -10,3 +13,13 @@ proxmox_smtp_password_id: "proxmox-smtp-password"
 
 # The id that will be used to retrieve the Ansible user's password saved in the Secret Manager. It will be the same for all hosts.
 ansible_password_id: "ansible-password"
+
+# Import Paths.
+path_roles_common: "roles/common"
+path_common_tasks: "{{ path_roles_common }}/tasks"
+path_tasks_debian: "{{ path_common_tasks }}/debian"
+
+# Packages.
+path_debian_packages: "{{ path_tasks_debian }}/packages"
+path_packages_apt: "{{ path_debian_packages }}/apt.yml"
+path_packages_pip: "{{ path_debian_packages }}/pip.yml"
