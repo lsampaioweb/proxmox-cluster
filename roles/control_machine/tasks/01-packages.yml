@@ -1,15 +1,22 @@
 ---
-- name: Installing apt packages
-  import_tasks: "roles/common/tasks/packages/apt.yml"
+- name: Upgrading full distro packages
+  ansible.builtin.apt:
+    update_cache: true
+    upgrade: "dist"
+
+- name: Installing required packages
+  ansible.builtin.include_tasks: "{{ path_packages_apt }}"
   vars:
     packages:
       - {name: "pip"}
       - {name: "sshpass"}
       - {name: "libsecret-tools"}
+      - {name: "qemu-guest-agent"} # To enhance Proxmox integration with the VM.
 
 - name: Installing pip packages
-  import_tasks: "roles/common/tasks/packages/pip.yml"
+  ansible.builtin.include_tasks: "{{ path_packages_pip }}"
   vars:
     packages:
       - {name: "passlib"}
       - {name: "ansible"}
+      - {name: "ansible-lint"}

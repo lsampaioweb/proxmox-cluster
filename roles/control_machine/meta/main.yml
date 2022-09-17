@@ -1,0 +1,18 @@
+---
+galaxy_info:
+  company: thecodemaster.net
+  author: Luciano Sampaio
+  description: Setup Ubuntu image with default settings.
+
+  license: MIT
+
+  min_ansible_version: 2.10.5
+  platforms:
+    - name: Ubuntu
+
+  galaxy_tags:
+    - proxmox
+    - ubuntu
+
+dependencies:
+  - role: common
