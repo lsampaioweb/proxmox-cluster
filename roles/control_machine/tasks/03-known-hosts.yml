@@ -1,5 +1,5 @@
 ---
 - name: Adding the fingerprint of the hosts into the know_hosts file
-  include_tasks: "03.1-known-hosts.yml"
+  ansible.builtin.include_tasks: "03.1-known-hosts.yml"
   vars:
     hosts: "{{ groups['Proxmox'] }}"

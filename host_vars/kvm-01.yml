@@ -22,7 +22,7 @@ wan_management_netmask: "24"
 wan_management_ip_and_netmask: "{{ wan_management_ip }}/{{ wan_management_netmask }}"
 wan_management_gateway: "192.168.0.2"
 
-lan_management_ip: "10.0.3.5"
+lan_management_ip: "10.0.2.5"
 lan_management_netmask: "28"
 lan_management_ip_and_netmask: "{{ lan_management_ip }}/{{ lan_management_netmask }}"
 

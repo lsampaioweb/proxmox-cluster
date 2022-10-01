@@ -15,7 +15,7 @@
   loop: "{{ hosts }}"
 
 - name: Adding the fingerprints of all hosts into the know_hosts file
-  include_tasks: "roles/common/tasks/known_hosts/add.yml"
+  ansible.builtin.include_tasks: "{{ path_debian_known_hosts_add }}"
   vars:
     ansible_become: false
   loop: "{{ fingerprints }}"

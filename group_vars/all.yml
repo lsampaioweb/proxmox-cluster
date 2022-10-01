@@ -19,7 +19,18 @@ path_roles_common: "roles/common"
 path_common_tasks: "{{ path_roles_common }}/tasks"
 path_tasks_debian: "{{ path_common_tasks }}/debian"
 
+# Known_hosts.
+path_debian_known_hosts: "{{ path_tasks_debian }}/known_hosts"
+path_debian_known_hosts_add: "{{ path_debian_known_hosts }}/add.yml"
+
 # Packages.
 path_debian_packages: "{{ path_tasks_debian }}/packages"
 path_packages_apt: "{{ path_debian_packages }}/apt.yml"
 path_packages_pip: "{{ path_debian_packages }}/pip.yml"
+
+# Passwords.
+path_debian_passwords: "{{ path_tasks_debian }}/passwords"
+path_debian_passwords_add: "{{ path_debian_passwords }}/add.yml"
+path_debian_passwords_get: "{{ path_debian_passwords }}/get.yml"
+
+git mv old/submod new/submod
