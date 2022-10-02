@@ -3,7 +3,7 @@
 proxmox_root_user: "root"
 
 # The password of the root user used in Proxmox.
-proxmox_root_password: "{{ lookup('pipe', 'secret-tool lookup password {{ proxmox_root_password_id }}') }}"
+proxmox_root_password: "{{ lookup('pipe', 'secret-tool lookup password ' +  proxmox_root_password_id) }}"
 
 # The user that will be used to connect on each host.
 ansible_user: "{{ proxmox_root_user }}"
