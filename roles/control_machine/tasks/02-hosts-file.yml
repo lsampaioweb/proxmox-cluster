@@ -4,4 +4,5 @@
     path: "/etc/hosts"
     line: "{{ hostvars[item].ansible_host }} {{ item }}.{{ domain }} {{ item }}"
     state: "present"
+  when: hostvars[item].ansible_host is defined
   loop: "{{ groups['Proxmox'] }}"
