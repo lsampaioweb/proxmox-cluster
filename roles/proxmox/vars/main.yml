@@ -14,7 +14,7 @@ proxmox_root_password: "{{ lookup('pipe', 'secret-tool lookup password ' + proxm
 smtp_server: "smtp.gmail.com"
 smtp_port: "587"
 smtp_email: "bHNhbXBhaW93ZWJAZ21haWwuY29t"
-smtp_password: "{{ lookup('pipe', 'secret-tool lookup password ' +  proxmox_smtp_password_id) }}"
+smtp_password: "{{ lookup('pipe', 'secret-tool lookup password ' + proxmox_smtp_password_id) }}"
 
 # The name of the HomeLab Cluster.
 cluster_name: "HomeLab"
