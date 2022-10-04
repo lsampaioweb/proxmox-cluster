@@ -14,7 +14,7 @@
     host_key: "{{ lookup('pipe', 'ssh-keyscan -t ecdsa ' + host_ip, errors='ignore') if (host_ip != '') else '' }}"
   loop: "{{ hosts }}"
 
-- name: Adding the fingerprints of all hosts into the know_hosts file
+- name: Adding the fingerprints of all hosts into the known_hosts file
   ansible.builtin.include_tasks: "{{ path_debian_known_hosts_add }}"
   vars:
     ansible_become: false
