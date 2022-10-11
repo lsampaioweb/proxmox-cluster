@@ -1,19 +1,20 @@
 ---
-- name: Upgrading full distro packages
+- name: "Upgrading full distro packages"
   ansible.builtin.apt:
     update_cache: true
     upgrade: "dist"
 
-- name: Installing required packages
+- name: "Installing required packages"
   ansible.builtin.include_tasks: "{{ path_packages_apt }}"
   vars:
     packages:
       - {name: "pip"}
       - {name: "sshpass"}
       - {name: "libsecret-tools"}
+      - {name: "python-is-python3"}
       - {name: "qemu-guest-agent"} # To enhance Proxmox integration with the VM.
 
-- name: Installing pip packages
+- name: "Installing pip packages"
   ansible.builtin.include_tasks: "{{ path_packages_pip }}"
   vars:
     packages:

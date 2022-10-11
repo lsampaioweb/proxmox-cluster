@@ -6,13 +6,13 @@ debug: false
 domain: "homelab"
 
 # The id that will be used to retrieve the proxmox's root password saved in the Secret Manager. It will be the same for all hosts.
-proxmox_root_password_id: "proxmox-root-password"
+proxmox_root_password_id: "proxmox_root_password"
 
 # The id that will be used to retrieve the proxmox's SMTP password saved in the Secret Manager. It will be the same for all hosts.
-proxmox_smtp_password_id: "proxmox-smtp-password"
+proxmox_smtp_password_id: "proxmox_smtp_password"
 
 # The id that will be used to retrieve the Ansible user's password saved in the Secret Manager. It will be the same for all hosts.
-ansible_password_id: "ansible-password"
+ansible_password_id: "ansible_password"
 
 # Import Paths.
 path_roles_common: "roles/common"

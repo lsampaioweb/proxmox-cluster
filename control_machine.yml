@@ -1,5 +1,5 @@
 ---
-- name: Setting up the control machine to run Ansible scripts
+- name: "Setting up the control machine to run Ansible scripts"
   hosts: "ControlMachine"
   become: true
   vars_prompt:
@@ -11,4 +11,4 @@
       private: true
 
   roles:
-    - control_machine
+    - "control_machine"
