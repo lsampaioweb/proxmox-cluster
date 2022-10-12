@@ -2,7 +2,7 @@
 galaxy_info:
   company: thecodemaster.net
   author: Luciano Sampaio
-  description: Setup the control machine.
+  description: Setup the proxmox host machine.
 
   license: MIT
 

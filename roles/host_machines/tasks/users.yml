@@ -1,23 +1,26 @@
 ---
-- name: Trying to retrieve the password of "{{ ansible_password_id }}" in order to verify if already exists
+- name: "Trying to retrieve the password of '{{ ansible_password_id }}' in order to verify if already exists"
   run_once: true
   delegate_to: "{{ groups['ControlMachine'][0] }}"
-  import_tasks: "roles/common/tasks/debian/passwords/get.yml"
+  ansible.builtin.import_tasks: "roles/common/tasks/debian/passwords/get.yml"
   vars:
     password_id: "{{ ansible_password_id }}"
   no_log: true
 
-- name: Creating a random password with {{ ansible_password_size }} characters if the password does not exist
+- name: "Creating a random password with {{ ansible_password_size }} characters if the password does not exist"
   run_once: true
   delegate_to: "{{ groups['ControlMachine'][0] }}"
   ansible.builtin.set_fact:
     usr_ansible_password: "{{ (saved_password != '') | ternary(saved_password, new_password) }}"
   vars:
+    size: "{{ ansible_password_size | string }}"
+    cut_size: "{{ (ansible_password_size + 1) | string }}"
+
     saved_password: "{{ (output.rc == 1) | ternary('', output.stdout) }}"
-    new_password: '{{ lookup(''pipe'', ''openssl rand -base64 {{ ansible_password_size }} | tr -d "=+/" | colrm {{ ansible_password_size + 1 }}'') }}'
+    new_password: "{{ lookup('pipe', 'openssl rand -base64 ' + size + ' | tr -d =+/ | colrm ' + cut_size) }}"
   no_log: true
 
-- name: Creating the Ansible user account
+- name: "Creating the Ansible user account"
   ansible.builtin.user:
     name: "usr_ansible"
     comment: "Ansible User"
@@ -27,9 +30,9 @@
     groups:
       - "sudo"
     state: "present"
-  register: creating_user_output
+  register: "creating_user_output"
 
-- name: Saving the password in the secret manager
+- name: "Saving the password in the secret manager"
   run_once: true
   delegate_to: "{{ groups['ControlMachine'][0] }}"
   import_tasks: "roles/common/tasks/debian/passwords/add.yml"

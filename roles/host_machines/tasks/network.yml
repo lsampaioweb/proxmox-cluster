@@ -1,11 +1,11 @@
 ---
-- name: Copying the empty 99-default.link file to override the default configuration
+- name: "Copying the empty 99-default.link file to override the default configuration"
   ansible.builtin.copy:
     src: "99-default.link"
     dest: "/etc/systemd/network/"
     mode: "preserve"
 
-- name: Copying the .link rule file to inform the OS to always put the same name in the network cards based on the MAC address
+- name: "Copying the .link rule file to inform the OS to always put the same name in the network cards based on the MAC address"
   ansible.builtin.template:
     src: "network-mac-bind.j2"
     dest: "/etc/systemd/network/10-{{ item.nic_name }}.link"
@@ -17,14 +17,14 @@
   notify:
     - "Reboot host"
 
-- name: Force all notified handlers to run at this point, not waiting for normal sync points
-  ansible.builtin.meta: "flush_handlers"
-
-- name: Copying the network config file
+- name: "Copying the network config file"
   ansible.builtin.template:
-    src: "network-{{ template_network_type }}.j2"
+    src: "interfaces.j2"
     dest: "/etc/network/interfaces"
     mode: "preserve"
   notify:
     - "Restart network"
     - "Wait for the network device to reload"
+
+- name: "Force all notified handlers to run at this point, not waiting for normal sync points"
+  ansible.builtin.meta: "flush_handlers"

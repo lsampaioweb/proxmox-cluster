@@ -1,30 +1,27 @@
 ---
-- name: Removing the pve-enterprise repository from sources list
-  ansible.builtin.apt_repository:
-    repo: "deb https://enterprise.proxmox.com/debian/pve bullseye pve-enterprise"
-    state: "absent"
-
-- name: Adding the pve-no-subscription repository into sources list
+- name: "Adding the pve-no-subscription repository into sources list"
   ansible.builtin.apt_repository:
     repo: "deb http://download.proxmox.com/debian/pve bullseye pve-no-subscription"
     state: "present"
 
-- name: Adding non-free repositories into sources list
+- name: "Adding non-free repositories into sources list"
   ansible.builtin.replace:
     path: "/etc/apt/sources.list"
     regexp: "main contrib$"
     replace: "main contrib non-free"
 
-- name: Updating apt repository and cache
+- name: "Removing the pve-enterprise repository from sources list"
+  ansible.builtin.apt_repository:
+    repo: "deb https://enterprise.proxmox.com/debian/pve bullseye pve-enterprise"
+    state: "absent"
+
+- name: "Upgrading full distro packages"
   ansible.builtin.apt:
     update_cache: true
-
-- name: Upgrading full distro packages
-  ansible.builtin.apt:
     upgrade: "dist"
 
-- name: Installing apt packages
-  import_tasks: "roles/common/tasks/debian/packages/apt.yml"
+- name: "Installing required packages"
+  ansible.builtin.include_tasks: "{{ path_packages_apt }}"
   vars:
     packages:
       - {name: "sudo"} # To enable elevated command.
@@ -36,15 +33,15 @@
       - {name: "parted"} # To format hard disks (HDD, SSD and NVME).
       - {name: "qrencode"} # To enable two-factor authentication (2FA)
 
-- name: Installing the intel-microcode package to fix the CPU bug
-  import_tasks: "roles/common/tasks/debian/packages/apt.yml"
+- name: "Installing the intel-microcode package to fix the CPU bug"
+  ansible.builtin.include_tasks: "{{ path_packages_apt }}"
   vars:
     packages:
       - {name: "intel-microcode"} # To fix the intel microcode bug.
-  when: "hostvars[inventory_hostname].ansible_processor is search('Intel')"
+  when: ansible_processor is search('Intel')
 
-- name: Installing pip packages
-  import_tasks: "roles/common/tasks/debian/packages/pip.yml"
+- name: "Installing pip packages"
+  ansible.builtin.include_tasks: "{{ path_packages_pip }}"
   vars:
     packages:
       - {name: "pip"} # To install other python applications.
@@ -52,18 +49,11 @@
       - {name: "requests"} # To enable ansible scripts.
       - {name: "pexpect"} # To enable ansible scripts that use the expect module.
 
-- name: Checking if a reboot is needed
+- name: "Checking if a reboot is needed"
   ansible.builtin.stat:
     path: "/var/run/reboot-required"
     get_md5: "no"
   register: "reboot_required"
-
-- name: Rebooting the host if kernel was updated
-  ansible.builtin.reboot:
-    msg: "Reboot initiated by Ansible for kernel updates."
-    connect_timeout: 5
-    reboot_timeout: 40
-    pre_reboot_delay: 0
-    post_reboot_delay: 20
-    test_command: "whoami"
-  when: reboot_required.stat.exists
+  changed_when: reboot_required.stat.exists
+  notify:
+    - "Reboot host"

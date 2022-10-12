@@ -12,15 +12,15 @@
 auto lo
 iface lo inet loopback
 
-iface enp1board0 inet manual {{ ethtool_command_board0 | default('') | indent(width=8) }}
+iface enp1board0 inet manual
 
-iface enp2lagg0 inet manual {{ ethtool_command_lagg0 | default('') | indent(width=8) }}
+iface enp2lacp0 inet manual
 
-iface enp3lagg1 inet manual {{ ethtool_command_lagg1 | default('') | indent(width=8) }}
+iface enp2lacp1 inet manual
 
-iface enp4lagg2 inet manual {{ ethtool_command_lagg2 | default('') | indent(width=8) }}
+iface enp2lacp2 inet manual
 
-iface enp5sync0 inet manual {{ ethtool_command_sync0 | default('') | indent(width=8) }}
+iface enp2lacp3 inet manual
 
 iface bond0 inet manual
         bond-slaves {{ bond0_nic }}
@@ -39,33 +39,25 @@ iface vmbr0 inet static
         bridge-fd 0
         bridge-vlan-aware yes
         bridge-vids 2-4094
+        post-up /sbin/ethtool -s $IFACE wol g
+        post-down /sbin/ethtool -s $IFACE wol g
 #Wan Management Interface.
 
 auto vmbr1
 iface vmbr1 inet manual
-        bridge-ports bond0
+        bridge-ports {{ lan_management_nic }}
         bridge-stp off
         bridge-fd 0
         bridge-vlan-aware yes
         bridge-vids 2-4094
-#Vms Interface.
+#Vms Interface - VLAN[2-4094]
 
-auto vmbr1.3
-iface vmbr1.3 inet static
+auto vmbr1.2
+iface vmbr1.2 inet static
         address {{ lan_management_ip_and_netmask }}
 #Lan Management Interface.
 
-auto vmbr2
-iface vmbr2 inet manual
-        bridge-ports {{ cluster_management_nic }}
-        bridge-stp off
-        bridge-fd 0
-        bridge-vlan-aware yes
-        bridge-vids 2-4094
-        mtu 9000
-#Cluster Interface.
-
-auto vmbr2.4
-iface vmbr2.4 inet static
+auto vmbr1.3
+iface vmbr1.3 inet static
         address {{ cluster_ip_and_netmask }}
 #Cluster Interface.

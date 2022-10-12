@@ -1,30 +1,23 @@
 ---
 mac_bind:
-  - {mac_address: "00:e0:4c:49:fb:b7", nic_name: "enp1board0"}
-  # - { mac_address: "a0:36:9f:c8:9c:ac", nic_name: "enp2lagg0"}
-  # - { mac_address: "a0:36:9f:c8:9c:ad", nic_name: "enp3lagg1"}
-  # - { mac_address: "a0:36:9f:c8:9c:ae", nic_name: "enp4lagg2"}
-  # - { mac_address: "a0:36:9f:c8:9c:af", nic_name: "enp5sync0"}
-  - {mac_address: "a0:36:9f:40:3d:60", nic_name: "enp6sync1"}
-  - {mac_address: "a0:36:9f:40:3d:62", nic_name: "enp7sync2"}
+  - {mac_address: "18:c0:4d:f1:fe:c9", nic_name: "enp1board0"}
+  - {mac_address: "00:e0:4c:68:62:71", nic_name: "enp2lacp0"}
+  - {mac_address: "00:e0:4c:68:62:72", nic_name: "enp2lacp1"}
+  - {mac_address: "00:e0:4c:68:62:73", nic_name: "enp2lacp2"}
+  - {mac_address: "00:e0:4c:68:62:74", nic_name: "enp2lacp3"}
 
-template_network_type: "worker"
+bond0_nic: "enp2lacp0 enp2lacp2 enp2lacp3"
+wan_management_nic: "bond0"
+wan_management_ip: "{{ ansible_host }}"
+wan_management_netmask: "24"
+wan_management_ip_and_netmask: "{{ wan_management_ip }}/{{ wan_management_netmask }}"
+wan_management_gateway: "192.168.0.2"
 
-ethtool_command_board0: |-
-
-  post-up /sbin/ethtool -s $IFACE wol g
-  post-down /sbin/ethtool -s $IFACE wol g
-  mtu 9000
-
-ethtool_command_sync1: ""
-ethtool_command_sync2: ""
-bond0_nic: "enp6sync1 enp7sync2"
-lan_management_ip: "{{ ansible_host }}"
+lan_management_nic: "bond0.2"
+lan_management_ip: "10.0.2.6"
 lan_management_netmask: "28"
 lan_management_ip_and_netmask: "{{ lan_management_ip }}/{{ lan_management_netmask }}"
-lan_management_gateway: "10.0.2.1"
 
-cluster_management_nic: "enp1board0"
-cluster_ip: "10.0.4.6"
+cluster_ip: "10.0.3.6"
 cluster_netmask: "28"
 cluster_ip_and_netmask: "{{ cluster_ip }}/{{ cluster_netmask }}"

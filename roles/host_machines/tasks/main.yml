@@ -1,27 +1,27 @@
 ---
-- name: "Setting up the UTF-8 locale"
-  ansible.builtin.import_tasks: "locale.yml"
+# - name: "Setting up the UTF-8 locale"
+#   ansible.builtin.import_tasks: "locale.yml"
 
-# - name: Disabling IPV6 on the server
-#   ansible.builtin.import_tasks: disable-ipv6.yml
+# - name: "Disabling IPV6 on the server"
+#   ansible.builtin.import_tasks: "disable-ipv6.yml"
 
-# - name: Setting up DNS
-#   ansible.builtin.import_tasks: dns.yml
+# - name: "Setting up DNS"
+#   ansible.builtin.import_tasks: "dns.yml"
 
-# - name: Installing required packages
-#   ansible.builtin.import_tasks: installing-packages.yml
+# - name: "Installing required packages"
+#   ansible.builtin.import_tasks: "installing-packages.yml"
 
-# - name: Removing unnecessary packages
-#   ansible.builtin.import_tasks: removing-packages.yml
+# - name: "Removing unnecessary packages"
+#   ansible.builtin.import_tasks: "removing-packages.yml"
 
-# - name: Setting up Brazilian timezone
-#   ansible.builtin.import_tasks: timezone.yml
+# - name: "Setting up Brazilian timezone"
+#   ansible.builtin.import_tasks: "timezone.yml"
 
-# - name: Setting up Brazilian NTP Servers
-#   ansible.builtin.import_tasks: ntp-servers.yml
+# - name: "Setting up Brazilian NTP Servers"
+#   ansible.builtin.import_tasks: "ntp-servers.yml"
 
-# - name: Creating the Ansible user account
-#   ansible.builtin.import_tasks: users.yml
+# - name: "Creating the Ansible user account"
+#   ansible.builtin.import_tasks: "users.yml"
 
-# - name: Setting up the network interfaces
-#   ansible.builtin.import_tasks: network.yml
+- name: "Setting up the network interfaces"
+  ansible.builtin.import_tasks: "network.yml"
