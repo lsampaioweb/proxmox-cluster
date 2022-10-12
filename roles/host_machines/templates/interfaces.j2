@@ -22,13 +22,28 @@ iface enp2lacp2 inet manual
 
 iface enp2lacp3 inet manual
 
+{% if ceph_nic is defined %}
+iface enp3sync0 inet manual
+
+iface enp3sync1 inet manual
+{% endif %}
+
 iface bond0 inet manual
         bond-slaves {{ bond0_nic }}
         bond-miimon 100
         bond-mode 802.3ad
         bond-xmit-hash-policy layer2+3
         bond-min-links 1
-#Bond Interface.
+#PVE Bond Interface.
+
+{% if ceph_nic is defined %}
+iface {{ ceph_nic }} inet manual
+        bond-slaves {{ bond1_nic }}
+        bond-miimon 100
+        bond-mode broadcast
+        bond-min-links 1
+#Ceph Bond Interface.
+{% endif %}
 
 auto vmbr0
 iface vmbr0 inet static
@@ -61,3 +76,15 @@ auto vmbr1.3
 iface vmbr1.3 inet static
         address {{ cluster_ip_and_netmask }}
 #Cluster Interface.
+
+{% if ceph_nic is defined %}
+auto vmbr2
+iface vmbr2 inet static
+        address {{ ceph_ip_and_netmask }}
+        bridge-ports {{ ceph_nic }}
+        bridge-stp off
+        bridge-fd 0
+        bridge-vlan-aware yes
+        bridge-vids 2-4094
+#Ceph Interface.
+{% endif %}

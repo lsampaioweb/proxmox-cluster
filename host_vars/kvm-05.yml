@@ -23,3 +23,9 @@ lan_management_ip_and_netmask: "{{ lan_management_ip }}/{{ lan_management_netmas
 cluster_ip: "10.0.3.9"
 cluster_netmask: "28"
 cluster_ip_and_netmask: "{{ cluster_ip }}/{{ cluster_netmask }}"
+
+bond1_nic: "enp3sync0 enp3sync1"
+ceph_nic: "bond1"
+ceph_ip: "10.0.4.9"
+ceph_netmask: "28"
+ceph_ip_and_netmask: "{{ ceph_ip }}/{{ ceph_netmask }}"
