@@ -1,5 +1,5 @@
 ---
-- name: Setting up the UTF-8 locale
+- name: "Setting up the UTF-8 locale"
   community.general.locale_gen:
     name: "en_US.UTF-8"
     state: "present"

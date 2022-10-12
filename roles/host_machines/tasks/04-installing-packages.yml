@@ -24,7 +24,7 @@
     upgrade: "dist"
 
 - name: Installing apt packages
-  import_tasks: "roles/common/tasks/packages/apt.yml"
+  import_tasks: "roles/common/tasks/debian/packages/apt.yml"
   vars:
     packages:
       - {name: "sudo"} # To enable elevated command.
@@ -37,14 +37,14 @@
       - {name: "qrencode"} # To enable two-factor authentication (2FA)
 
 - name: Installing the intel-microcode package to fix the CPU bug
-  import_tasks: "roles/common/tasks/packages/apt.yml"
+  import_tasks: "roles/common/tasks/debian/packages/apt.yml"
   vars:
     packages:
       - {name: "intel-microcode"} # To fix the intel microcode bug.
   when: "hostvars[inventory_hostname].ansible_processor is search('Intel')"
 
 - name: Installing pip packages
-  import_tasks: "roles/common/tasks/packages/pip.yml"
+  import_tasks: "roles/common/tasks/debian/packages/pip.yml"
   vars:
     packages:
       - {name: "pip"} # To install other python applications.

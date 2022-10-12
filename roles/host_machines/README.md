@@ -2,7 +2,7 @@
 
 Run the command in the terminal:
 ```bash
-  ansible-playbook 02-setup-host-machines.yml
+  ansible-playbook host_machines.yml
 ```
 
 # Tasks:

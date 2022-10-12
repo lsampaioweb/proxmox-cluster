@@ -2,7 +2,7 @@
 - name: Trying to retrieve the password of "{{ ansible_password_id }}" in order to verify if already exists
   run_once: true
   delegate_to: "{{ groups['ControlMachine'][0] }}"
-  import_tasks: "roles/common/tasks/passwords/get.yml"
+  import_tasks: "roles/common/tasks/debian/passwords/get.yml"
   vars:
     password_id: "{{ ansible_password_id }}"
   no_log: true
@@ -32,7 +32,7 @@
 - name: Saving the password in the secret manager
   run_once: true
   delegate_to: "{{ groups['ControlMachine'][0] }}"
-  import_tasks: "roles/common/tasks/passwords/add.yml"
+  import_tasks: "roles/common/tasks/debian/passwords/add.yml"
   vars:
     password_id: "{{ ansible_password_id }}"
     password: "{{ usr_ansible_password }}"

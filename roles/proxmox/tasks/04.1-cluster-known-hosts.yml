@@ -25,7 +25,7 @@
   loop: "{{ hosts }}"
 
 - name: Adding the fingerprints of all hosts into the know_hosts file
-  include_tasks: "roles/common/tasks/known_hosts/add.yml"
+  include_tasks: "roles/common/tasks/debian/known_hosts/add.yml"
   loop: "{{ fingerprints }}"
   loop_control:
     loop_var: "host"

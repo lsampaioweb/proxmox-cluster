@@ -1,6 +1,11 @@
 ---
-- name: Setting up the host machines
-  hosts: "Proxmox"
+- name: "Setting up the host machines"
+  hosts: "ProxmoxDHCP"
+  gather_facts: false
+
+  pre_tasks:
+    - name: "Ensure the fingerprint is present in the known_hosts file"
+      ansible.builtin.include_tasks: "{{ path_debian_known_hosts_add_current }}"
 
   roles:
-    - host_machines
+    - "host_machines"
