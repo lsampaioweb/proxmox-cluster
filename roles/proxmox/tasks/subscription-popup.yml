@@ -1,5 +1,5 @@
 ---
-- name: Removing the no subscription popup
+- name: "Removing the no subscription popup"
   ansible.builtin.replace:
     path: "/usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js"
     regexp: if \(res === null \|\| res === undefined \|\| !res \|\| res\s+\.data\.status\.toLowerCase\(\) !== 'active'\) \{

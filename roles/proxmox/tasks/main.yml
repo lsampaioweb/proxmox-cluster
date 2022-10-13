@@ -1,22 +1,19 @@
 ---
-- name: Adding the internal IP and url of all hosts into the 'hosts' file
-  import_tasks: 01-hosts.yml
+# - name: "Setting up email notification with Postfix"
+#   ansible.builtin.import_tasks: "email-notification.yml"
 
-- name: Setting up email notification with Postfix
-  import_tasks: 02-email-notification.yml
+# - name: "Removing the no subscription popup"
+#   ansible.builtin.import_tasks: "subscription-popup.yml"
 
-- name: Removing the no subscription popup
-  import_tasks: 03-subscription-popup.yml
+# - name: "Creating the cluster and join the nodes into it"
+#   ansible.builtin.import_tasks: "cluster.yml"
 
-- name: Creating the cluster and join the nodes into it
-  import_tasks: 04-cluster.yml
+# - name: "Setting up the network for all migrations in the cluster"
+#   ansible.builtin.import_tasks: "migration-network.yml"
 
-- name: Setting up the network for all migrations in the cluster
-  import_tasks: 05-migration-network.yml
-
-- name: Formatting the HDD, SSD and NVME drives
-  import_tasks: 06-local-storage.yml
+- name: "Formatting the HDD, SSD and NVME drives"
+  ansible.builtin.import_tasks: "local-storage.yml"
 
 # Do not uncomment unless you really want to destroy the cluster.
-### - name: Remove all nodes from the cluster
-###   import_tasks: XX-destroy-cluster.yml
+### - name: "Remove all nodes from the cluster"
+###   ansible.builtin.import_tasks: "destroy-cluster.yml"

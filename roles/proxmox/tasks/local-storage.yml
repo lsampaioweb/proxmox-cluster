@@ -1,0 +1,7 @@
+---
+- name: Extending the "pve-data" partition to fill all available space on the disc
+  lvol:
+    vg: "pve"
+    lv: "data"
+    size: "+100%FREE"
+    resizefs: true

@@ -1,12 +1,12 @@
 ---
-- name: Adding SMTP server, user name and password into the sasl_passwd file
+- name: "Adding SMTP server, user name and password into the sasl_passwd file"
   ansible.builtin.template:
     src: "sasl_passwd.j2"
     dest: "/etc/postfix/sasl_passwd"
     mode: "0600"
   notify: "Updating Postfix table management"
 
-- name: Adding relayhost into the main.cf file
+- name: "Adding relayhost into the main.cf file"
   ansible.builtin.lineinfile:
     path: "/etc/postfix/main.cf"
     regexp: "^relayhost ="
@@ -14,7 +14,7 @@
     state: "present"
   notify: "Restarting Postfix"
 
-- name: Adding SASL authentication into the main.cf file
+- name: "Adding SASL authentication into the main.cf file"
   ansible.builtin.blockinfile:
     path: "/etc/postfix/main.cf"
     block: |
@@ -29,7 +29,7 @@
   notify: "Restarting Postfix"
 
   # It is a bug on debian.
-- name: Removing the symlink for the makedefs.out
+- name: "Removing the symlink for the makedefs.out"
   ansible.builtin.file:
     path: "/etc/postfix/makedefs.out"
     state: "absent"

@@ -14,13 +14,13 @@ kvm-07 ansible_host=192.168.0.17
 ansible_python_interpreter=/usr/bin/python3.9
 
 [Proxmox]
-ansible_host=10.0.2.5
-ansible_host=10.0.2.6
-ansible_host=10.0.2.7
-ansible_host=10.0.2.8
-ansible_host=10.0.2.9
-ansible_host=10.0.2.10
-ansible_host=10.0.2.11
+10.0.2.5
+10.0.2.6
+10.0.2.7
+10.0.2.8
+10.0.2.9
+10.0.2.10
+10.0.2.11
 
 [Proxmox:vars]
 ansible_python_interpreter=/usr/bin/python3.9

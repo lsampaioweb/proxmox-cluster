@@ -1,11 +1,11 @@
 ---
-- name: Creating .ssh directory
+- name: "Creating .ssh directory"
   ansible.builtin.file:
     path: "~/.ssh/"
     state: "directory"
     mode: "0700"
 
-- name: Retrieving the fingerprint of the hosts
+- name: "Retrieving the fingerprint of the hosts"
   run_once: true
   delegate_to: "{{ cluster_master_node }}"
   ansible.builtin.set_fact:
