@@ -1,10 +1,6 @@
 ---
 mac_bind:
   - {mac_address: "8c:94:b9:99:9a:85", nic_name: "enp1board0"}
-  # - {mac_address: "a0:36:9f:c8:9c:ac", nic_name: "enp2lacp0"}
-  # - {mac_address: "a0:36:9f:c8:9c:ad", nic_name: "enp2lacp1"}
-  # - {mac_address: "a0:36:9f:c8:9c:ae", nic_name: "enp2lacp2"}
-  # - {mac_address: "a0:36:9f:c8:9c:af", nic_name: "enp2lacp3"}
 
 bond0_nic: "enp1board0"
 wan_management_nic: "bond0"

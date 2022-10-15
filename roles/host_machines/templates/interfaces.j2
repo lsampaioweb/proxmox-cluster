@@ -22,12 +22,6 @@ iface enp2lacp2 inet manual
 
 iface enp2lacp3 inet manual
 
-{% if ceph_nic is defined %}
-iface enp3sync0 inet manual
-
-iface enp3sync1 inet manual
-{% endif %}
-
 iface bond0 inet manual
         bond-slaves {{ bond0_nic }}
         bond-miimon 100
@@ -35,15 +29,6 @@ iface bond0 inet manual
         bond-xmit-hash-policy layer2+3
         bond-min-links 1
 #PVE Bond Interface.
-
-{% if ceph_nic is defined %}
-iface {{ ceph_nic }} inet manual
-        bond-slaves {{ bond1_nic }}
-        bond-miimon 100
-        bond-mode broadcast
-        bond-min-links 1
-#Ceph Bond Interface.
-{% endif %}
 
 auto vmbr0
 iface vmbr0 inet static
@@ -77,14 +62,18 @@ iface vmbr1.3 inet static
         address {{ cluster_ip_and_netmask }}
 #Cluster Interface.
 
-{% if ceph_nic is defined %}
-auto vmbr2
-iface vmbr2 inet static
-        address {{ ceph_ip_and_netmask }}
-        bridge-ports {{ ceph_nic }}
-        bridge-stp off
-        bridge-fd 0
-        bridge-vlan-aware yes
-        bridge-vids 2-4094
-#Ceph Interface.
+{% if ceph_ip is defined %}
+auto enp3sync0
+iface enp3sync0 inet static
+        address  {{ ceph_ip_and_netmask }}
+        up ip route add {{ ceph_next_ip_and_netmask_01 }} dev enp3sync0
+        down ip route del {{ ceph_next_ip_and_netmask_01 }}
+# Connected to Ceph-Node1
+
+auto enp3sync1
+iface enp3sync1 inet static
+        address  {{ ceph_ip_and_netmask }}
+        up ip route add {{ ceph_next_ip_and_netmask_02 }} dev enp3sync1
+        down ip route del {{ ceph_next_ip_and_netmask_02 }}
+# Connected to Ceph-Node2
 {% endif %}

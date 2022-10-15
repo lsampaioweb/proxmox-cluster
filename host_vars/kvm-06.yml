@@ -5,8 +5,12 @@ mac_bind:
   - {mac_address: "00:e0:4c:87:1e:95", nic_name: "enp2lacp1"}
   - {mac_address: "00:e0:4c:87:1e:96", nic_name: "enp2lacp2"}
   - {mac_address: "00:e0:4c:87:1e:97", nic_name: "enp2lacp3"}
-  - {mac_address: "a0:36:9f:40:47:70", nic_name: "enp3sync0"}
-  - {mac_address: "a0:36:9f:40:47:72", nic_name: "enp3sync1"}
+  - {mac_address: "a0:36:9f:c8:9c:ac", nic_name: "enp3sync0"}
+  - {mac_address: "a0:36:9f:c8:9c:ad", nic_name: "enp3sync1"}
+  - {mac_address: "a0:36:9f:c8:9c:ae", nic_name: "enp3sync2"}
+  - {mac_address: "a0:36:9f:c8:9c:af", nic_name: "enp3sync3"}
+  # - {mac_address: "a0:36:9f:40:47:70", nic_name: "enp3sync0"}
+  # - {mac_address: "a0:36:9f:40:47:72", nic_name: "enp3sync1"}
 
 bond0_nic: "enp2lacp0 enp2lacp1 enp2lacp2"
 wan_management_nic: "bond0"
@@ -24,8 +28,14 @@ cluster_ip: "10.0.3.10"
 cluster_netmask: "28"
 cluster_ip_and_netmask: "{{ cluster_ip }}/{{ cluster_netmask }}"
 
-bond1_nic: "enp3sync0 enp3sync1"
-ceph_nic: "bond1"
 ceph_ip: "10.0.4.10"
 ceph_netmask: "28"
 ceph_ip_and_netmask: "{{ ceph_ip }}/{{ ceph_netmask }}"
+
+ceph_next_ip_01: "10.0.4.8"
+ceph_next_ip_netmask_01: "32"
+ceph_next_ip_and_netmask_01: "{{ ceph_next_ip_01 }}/{{ ceph_next_ip_netmask_01 }}"
+
+ceph_next_ip_02: "10.0.4.9"
+ceph_next_ip_netmask_02: "32"
+ceph_next_ip_and_netmask_02: "{{ ceph_next_ip_02 }}/{{ ceph_next_ip_netmask_02 }}"
