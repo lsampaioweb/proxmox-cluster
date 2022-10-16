@@ -1,0 +1,83 @@
+---
+- name: "Adding the ceph repository into sources list"
+  ansible.builtin.apt_repository:
+    repo: "deb http://download.proxmox.com/debian/ceph-pacific bullseye main"
+    filename: "ceph"
+    state: "present"
+
+- name: "Installing the ceph packages"
+  ansible.builtin.include_tasks: "{{ path_packages_apt }}"
+  vars:
+    packages:
+      - {name: "ceph"}
+
+- name: "Checking Ceph status"
+  run_once: true
+  delegate_to: "kvm-04"
+  ansible.builtin.command: "pveceph status"
+  register: "status_output"
+  changed_when: false
+  failed_when: false
+
+- name: "Set should_setup_ceph"
+  ansible.builtin.set_fact:
+    should_setup_ceph: "{{ ('not initialized' in status_output.stderr) | ternary(true, false) }}"
+
+- name: "Initializing Ceph"
+  run_once: true
+  delegate_to: "{{ ceph_master_node }}"
+  ansible.builtin.command: "pveceph init --network {{ cluster_ip_and_netmask }} --cluster-network {{ ceph_cluster_ip_and_netmask }}"
+  register: "init_output"
+  changed_when: init_output.rc == 0
+  failed_when: (init_output.rc != 0)
+  when: should_setup_ceph
+
+- name: "Creating the monitor"
+  ansible.builtin.command: "pveceph mon create"
+  register: "monitor_output"
+  changed_when: monitor_output.rc == 0
+  failed_when: (monitor_output.rc != 0) and ' already in use' not in monitor_output.stderr
+
+- name: "Creating the manager"
+  ansible.builtin.command: "pveceph mgr create"
+  register: "manager_output"
+  changed_when: manager_output.rc == 0
+  failed_when: (manager_output.rc != 0) and ' already exists' not in manager_output.stderr
+
+- name: "Creating the OSD disks"
+  ansible.builtin.command: "pveceph osd create {{ item.name }} --crush-device-class {{ item.type }}"
+  register: "osd_output"
+  changed_when: osd_output.rc == 0
+  failed_when: (osd_output.rc != 0) and ' already in use' not in osd_output.stderr
+  loop: "{{ ceph_devices }}"
+
+- name: "Creating the CRUSH rule"
+  run_once: true
+  delegate_to: "{{ ceph_master_node }}"
+  ansible.builtin.command: "ceph osd crush rule create-replicated {{ item.name }} default host {{ item.type }}"
+  register: "crush_output"
+  changed_when: (crush_output.rc == 0) and ' already exists' not in crush_output.stderr
+  failed_when: (crush_output.rc != 0) and ' already exists' not in crush_output.stderr
+  loop: "{{ ceph_crush_rules }}"
+
+- name: "Creating the Ceph pools"
+  run_once: true
+  delegate_to: "{{ ceph_master_node }}"
+  ansible.builtin.command: "pveceph pool create {{ item.name }} --crush_rule {{ item.crush_rule }} --pg_autoscale_mode on --add_storages"
+  register: "ceph_pool_output"
+  changed_when: (ceph_pool_output.rc == 0) and ' already defined' not in ceph_pool_output.stderr
+  failed_when: (ceph_pool_output.rc != 0) and ' already defined' not in ceph_pool_output.stderr
+  loop: "{{ ceph_pools }}"
+
+- name: "Printing variables"
+  ansible.builtin.debug:
+    msg:
+      - "status_output: {{ status_output }}"
+      - "should_setup_ceph: {{ should_setup_ceph }}"
+      - "init_output: {{ init_output }}"
+      - "monitor_output: {{ monitor_output }}"
+      - "manager_output: {{ manager_output }}"
+      - "osd_output: {{ osd_output }}"
+      - "crush_output: {{ crush_output }}"
+      - "ceph_pool_output: {{ ceph_pool_output }}"
+  when: debug | bool

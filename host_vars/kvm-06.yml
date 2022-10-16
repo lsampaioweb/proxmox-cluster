@@ -39,3 +39,15 @@ ceph_next_ip_and_netmask_01: "{{ ceph_next_ip_01 }}/{{ ceph_next_ip_netmask_01 }
 ceph_next_ip_02: "10.0.4.9"
 ceph_next_ip_netmask_02: "32"
 ceph_next_ip_and_netmask_02: "{{ ceph_next_ip_02 }}/{{ ceph_next_ip_netmask_02 }}"
+
+lvm: []
+
+is_ceph_server: true
+ceph_devices:
+  - {name: "/dev/nvme0n1", type: "nvme"}
+  - {name: "/dev/nvme1n1", type: "nvme"}
+  - {name: "/dev/nvme2n1", type: "nvme"}
+  - {name: "/dev/nvme3n1", type: "nvme"}
+  - {name: "/dev/sdb", type: "ssd"}
+  - {name: "/dev/sdc", type: "ssd"}
+  - {name: "/dev/sdd", type: "hdd"}

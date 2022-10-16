@@ -22,5 +22,6 @@ cluster_ip: "10.0.3.5"
 cluster_netmask: "28"
 cluster_ip_and_netmask: "{{ cluster_ip }}/{{ cluster_netmask }}"
 
-zfs:
-  - {name: "local-zfs-120", mode: "", mountpoint: "/mnt/", compression: "lz4", devices: ["/dev/sda"]}
+lvm: []
+
+is_ceph_server: false

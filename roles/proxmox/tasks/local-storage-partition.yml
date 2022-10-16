@@ -1,0 +1,86 @@
+---
+- name: "Creating a new partition on the disk(s)"
+  ansible.builtin.parted:
+    device: "{{ device }}"
+    number: 1
+    label: "gpt"
+    flags: ["lvm"]
+    state: "present"
+  register: "parted_output"
+  loop: "{{ item.devices }}"
+  loop_control:
+    loop_var: "device"
+
+- name: "Getting the name of the primary partition of the disk"
+  ansible.builtin.shell: >
+    set -o pipefail && \
+    lsblk -nr {{ device }} | grep part | cut -d' ' -f1
+  args:
+    executable: "/usr/bin/bash"
+  register: "disk_partitions"
+  loop: "{{ item.devices }}"
+  loop_control:
+    loop_var: "device"
+  failed_when: disk_partitions.rc != 0 or disk_partitions.stdout == ''
+  changed_when: false
+
+- name: "Concatenating each partition with the '/dev/???' prefix"
+  ansible.builtin.set_fact:
+    partition_name: "/dev/{{ partition.1 }}"
+  register: "partition_list"
+  loop: "{{ disk_partitions.results | subelements('stdout_lines') }}"
+  loop_control:
+    loop_var: "partition"
+    label: "{{ partition_name }}"
+
+- name: "Converting the array to a string so it can be used to create volume groups"
+  ansible.builtin.set_fact:
+    partitions_single_line: "{{ partition_list.results | map(attribute='ansible_facts.partition_name') | join(',') }}"
+
+- name: "Creating the volume group {{ item.volume_group }}"
+  ansible.builtin.lvg:
+    vg: "{{ item.volume_group }}"
+    pvs: "{{ partitions_single_line }}"
+    pvresize: true
+  register: "lvg_output"
+
+- name: "Creating the logical volume {{ item.logical_volume }}"
+  ansible.builtin.lvol:
+    thinpool: "{{ item.logical_volume }}"
+    vg: "{{ item.volume_group }}"
+    size: "100%FREE"
+    resizefs: true
+    shrink: false
+  register: "lvol_output"
+
+- name: "Creating an {{ item.filesystem_type }} filesystem on the LVM /dev/mapper/{{ item.volume_group }}-{{ item.logical_volume }}"
+  ansible.builtin.filesystem:
+    fstype: "{{ item.filesystem_type }}"
+    dev: "/dev/mapper/{{ item.volume_group }}-{{ item.logical_volume }}"
+  register: "filesystem_output"
+  when: ('True' in parted_output.results | map(attribute='changed')) or lvg_output.changed or lvol_output.changed
+
+- name: "Adding a LVM-Thin to the cluster"
+  ansible.builtin.shell: >
+    set -o pipefail && \
+    pvesm add lvmthin {{ item.name }} --vgname {{ item.volume_group }} --thinpool {{ item.logical_volume }} --nodes {{ ansible_hostname }}
+  args:
+    executable: "/usr/bin/bash"
+  register: "lvmthin_output"
+  changed_when: lvmthin_output.rc == 0
+  failed_when: (lvmthin_output.rc != 0) and ' already defined' not in lvmthin_output.stderr
+
+- name: "Printing variables"
+  ansible.builtin.debug:
+    msg:
+      - "parted_output: {{ parted_output }}"
+      - "parted_output: {{ parted_output.results | map(attribute='changed') }}"
+      - "parted_output: {{ ('True' in parted_output.results | map(attribute='changed')) }}"
+      - "disk_partitions: {{ disk_partitions }}"
+      - "partition_list: {{ partition_list }}"
+      - "partitions_single_line: {{ partitions_single_line }}"
+      - "lvg_output: {{ lvg_output }}"
+      - "lvol_output: {{ lvol_output }}"
+      - "filesystem_output: {{ filesystem_output | default('') }}"
+      - "lvmthin_output: {{ lvmthin_output }}"
+  when: debug | bool

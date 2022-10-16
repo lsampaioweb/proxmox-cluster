@@ -1,7 +1,11 @@
 ---
-- name: Extending the "pve-data" partition to fill all available space on the disc
-  lvol:
+- name: "Extending the 'pve-data' partition to fill all available space on the disc"
+  ansible.builtin.lvol:
     vg: "pve"
     lv: "data"
     size: "+100%FREE"
     resizefs: true
+
+- name: "Creating new partitions, volume groups and logical volumes on the local disks"
+  ansible.builtin.include_tasks: "local-storage-partition.yml"
+  loop: "{{ lvm }}"

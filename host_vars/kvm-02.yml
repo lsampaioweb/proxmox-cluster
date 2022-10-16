@@ -21,3 +21,7 @@ lan_management_ip_and_netmask: "{{ lan_management_ip }}/{{ lan_management_netmas
 cluster_ip: "10.0.3.6"
 cluster_netmask: "28"
 cluster_ip_and_netmask: "{{ cluster_ip }}/{{ cluster_netmask }}"
+
+lvm: []
+
+is_ceph_server: false
