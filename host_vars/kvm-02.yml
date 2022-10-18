@@ -6,7 +6,7 @@ mac_bind:
   - {mac_address: "00:e0:4c:68:62:73", nic_name: "enp2lacp2"}
   - {mac_address: "00:e0:4c:68:62:74", nic_name: "enp2lacp3"}
 
-bond0_nic: "enp2lacp0 enp2lacp2 enp2lacp3"
+bond0_nic: "enp2lacp0 enp2lacp1 enp2lacp2"
 wan_management_nic: "bond0"
 wan_management_ip: "{{ ansible_host }}"
 wan_management_netmask: "24"
