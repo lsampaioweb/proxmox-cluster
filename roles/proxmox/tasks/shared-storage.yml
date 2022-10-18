@@ -13,7 +13,7 @@
 
 - name: "Checking Ceph status"
   run_once: true
-  delegate_to: "kvm-04"
+  delegate_to: "{{ ceph_master_node }}"
   ansible.builtin.command: "pveceph status"
   register: "status_output"
   changed_when: false
@@ -44,6 +44,12 @@
   changed_when: manager_output.rc == 0
   failed_when: (manager_output.rc != 0) and ' already exists' not in manager_output.stderr
 
+- name: "Creating the Metadata Server (MDS)"
+  ansible.builtin.command: "pveceph mds create"
+  register: "mds_output"
+  changed_when: mds_output.rc == 0
+  failed_when: (mds_output.rc != 0) and ' already referenced in ceph config' not in mds_output.stderr
+
 - name: "Creating the OSD disks"
   ansible.builtin.command: "pveceph osd create {{ item.name }} --crush-device-class {{ item.type }}"
   register: "osd_output"
@@ -69,6 +75,24 @@
   failed_when: (ceph_pool_output.rc != 0) and ' already defined' not in ceph_pool_output.stderr
   loop: "{{ ceph_pools }}"
 
+- name: "Creating the Ceph file system"
+  run_once: true
+  delegate_to: "{{ ceph_master_node }}"
+  ansible.builtin.command: "pveceph fs create --name {{ item.name }} --pg_num {{ item.pg_num }} --add-storage"
+  register: "filesystem_output"
+  changed_when: (filesystem_output.rc == 0)
+  failed_when: (filesystem_output.rc != 0) and ' already exist' not in filesystem_output.stderr
+  loop: "{{ ceph_file_systems }}"
+
+- name: "Setting HDD crush rule to the default pools"
+  run_once: true
+  delegate_to: "{{ ceph_master_node }}"
+  ansible.builtin.command: "pveceph pool set {{ item.name }} --crush_rule {{ item.crush_rule }}"
+  register: "ceph_default_pool_output"
+  changed_when: (ceph_default_pool_output.rc == 0)
+  failed_when: (ceph_default_pool_output.rc != 0)
+  loop: "{{ ceph_default_pools_crush_rule }}"
+
 - name: "Printing variables"
   ansible.builtin.debug:
     msg:
@@ -77,7 +101,10 @@
       - "init_output: {{ init_output }}"
       - "monitor_output: {{ monitor_output }}"
       - "manager_output: {{ manager_output }}"
+      - "mds_output: {{ mds_output }}"
       - "osd_output: {{ osd_output }}"
       - "crush_output: {{ crush_output }}"
       - "ceph_pool_output: {{ ceph_pool_output }}"
+      - "filesystem_output: {{ filesystem_output }}"
+      - "ceph_default_pool_output: {{ ceph_default_pool_output }}"
   when: debug | bool

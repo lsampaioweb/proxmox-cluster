@@ -59,6 +59,14 @@ ceph_crush_rules:
   - {name: "hdd", type: "hdd"}
 
 ceph_pools:
-  - {name: "CEPH_Gold", crush_rule: "nvme"}
-  - {name: "CEPH_Silver", crush_rule: "ssd"}
-  - {name: "CEPH_Bronze", crush_rule: "hdd"}
+  - {name: "Ceph_Gold", crush_rule: "nvme"}
+  - {name: "Ceph_Silver", crush_rule: "ssd"}
+  - {name: "Ceph_Bronze", crush_rule: "hdd"}
+
+ceph_default_pools_crush_rule:
+  - {name: "device_health_metrics", crush_rule: "hdd"}
+  - {name: "CephFS_Bronze_data", crush_rule: "hdd"}
+  - {name: "CephFS_Bronze_metadata", crush_rule: "hdd"}
+
+ceph_file_systems:
+  - {name: "CephFS_Bronze", pg_num: "128"}
