@@ -14,7 +14,7 @@ Run the command in the terminal:
   1. Set the DNS for the host.
 
 ## 3. Disable IPV6.
-  1. Disable IPV6 by setting GRUB_CMDLINE_LINUX_DEFAULT="ipv6.disable=1".
+  1. Disable IPV6 by setting GRUB_CMDLINE_LINUX="ipv6.disable=1".
 
 ## 4. Install required packages.
   1. Install required packages.
