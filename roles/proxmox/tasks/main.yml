@@ -17,3 +17,6 @@
 - name: "Preparing Ceph OSDs"
   ansible.builtin.include_tasks: "shared-storage.yml"
   when: is_ceph_server
+
+- name: "Creating the pools"
+  ansible.builtin.import_tasks: "pools.yml"

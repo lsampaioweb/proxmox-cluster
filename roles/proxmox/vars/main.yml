@@ -20,3 +20,8 @@ smtp_password: "{{ lookup('pipe', 'secret-tool lookup password ' + proxmox_smtp_
 cluster_name: "HomeLab"
 cluster_master_node: "{{ groups['ProxmoxDHCP'][0] }}"
 migration_network: "10.0.3.0/28"
+
+resource_pools:
+  - {name: "Production", comment: "Pool for the Production Virtual Machines."}
+  - {name: "Stagging", comment: "Pool for the Stagging Virtual Machines."}
+  - {name: "Template", comment: "Pool for template images."}

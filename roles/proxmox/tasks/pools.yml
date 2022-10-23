@@ -1,0 +1,8 @@
+---
+- name: "Creating the pools"
+  run_once: true
+  ansible.builtin.command: "pveum pool add {{ item.name }} --comment '{{ item.comment }}'"
+  register: "create_pool"
+  changed_when: create_pool.rc == 0
+  failed_when: (create_pool.rc != 0) and ' already exists' not in create_pool.stderr
+  loop: "{{ resource_pools }}"
