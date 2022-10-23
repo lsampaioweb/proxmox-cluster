@@ -20,3 +20,6 @@
 
 - name: "Creating the pools"
   ansible.builtin.import_tasks: "pools.yml"
+
+- name: "Creating the roles"
+  ansible.builtin.import_tasks: "roles.yml"
