@@ -37,6 +37,12 @@ Run the command in the terminal:
   1. Remove partitions from disks.
   1. Create new partitions, volume groups and logical volumes on the local disks.
 
+## 6. Create the resource pools.
+  1. Template, Stagging and Production.
+
+## 7. Create the Roles.
+  1. Packer.
+
 # Created by: 
 
 1. Luciano Sampaio.
