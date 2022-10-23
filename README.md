@@ -8,9 +8,9 @@ Run the command in the terminal:
 ```
 
 # Roles you can execute:
-1. [Setup](roles/01-setup-control-machine/README.md) the control machine to run Ansible scripts.
-1. [Setup](roles/02-setup-host-machines/README.md) the host machines.
-1. [Setup](roles/03-setup-proxmox/README.md) Proxmox.
+1. [Setup](roles/control_machine/README.md) the control machine to run Ansible scripts.
+1. [Setup](roles/host_machines/README.md) the host machines.
+1. [Setup](roles/proxmox/README.md) Proxmox.
 
 # Links:
 
