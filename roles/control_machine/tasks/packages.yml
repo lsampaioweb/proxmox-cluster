@@ -1,8 +1,8 @@
 ---
-- name: "Upgrading full distro packages"
+- name: "Upgrading the packages"
   ansible.builtin.apt:
     update_cache: true
-    upgrade: "dist"
+    upgrade: "safe"
 
 - name: "Installing required packages"
   ansible.builtin.include_tasks: "{{ path_packages_apt }}"
