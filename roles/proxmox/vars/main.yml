@@ -26,8 +26,13 @@ resource_pools:
   - {name: "Stagging", comment: "Pool for the Stagging Virtual Machines."}
   - {name: "Template", comment: "Pool for template images."}
 
+# pve-docs/chapter-pveum.html#pveum_roles
 permissions_roles:
   - {name: "Packer", privileges: "Datastore.AllocateSpace, Datastore.Audit,\
+  Sys.Modify, VM.Allocate, VM.Audit, VM.Clone, VM.Config.CDROM, VM.Config.CPU,\
+  VM.Config.Cloudinit, VM.Config.Disk, VM.Config.HWType, VM.Config.Memory,\
+  VM.Config.Network, VM.Config.Options, VM.Console, VM.Monitor, VM.PowerMgmt"}
+  - {name: "Terraform", privileges: "Datastore.AllocateSpace, Datastore.Audit,\
   Sys.Modify, VM.Allocate, VM.Audit, VM.Clone, VM.Config.CDROM, VM.Config.CPU,\
   VM.Config.Cloudinit, VM.Config.Disk, VM.Config.HWType, VM.Config.Memory,\
   VM.Config.Network, VM.Config.Options, VM.Console, VM.Monitor, VM.PowerMgmt"}
