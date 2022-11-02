@@ -36,3 +36,6 @@ permissions_roles:
   Sys.Modify, VM.Allocate, VM.Audit, VM.Clone, VM.Config.CDROM, VM.Config.CPU,\
   VM.Config.Cloudinit, VM.Config.Disk, VM.Config.HWType, VM.Config.Memory,\
   VM.Config.Network, VM.Config.Options, VM.Console, VM.Monitor, VM.PowerMgmt"}
+
+ha_groups:
+  - {name: "default", nodes: "kvm-01,kvm-02,kvm-03,kvm-04,kvm-05,kvm-06,kvm-07", comment: "The default HA group, all Proxmox hosts can run the VM."}

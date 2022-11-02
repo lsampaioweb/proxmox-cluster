@@ -23,3 +23,6 @@
 
 - name: "Creating the roles"
   ansible.builtin.import_tasks: "roles.yml"
+
+- name: "Creating the HA groups"
+  ansible.builtin.import_tasks: "ha-groups.yml"
