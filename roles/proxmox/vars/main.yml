@@ -29,7 +29,8 @@ resource_pools:
 # pve-docs/chapter-pveum.html#pveum_roles
 permissions_roles:
   - {name: "Packer", privileges: "Datastore.AllocateSpace, Datastore.Audit,\
-  Sys.Modify, VM.Allocate, VM.Audit, VM.Clone, VM.Config.CDROM, VM.Config.CPU,\
+  Group.Allocate, Pool.Audit, Pool.Allocate, Sys.Audit, Sys.Modify,\
+  VM.Allocate, VM.Audit, VM.Clone, VM.Config.CDROM, VM.Config.CPU,\
   VM.Config.Cloudinit, VM.Config.Disk, VM.Config.HWType, VM.Config.Memory,\
   VM.Config.Network, VM.Config.Options, VM.Console, VM.Monitor, VM.PowerMgmt"}
   - {name: "Terraform", privileges: "Datastore.AllocateSpace, Datastore.Audit,\
