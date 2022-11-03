@@ -35,7 +35,7 @@
 - name: "Saving the password in the secret manager"
   run_once: true
   delegate_to: "{{ groups['ControlMachine'][0] }}"
-  import_tasks: "roles/common/tasks/debian/passwords/add.yml"
+  ansible.builtin.import_tasks: "roles/common/tasks/debian/passwords/add.yml"
   vars:
     password_id: "{{ ansible_password_id }}"
     password: "{{ usr_ansible_password }}"
