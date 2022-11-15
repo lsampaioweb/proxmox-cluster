@@ -58,7 +58,7 @@
     fstype: "{{ item.filesystem_type }}"
     dev: "/dev/mapper/{{ item.volume_group }}-{{ item.logical_volume }}"
   register: "filesystem_output"
-  when: ('True' in parted_output.results | map(attribute='changed')) or lvg_output.changed or lvol_output.changed
+  when: parted_output.changed or lvg_output.changed or lvol_output.changed
 
 - name: "Adding a LVM-Thin to the cluster"
   ansible.builtin.shell: >
