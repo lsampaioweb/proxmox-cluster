@@ -31,7 +31,8 @@
       - {name: "libsasl2-modules"} # Necessary to Postfix.
       - {name: "ifupdown2"} # To enable make changes on the network configuration and don't require server reboot.
       - {name: "parted"} # To format hard disks (HDD, SSD and NVME).
-      - {name: "qrencode"} # To enable two-factor authentication (2FA)
+      - {name: "qrencode"} # To enable two-factor authentication (2FA).
+      - {name: "numactl"} # Control NUMA policy for processes or shared memory.
 
 - name: "Installing the intel-microcode package to fix the CPU bug"
   ansible.builtin.include_tasks: "{{ path_packages_apt }}"
