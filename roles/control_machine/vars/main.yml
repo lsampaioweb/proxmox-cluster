@@ -1,0 +1,6 @@
+---
+# The id of the password saved in the secret manager.
+root_password_id: "local-user-password"
+
+# The password of the root user used in VM.
+ansible_password: "{{ lookup('pipe', 'secret-tool lookup password ' + root_password_id) }}"

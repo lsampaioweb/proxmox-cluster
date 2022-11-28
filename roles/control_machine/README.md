@@ -2,8 +2,25 @@
 
 Run the command in the terminal:
 ```bash
-  # -K (--ask-become-pass)
-  ansible-playbook control_machine.yml -K
+  01 - Add the unlock-keyring function into the ~/.bashrc file.
+    nano ~/.bashrc
+    # Function to unlock gnome keyring for headless logins.
+    function unlock-keyring ()
+    {
+      read -rsp "Type your password: " pass
+      export $(echo -n "$pass" | gnome-keyring-daemon --replace --unlock --daemonize)
+      unset pass
+    }
+
+  02 - Run the unlock-keyring command on the terminal to unlock the secret - manager.
+    source ~/.bashrc  
+    unlock-keyring
+
+  03 - Save your password in the secret manager.
+    secret-tool store --label="local-user-password" password local-user-password
+
+  04 - Run the playbook.
+  ansible-playbook control_machine.yml
 ```
 
 # Tasks:

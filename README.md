@@ -4,7 +4,7 @@ The playbook can setup one or more servers running Proxmox Virtual Environment (
 
 Run the command in the terminal:
 ```bash
-  ansible-playbook site.yml -K
+  ansible-playbook site.yml
 ```
 
 # Roles you can execute:
