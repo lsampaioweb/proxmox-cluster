@@ -44,23 +44,25 @@ iface vmbr0 inet static
 #Wan Management Interface.
 
 auto vmbr1
-iface vmbr1 inet manual
+iface vmbr1 inet static
+        address {{ lan_management_ip_and_netmask }}
         bridge-ports {{ lan_management_nic }}
+#Lan Management Interface.
+
+auto vmbr2
+iface vmbr2 inet static
+        address {{ cluster_ip_and_netmask }}
+        bridge-ports {{ cluster_nic }}
+#Cluster Interface.
+
+auto vmbr3
+iface vmbr3 inet manual
+        bridge-ports {{ vms_nic }}
         bridge-stp off
         bridge-fd 0
         bridge-vlan-aware yes
         bridge-vids 2-4094
-#Vms Interface - VLAN[2-4094]
-
-auto vmbr1.2
-iface vmbr1.2 inet static
-        address {{ lan_management_ip_and_netmask }}
-#Lan Management Interface.
-
-auto vmbr1.3
-iface vmbr1.3 inet static
-        address {{ cluster_ip_and_netmask }}
-#Cluster Interface.
+#Vms Interface - VLAN[2-4094].
 
 {% if ceph_ip is defined %}
 auto enp3sync0
