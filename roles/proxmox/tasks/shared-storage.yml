@@ -21,8 +21,7 @@
 
 - name: "Set should_setup_ceph"
   ansible.builtin.set_fact:
-    # should_setup_ceph: "{{ ('not initialized' in status_output.stderr) | ternary(true, false) }}"
-    should_setup_ceph: true
+    should_setup_ceph: "{{ ('not initialized' in status_output.stderr) | ternary(true, false) }}"
 
 - name: "Initializing Ceph"
   run_once: true

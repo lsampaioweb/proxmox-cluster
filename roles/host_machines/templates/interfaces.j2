@@ -43,20 +43,20 @@ iface vmbr0 inet static
         post-down /sbin/ethtool -s $IFACE wol g
 #Wan Management Interface.
 
-auto vmbr1
-iface vmbr1 inet static
+auto vmbr2
+iface vmbr2 inet static
         address {{ lan_management_ip_and_netmask }}
         bridge-ports {{ lan_management_nic }}
 #Lan Management Interface.
 
-auto vmbr2
-iface vmbr2 inet static
+auto vmbr3
+iface vmbr3 inet static
         address {{ cluster_ip_and_netmask }}
         bridge-ports {{ cluster_nic }}
 #Cluster Interface.
 
-auto vmbr3
-iface vmbr3 inet manual
+auto vmbr4
+iface vmbr4 inet manual
         bridge-ports {{ vms_nic }}
         bridge-stp off
         bridge-fd 0
