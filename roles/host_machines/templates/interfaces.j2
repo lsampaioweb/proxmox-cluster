@@ -64,18 +64,6 @@ iface vmbr4 inet manual
         bridge-vids 2-4094
 #Vms Interface - VLAN[2-4094].
 
-{% if ceph_ip is defined %}
-auto enp3sync0
-iface enp3sync0 inet static
-        address  {{ ceph_ip_and_netmask }}
-        up ip route add {{ ceph_next_ip_and_netmask_01 }} dev enp3sync0
-        down ip route del {{ ceph_next_ip_and_netmask_01 }}
-# Connected to Ceph-Node1
+iface enp3sync0 inet manual
 
-auto enp3sync1
-iface enp3sync1 inet static
-        address  {{ ceph_ip_and_netmask }}
-        up ip route add {{ ceph_next_ip_and_netmask_02 }} dev enp3sync1
-        down ip route del {{ ceph_next_ip_and_netmask_02 }}
-# Connected to Ceph-Node2
-{% endif %}
+iface enp3sync1 inet manual

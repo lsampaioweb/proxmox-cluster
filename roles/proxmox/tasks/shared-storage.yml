@@ -26,7 +26,7 @@
 - name: "Initializing Ceph"
   run_once: true
   delegate_to: "{{ ceph_master_node }}"
-  ansible.builtin.command: "pveceph init --network {{ cluster_ip_and_netmask }} --cluster-network {{ ceph_cluster_ip_and_netmask }}"
+  ansible.builtin.command: "pveceph init --network {{ cluster_ip_and_netmask }}"
   register: "init_output"
   changed_when: init_output.rc == 0
   failed_when: (init_output.rc != 0)
