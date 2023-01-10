@@ -38,7 +38,7 @@ Run the command in the terminal:
   1. Create new partitions, volume groups and logical volumes on the local disks.
 
 ## 6. Create the resource pools.
-  1. Template, Stagging and Production.
+  1. Template, Staging and Production.
 
 ## 7. Create the Roles.
   1. Packer.

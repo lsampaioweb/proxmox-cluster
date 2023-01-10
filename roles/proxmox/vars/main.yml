@@ -23,7 +23,7 @@ migration_network: "10.0.2.0/28"
 
 resource_pools:
   - {name: "Production", comment: "Pool for the Production Virtual Machines."}
-  - {name: "Stagging", comment: "Pool for the Stagging Virtual Machines."}
+  - {name: "Staging", comment: "Pool for the Staging Virtual Machines."}
   - {name: "Template", comment: "Pool for template images."}
 
 # pve-docs/chapter-pveum.html#pveum_roles
