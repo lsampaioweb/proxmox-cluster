@@ -22,6 +22,10 @@ iface enp2lacp2 inet manual
 
 iface enp2lacp3 inet manual
 
+iface enp3sync0 inet manual
+
+iface enp3sync1 inet manual
+
 iface bond0 inet manual
         bond-slaves {{ bond0_nic }}
         bond-miimon 100
@@ -39,9 +43,7 @@ iface vmbr0 inet static
         bridge-fd 0
         bridge-vlan-aware yes
         bridge-vids 2-4094
-        post-up /sbin/ethtool -s $IFACE wol g
-        post-down /sbin/ethtool -s $IFACE wol g
-#Wan Management Interface.
+#Vms Interface - VLAN[2-4094].
 
 auto vmbr2
 iface vmbr2 inet static
@@ -49,6 +51,8 @@ iface vmbr2 inet static
         bridge-ports {{ lan_management_nic }}
         bridge-stp off
         bridge-fd 0
+        bridge-vlan-aware yes
+        bridge-vids 2-4094
 #Lan Management Interface.
 
 auto vmbr3
@@ -58,16 +62,3 @@ iface vmbr3 inet static
         bridge-stp off
         bridge-fd 0
 #Cluster Interface.
-
-auto vmbr4
-iface vmbr4 inet manual
-        bridge-ports {{ vms_nic }}
-        bridge-stp off
-        bridge-fd 0
-        bridge-vlan-aware yes
-        bridge-vids 2-4094
-#Vms Interface - VLAN[2-4094].
-
-iface enp3sync0 inet manual
-
-iface enp3sync1 inet manual
