@@ -1,12 +1,9 @@
 ---
-- name: "Upgrading the packages"
-  ansible.builtin.apt:
-    update_cache: true
-    upgrade: "safe"
-
 - name: "Installing required packages"
   ansible.builtin.include_tasks: "{{ path_packages_apt }}"
   vars:
+    update_cache: true
+    upgrade: "safe"
     packages:
       - {name: "pip"}
       - {name: "sshpass"}

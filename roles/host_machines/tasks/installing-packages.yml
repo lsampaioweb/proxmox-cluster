@@ -15,14 +15,11 @@
     repo: "deb https://enterprise.proxmox.com/debian/pve bullseye pve-enterprise"
     state: "absent"
 
-- name: "Upgrading the packages"
-  ansible.builtin.apt:
-    update_cache: true
-    upgrade: "safe"
-
 - name: "Installing required packages"
   ansible.builtin.include_tasks: "{{ path_packages_apt }}"
   vars:
+    update_cache: true
+    upgrade: "safe"
     packages:
       - {name: "sudo"} # To enable elevated command.
       - {name: "python3-pip"} # To enable ansible scripts.
