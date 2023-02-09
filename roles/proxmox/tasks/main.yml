@@ -1,28 +1,28 @@
 ---
-# - name: "Setting up email notification with Postfix"
-#   ansible.builtin.import_tasks: "email-notification.yml"
+- name: "Setting up email notification with Postfix"
+  ansible.builtin.import_tasks: "email-notification.yml"
 
-# - name: "Removing the no subscription popup"
-#   ansible.builtin.import_tasks: "subscription-popup.yml"
+- name: "Removing the no subscription popup"
+  ansible.builtin.import_tasks: "subscription-popup.yml"
 
-# - name: "Creating the cluster and join the nodes into it"
-#   ansible.builtin.import_tasks: "cluster.yml"
+- name: "Creating the cluster and join the nodes into it"
+  ansible.builtin.import_tasks: "cluster.yml"
 
-# - name: "Setting up the network for all migrations in the cluster"
-#   ansible.builtin.import_tasks: "migration-network.yml"
+- name: "Setting up the network for all migrations in the cluster"
+  ansible.builtin.import_tasks: "migration-network.yml"
 
-# - name: "Formatting the HDD, SSD and NVME drives"
-#   ansible.builtin.import_tasks: "local-storage.yml"
+- name: "Formatting the HDD, SSD and NVME drives"
+  ansible.builtin.import_tasks: "local-storage.yml"
 
 - name: "Preparing Ceph OSDs"
   ansible.builtin.include_tasks: "shared-storage.yml"
   when: is_ceph_server
 
-# - name: "Creating the pools"
-#   ansible.builtin.import_tasks: "pools.yml"
+- name: "Creating the pools"
+  ansible.builtin.import_tasks: "pools.yml"
 
-# - name: "Creating the roles"
-#   ansible.builtin.import_tasks: "roles.yml"
+- name: "Creating the roles"
+  ansible.builtin.import_tasks: "roles.yml"
 
-# - name: "Creating the HA groups"
-#   ansible.builtin.import_tasks: "ha-groups.yml"
+- name: "Creating the HA groups"
+  ansible.builtin.import_tasks: "ha-groups.yml"
