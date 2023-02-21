@@ -1,6 +1,3 @@
 ---
 - name: "Installing required packages"
   ansible.builtin.import_tasks: "packages.yml"
-
-- name: "Adding passwords into the Secret Manager"
-  ansible.builtin.import_tasks: "passwords.yml"
