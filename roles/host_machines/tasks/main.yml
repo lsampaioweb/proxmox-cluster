@@ -25,3 +25,6 @@
 
 - name: "Setting up the network interfaces"
   ansible.builtin.import_tasks: "network.yml"
+
+- name: "Checking if a reboot is required"
+  ansible.builtin.import_tasks: "roles/common/tasks/debian/os/reboot-if-required.yml"
