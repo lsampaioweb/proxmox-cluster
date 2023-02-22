@@ -17,12 +17,12 @@ wan_management_gateway: "192.168.0.2"
 
 lan_management_nic: "bond0.2"
 lan_management_ip: "10.0.2.11"
-lan_management_netmask: "28"
+lan_management_netmask: "27"
 lan_management_ip_and_netmask: "{{ lan_management_ip }}/{{ lan_management_netmask }}"
 
 cluster_nic: "enp3sync1"
 cluster_ip: "10.0.3.11"
-cluster_netmask: "28"
+cluster_netmask: "27"
 cluster_ip_and_netmask: "{{ cluster_ip }}/{{ cluster_netmask }}"
 
 lvm:
