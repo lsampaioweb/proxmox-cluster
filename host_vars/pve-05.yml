@@ -9,20 +9,15 @@ mac_bind:
   - {mac_address: "a0:36:9f:40:3d:5a", nic_name: "enp3sync1"}
 
 bond0_nic: "enp2lacp0 enp2lacp1 enp2lacp2 enp2lacp3"
-wan_management_nic: "bond0"
+wan_management_nic: "bond0.10"
 wan_management_ip: "{{ ansible_host }}"
-wan_management_netmask: "24"
+wan_management_netmask: "28"
 wan_management_ip_and_netmask: "{{ wan_management_ip }}/{{ wan_management_netmask }}"
-wan_management_gateway: "192.168.0.2"
-
-lan_management_nic: "bond0.2"
-lan_management_ip: "10.0.2.9"
-lan_management_netmask: "27"
-lan_management_ip_and_netmask: "{{ lan_management_ip }}/{{ lan_management_netmask }}"
+wan_management_gateway: "172.16.10.1"
 
 cluster_nic: "enp3sync1"
-cluster_ip: "10.0.3.9"
-cluster_netmask: "27"
+cluster_ip: "172.16.11.7"
+cluster_netmask: "28"
 cluster_ip_and_netmask: "{{ cluster_ip }}/{{ cluster_netmask }}"
 
 lvm: []

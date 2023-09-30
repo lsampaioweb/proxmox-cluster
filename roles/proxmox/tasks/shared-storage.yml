@@ -34,11 +34,11 @@
 - name: "Set should_setup_ceph"
   ansible.builtin.set_fact:
     should_setup_ceph: "{{ ('not initialized' in status_output.stderr) | ternary(true, false) }}"
-    # mon: 3 daemons, quorum kvm-04,kvm-05,kvm-06
+    # mon: 3 daemons, quorum pve-04,pve-05,pve-06
     should_create_mon: "{{ (ansible_hostname not in status_output.stdout_lines[5] | default('true')) | ternary(true, false) }}"
-    # mgr: kvm-04(active, since 62m), standbys: kvm-05, kvm-06
+    # mgr: pve-04(active, since 62m), standbys: pve-05, pve-06
     should_create_mgr: "{{ (ansible_hostname not in status_output.stdout_lines[6] | default('true')) | ternary(true, false) }}"
-    # [mds.kvm-04]
+    # [mds.pve-04]
     should_create_mds: "{{ (ansible_hostname not in mds_status_output.stdout | default('true')) | ternary(true, false) }}"
 
 - name: "Initializing Ceph"

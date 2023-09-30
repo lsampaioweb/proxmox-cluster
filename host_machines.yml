@@ -1,6 +1,6 @@
 ---
 - name: "Setting up the host machines"
-  hosts: "ProxmoxDHCP"
+  hosts: "Nodes"
   gather_facts: false
 
   pre_tasks:

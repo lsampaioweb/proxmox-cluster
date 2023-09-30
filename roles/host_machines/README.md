@@ -2,6 +2,12 @@
 
 Run the command in the terminal:
 ```bash
+  01 - Save these passwords in the secret manager.
+    secret-tool store --label="local-user-password" password local-user-password
+    secret-tool store --label="proxmox-root-password" password proxmox-root-password
+    secret-tool store --label="proxmox-smtp-password" password proxmox-smtp-password
+
+  02 - Run the playbook.
   ansible-playbook host_machines.yml
 ```
 
@@ -35,6 +41,6 @@ Run the command in the terminal:
   1. Copy the network config file to the host.
   1. Edit the grub file so the network cards (NIC) are named as eth0 - ethX.
 
-# Created by: 
+# Created by:
 
 1. Luciano Sampaio.

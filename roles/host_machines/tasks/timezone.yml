@@ -1,5 +1,5 @@
 ---
 - name: Setting timezone to {{ timezone }}
-  timezone:
+  community.general.timezone:
     name: "{{ timezone }}"
   notify: "Reconfigure Timezone"

@@ -1,26 +1,17 @@
 [ControlMachine]
 localhost ansible_connection=local
 
-[ProxmoxDHCP]
-kvm-01 ansible_host=192.168.0.11
-kvm-02 ansible_host=192.168.0.12
-kvm-03 ansible_host=192.168.0.13
-kvm-04 ansible_host=192.168.0.14
-kvm-05 ansible_host=192.168.0.15
-kvm-06 ansible_host=192.168.0.16
-kvm-07 ansible_host=192.168.0.17
+[ControlMachine:vars]
+ansible_python_interpreter=/usr/bin/python3.10
 
-[ProxmoxDHCP:vars]
-ansible_python_interpreter=/usr/bin/python3.9
+[Nodes]
+pve-01
+pve-02
+pve-03
+pve-04
+pve-05
+pve-06
+pve-07
 
-[Proxmox]
-10.0.2.5
-10.0.2.6
-10.0.2.7
-10.0.2.8
-10.0.2.9
-10.0.2.10
-10.0.2.11
-
-[Proxmox:vars]
-ansible_python_interpreter=/usr/bin/python3.9
+[Nodes:vars]
+ansible_python_interpreter=/usr/bin/python3.11
