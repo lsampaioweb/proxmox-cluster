@@ -1,7 +1,7 @@
 ---
 - name: "Adding the ceph repository into sources list"
   ansible.builtin.apt_repository:
-    repo: "deb http://download.proxmox.com/debian/ceph-pacific bullseye main"
+    repo: "deb http://download.proxmox.com/debian/ceph-pacific bookworm main"
     filename: "ceph"
     state: "present"
 

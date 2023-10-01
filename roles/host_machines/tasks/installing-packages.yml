@@ -1,19 +1,24 @@
 ---
+- name: "Removing the pve-enterprise repositories from sources list"
+  ansible.builtin.apt_repository:
+    repo: "{{ item.repo }}"
+    update_cache: false
+    state: "absent"
+  loop:
+    - {repo: "deb https://enterprise.proxmox.com/debian/ceph-quincy bookworm enterprise"}
+    - {repo: "deb https://enterprise.proxmox.com/debian/pve bookworm pve-enterprise"}
+
 - name: "Adding the pve-no-subscription repository into sources list"
   ansible.builtin.apt_repository:
-    repo: "deb http://download.proxmox.com/debian/pve bullseye pve-no-subscription"
+    repo: "deb http://download.proxmox.com/debian/pve bookworm pve-no-subscription"
+    filename: "pve-no-subscription"
     state: "present"
 
 - name: "Adding non-free repositories into sources list"
   ansible.builtin.replace:
     path: "/etc/apt/sources.list"
     regexp: "main contrib$"
-    replace: "main contrib non-free"
-
-- name: "Removing the pve-enterprise repository from sources list"
-  ansible.builtin.apt_repository:
-    repo: "deb https://enterprise.proxmox.com/debian/pve bullseye pve-enterprise"
-    state: "absent"
+    replace: "main contrib non-free non-free-firmware"
 
 - name: "Installing required packages"
   ansible.builtin.include_tasks: "{{ path_packages_apt }}"
@@ -23,7 +28,7 @@
     packages:
       - {name: "sudo"} # To enable elevated command.
       - {name: "python3-pip"} # To enable ansible scripts.
-      - {name: "systemd-timesyncd"} # To enable time synchronization.
+      - {name: "chrony"} # To enable time synchronization.
       - {name: "ethtool"} # To enable Wake-on-Lan.
       - {name: "libsasl2-modules"} # Necessary to Postfix.
       - {name: "ifupdown2"} # To enable make changes on the network configuration and don't require server reboot.
@@ -31,21 +36,18 @@
       - {name: "qrencode"} # To enable two-factor authentication (2FA).
       - {name: "numactl"} # Control NUMA policy for processes or shared memory.
 
+      # New way on Proxmox to install pip applications.
+      - {name: "python3-pip"} # To install other python applications.
+      - {name: "python3-proxmoxer"} # To enable ansible scripts.
+      - {name: "python3-requests"} # To enable ansible scripts.
+      - {name: "python3-pexpect"} # To enable ansible scripts that use the
+
 - name: "Installing the intel-microcode package to fix the CPU bug"
   ansible.builtin.include_tasks: "{{ path_packages_apt }}"
   vars:
     packages:
       - {name: "intel-microcode"} # To fix the intel microcode bug.
   when: ansible_processor is search('Intel')
-
-- name: "Installing pip packages"
-  ansible.builtin.include_tasks: "{{ path_packages_pip }}"
-  vars:
-    packages:
-      - {name: "pip"} # To install other python applications.
-      - {name: "proxmoxer"} # To enable ansible scripts.
-      - {name: "requests"} # To enable ansible scripts.
-      - {name: "pexpect"} # To enable ansible scripts that use the expect module.
 
 - name: "Checking if a reboot is needed"
   ansible.builtin.stat:
