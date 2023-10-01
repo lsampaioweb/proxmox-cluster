@@ -11,15 +11,12 @@
   ansible.builtin.set_fact:
     fingerprints: "{{ fingerprints | default([]) +
       [{'name': wan_ip, 'key': wan_key}] +
-      [{'name': lan_ip, 'key': lan_key}] +
       [{'name': cluster_ip, 'key': clusterkey}] }}"
   vars:
     wan_ip: "{{ hostvars[item].wan_management_ip | default('') }}"
-    lan_ip: "{{ hostvars[item].lan_management_ip | default('') }}"
     cluster_ip: "{{ hostvars[item].cluster_ip | default('') }}"
 
     wan_key: "{{ lookup('pipe', 'ssh-keyscan -t ecdsa ' + wan_ip, errors='ignore') if (wan_ip != '') else '' }}"
-    lan_key: "{{ lookup('pipe', 'ssh-keyscan -t ecdsa ' + lan_ip, errors='ignore') if (lan_ip != '') else '' }}"
     clusterkey: "{{ lookup('pipe', 'ssh-keyscan -t ecdsa ' + cluster_ip, errors='ignore') if (cluster_ip != '') else '' }}"
 
   loop: "{{ hosts }}"
