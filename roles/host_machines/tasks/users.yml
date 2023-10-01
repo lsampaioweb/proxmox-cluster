@@ -1,5 +1,5 @@
 ---
-- name: "Trying to retrieve the password of '{{ ansible_password_id }}' in order to verify if already exists"
+- name: "Trying to retrieve the password in order to verify if already exists - '{{ ansible_password_id }}'"
   run_once: true
   delegate_to: "{{ groups['ControlMachine'][0] }}"
   ansible.builtin.import_tasks: "roles/common/tasks/debian/passwords/get.yml"
@@ -7,7 +7,7 @@
     password_id: "{{ ansible_password_id }}"
   no_log: true
 
-- name: "Creating a random password with {{ ansible_password_size }} characters if the password does not exist"
+- name: "Creating a random password if the password does not exist - Size: {{ ansible_password_size }}"
   run_once: true
   delegate_to: "{{ groups['ControlMachine'][0] }}"
   ansible.builtin.set_fact:
