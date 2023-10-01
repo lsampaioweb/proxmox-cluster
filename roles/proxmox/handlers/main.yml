@@ -1,13 +1,29 @@
 ---
-- name: Updating Postfix table management
+- name: "Updating Postfix table management"
   ansible.builtin.command: "postmap /etc/postfix/sasl_passwd"
+  register: "output"
+  changed_when: output.rc == 0
 
-- name: Restarting Postfix
+- name: "Restarting Postfix"
   ansible.builtin.service:
     name: "postfix"
     state: "restarted"
 
-- name: Restarting PVEProxy
+- name: "Rebuilding Aliases Database"
+  ansible.builtin.command: "newaliases"
+  register: "output"
+  changed_when: output.rc == 0
+
+- name: "Sending a test email"
+  ansible.builtin.shell: >-
+    set -o pipefail && \
+    echo "Just testing" | mail -s "Email from {{ inventory_hostname }}" {{ smtp_email | b64decode }}
+  args:
+    executable: "/usr/bin/bash"
+  register: "output"
+  changed_when: output.rc == 0
+
+- name: "Restarting PVEProxy"
   ansible.builtin.service:
     name: "pveproxy"
     state: "restarted"

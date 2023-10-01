@@ -19,7 +19,7 @@ smtp_password: "{{ lookup('pipe', 'secret-tool lookup password ' + proxmox_smtp_
 # The name of the HomeLab Cluster.
 cluster_name: "HomeLab"
 cluster_master_node: "{{ groups['Proxmox'][0] }}"
-migration_network: "10.0.3.0/27"
+migration_network: "172.16.11.0/28"
 
 resource_pools:
   - {name: "Production", comment: "Pool for the Production Virtual Machines."}
@@ -29,15 +29,15 @@ resource_pools:
 # pve-docs/chapter-pveum.html#pveum_roles
 permissions_roles:
   - {name: "Packer", privileges: "Datastore.AllocateSpace, Datastore.Audit,\
-  Group.Allocate, Pool.Audit, Pool.Allocate, Sys.Audit, Sys.Modify,\
-  VM.Allocate, VM.Audit, VM.Clone, VM.Config.CDROM, VM.Config.CPU,\
-  VM.Config.Cloudinit, VM.Config.Disk, VM.Config.HWType, VM.Config.Memory,\
-  VM.Config.Network, VM.Config.Options, VM.Console, VM.Monitor, VM.PowerMgmt"}
+    Group.Allocate, Pool.Audit, Pool.Allocate, Sys.Audit, Sys.Modify,\
+    VM.Allocate, VM.Audit, VM.Clone, VM.Config.CDROM, VM.Config.CPU,\
+    VM.Config.Cloudinit, VM.Config.Disk, VM.Config.HWType, VM.Config.Memory,\
+    VM.Config.Network, VM.Config.Options, VM.Console, VM.Monitor, VM.PowerMgmt"}
   - {name: "Terraform", privileges: "Datastore.AllocateSpace, Datastore.Audit,\
-  Group.Allocate, Pool.Audit, Pool.Allocate, Sys.Audit, Sys.Console, Sys.Modify,\
-  VM.Allocate, VM.Audit, VM.Clone, VM.Config.CDROM, VM.Config.CPU,\
-  VM.Config.Cloudinit, VM.Config.Disk, VM.Config.HWType, VM.Config.Memory,\
-  VM.Config.Network, VM.Config.Options, VM.Console, VM.Migrate, VM.Monitor, VM.PowerMgmt"}
+    Group.Allocate, Pool.Audit, Pool.Allocate, Sys.Audit, Sys.Console, Sys.Modify,\
+    VM.Allocate, VM.Audit, VM.Clone, VM.Config.CDROM, VM.Config.CPU,\
+    VM.Config.Cloudinit, VM.Config.Disk, VM.Config.HWType, VM.Config.Memory,\
+    VM.Config.Network, VM.Config.Options, VM.Console, VM.Migrate, VM.Monitor, VM.PowerMgmt"}
 
 ha_groups:
   - {name: "default", nodes: "pve-01,pve-02,pve-03,pve-04,pve-05,pve-06,pve-07", comment: "The default HA group, all Proxmox hosts can run the VM."}

@@ -28,6 +28,16 @@
     marker: "# {mark} SASL authentication"
   notify: "Restarting Postfix"
 
+- name: "Adding the root email"
+  ansible.builtin.lineinfile:
+    path: "/etc/aliases"
+    regexp: "^root: "
+    line: "root: {{ smtp_email | b64decode }}"
+    state: "present"
+  notify:
+    - "Rebuilding Aliases Database"
+    - "Sending a test email"
+
   # It is a bug on debian.
 - name: "Removing the symlink for the makedefs.out"
   ansible.builtin.file:
