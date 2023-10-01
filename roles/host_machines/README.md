@@ -3,8 +3,11 @@
 Run the command in the terminal:
 ```bash
   01 - Save these passwords in the secret manager.
+    # It will avoid the need to type -K (ask the become password).
     secret-tool store --label="local-user-password" password local-user-password
+    # It will be used to connect to the Proxmox nodes.
     secret-tool store --label="proxmox-root-password" password proxmox-root-password
+    # It will be used to send emails.
     secret-tool store --label="proxmox-smtp-password" password proxmox-smtp-password
 
   02 - Run the playbook.

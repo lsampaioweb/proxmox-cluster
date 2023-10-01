@@ -1,6 +1,6 @@
+{% if domain is defined %}
 search {{ domain }}
+{% endif %}
 {% if wan_management_gateway is defined %}
 nameserver {{ wan_management_gateway }}
-{% elif lan_management_gateway is defined %}
-nameserver {{ lan_management_gateway }}
 {% endif %}

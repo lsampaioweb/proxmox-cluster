@@ -17,5 +17,7 @@ ansible_password_size: 30
 # All servers are located in Aracaju - Brazil. Maceio is the closest city.
 timezone: "America/Maceio"
 
-# Brazilian NTP Servers.
-ntp_servers: "0.br.pool.ntp.org 1.br.pool.ntp.org 2.br.pool.ntp.org 3.br.pool.ntp.org"
+# This is a DNS for the Fortigate NTP server.
+ntp_service: "chrony"
+ntp_servers:
+  - "pool ntp-pool.homelab iburst"
