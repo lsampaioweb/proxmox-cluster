@@ -1,0 +1,8 @@
+---
+- name: "Updating all nodes of the Cluster"
+  hosts: "Nodes"
+  gather_facts: false
+  become: true
+
+  roles:
+    - "update"

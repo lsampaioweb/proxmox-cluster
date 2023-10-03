@@ -1,0 +1,6 @@
+---
+- name: "Updating pachages"
+  ansible.builtin.include_tasks: "{{ path_packages_apt }}"
+  vars:
+    update_cache: true
+    upgrade: "safe"
