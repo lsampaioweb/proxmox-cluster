@@ -6,17 +6,22 @@
 
 - name: "Creating cluster (only on {{ cluster_master_node }})"
   run_once: true
-  ansible.builtin.command: "pvecm create {{ cluster_name }} -link0 address={{ cluster_ip }},priority=0 -link1 address={{ lan_management_ip }},priority=1"
+  ansible.builtin.command: "pvecm create {{ cluster_name }} -link0 address={{ cluster_ip }},priority=0 -link1 address={{ wan_management_ip }},priority=1"
   register: "create_cluster"
+  changed_when: create_cluster.rc == 0
   when: ansible_hostname == cluster_master_node and not corosync.stat.exists
+
+- name: "Waiting a couple of seconds until the cluster is ready to accept connections"
+  ansible.builtin.pause:
+    seconds: 10
 
 - name: "Adding nodes to cluster"
   throttle: 1
   ansible.builtin.expect:
     command: >-
-      pvecm add {{ hostvars[cluster_master_node].lan_management_ip }}
+      pvecm add {{ hostvars[cluster_master_node].wan_management_ip }}
       -link0 address={{ cluster_ip }},priority=0
-      -link1 address={{ lan_management_ip }},priority=1
+      -link1 address={{ wan_management_ip }},priority=1
       -force
     responses:
       "Please enter": "{{ proxmox_root_password }}"
@@ -25,6 +30,10 @@
   timeout: 30
   no_log: true
   register: "join_cluster"
+  changed_when:
+    - "'successfully added node' in join_cluster.stdout"
+  failed_when:
+    - "'Cluster join aborted' in join_cluster.stdout"
   when: ansible_hostname != cluster_master_node and not corosync.stat.exists
 
 - name: "Printing variables"

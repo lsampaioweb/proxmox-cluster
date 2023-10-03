@@ -1,6 +1,6 @@
 ---
 - name: "Creating a new partition on the disk(s)"
-  ansible.builtin.parted:
+  community.general.parted:
     device: "{{ device }}"
     number: 1
     label: "gpt"
@@ -38,14 +38,14 @@
     partitions_single_line: "{{ partition_list.results | map(attribute='ansible_facts.partition_name') | join(',') }}"
 
 - name: "Creating the volume group {{ item.volume_group }}"
-  ansible.builtin.lvg:
+  community.general.lvg:
     vg: "{{ item.volume_group }}"
     pvs: "{{ partitions_single_line }}"
     pvresize: true
   register: "lvg_output"
 
 - name: "Creating the logical volume {{ item.logical_volume }}"
-  ansible.builtin.lvol:
+  community.general.lvol:
     thinpool: "{{ item.logical_volume }}"
     vg: "{{ item.volume_group }}"
     size: "100%FREE"
@@ -54,7 +54,7 @@
   register: "lvol_output"
 
 - name: "Creating an {{ item.filesystem_type }} filesystem on the LVM /dev/mapper/{{ item.volume_group }}-{{ item.logical_volume }}"
-  ansible.builtin.filesystem:
+  community.general.filesystem:
     fstype: "{{ item.filesystem_type }}"
     dev: "/dev/mapper/{{ item.volume_group }}-{{ item.logical_volume }}"
   register: "filesystem_output"

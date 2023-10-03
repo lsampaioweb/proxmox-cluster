@@ -1,7 +1,7 @@
 ---
 - name: "Adding the ceph repository into sources list"
   ansible.builtin.apt_repository:
-    repo: "deb http://download.proxmox.com/debian/ceph-pacific bookworm main"
+    repo: "deb http://download.proxmox.com/debian/ceph-quincy bookworm main"
     filename: "ceph"
     state: "present"
 
@@ -161,10 +161,6 @@
       - "should_create_mon: {{ should_create_mon }}"
       - "should_create_mgr: {{ should_create_mgr }}"
       - "should_create_mds: {{ should_create_mds }}"
-      # - "mds_status_output: {{ mds_status_output }}"
-      # - "osd_status_output: {{ osd_status_output.results | map(attribute='stdout') | join(',') }}"
-      # - "crush_status_output: {{ crush_status_output }}"
-      # - "pool_status_output: {{ pool_status_output }}"
       - "init_output: {{ init_output }}"
       - "monitor_output: {{ monitor_output }}"
       - "manager_output: {{ manager_output }}"
