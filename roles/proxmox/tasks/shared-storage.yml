@@ -89,7 +89,7 @@
   ansible.builtin.command: >-
     pveceph osd create {{ item.name }}
     --crush-device-class {{ item.type }}
-    {{ (item.db is not defined) | ternary('', ' -db_dev ' + item.db) }}
+    {{ (item.db is not defined) | ternary('', ' --db_dev ' + item.db) }}
   throttle: 1
   register: "osd_output"
   changed_when: osd_output.rc == 0
@@ -140,7 +140,13 @@
   failed_when: false
 
 - name: "Creating the Ceph pools"
-  ansible.builtin.command: "pveceph pool create {{ item.name }} --crush_rule {{ item.crush_rule }} --pg_autoscale_mode on --add_storages"
+  ansible.builtin.command: >-
+    pveceph pool create {{ item.name }}
+    --size {{ item.size }}
+    --min_size {{ item.min_size }}
+    --crush_rule {{ item.crush_rule }}
+    --pg_autoscale_mode on
+    --add_storages
   register: "ceph_pool_output"
   changed_when: (ceph_pool_output.rc == 0) and ' already defined' not in ceph_pool_output.stderr
   failed_when: (ceph_pool_output.rc != 0) and ' already defined' not in ceph_pool_output.stderr

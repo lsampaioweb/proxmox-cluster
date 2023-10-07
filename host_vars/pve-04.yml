@@ -41,9 +41,8 @@ ceph_crush_rules:
   - {name: "hdd", type: "hdd"}
 
 ceph_pools:
-  - {name: "Ceph_Gold", crush_rule: "nvme"}
-  - {name: "Ceph_Silver", crush_rule: "ssd"}
-  - {name: "Ceph_Bronze", crush_rule: "hdd"}
+  - {name: "Ceph_Gold", crush_rule: "nvme", size: 2, min_size: 1 }
+  - {name: "Ceph_Silver", crush_rule: "ssd", size: 2, min_size: 1 }
 
 ceph_default_pools_crush_rule:
   - {name: ".mgr", crush_rule: "hdd"}
