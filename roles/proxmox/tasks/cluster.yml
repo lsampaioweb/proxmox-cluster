@@ -12,6 +12,9 @@
   notify: "Waiting 10 seconds"
   when: ansible_hostname == cluster_master_node and not corosync.stat.exists
 
+- name: Force all notified handlers to run at this point, not waiting for normal sync points
+  ansible.builtin.meta: "flush_handlers"
+
 - name: "Adding nodes to cluster"
   throttle: 1
   ansible.builtin.expect:
