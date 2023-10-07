@@ -86,7 +86,10 @@
   loop: "{{ ceph_devices | default([]) }}"
 
 - name: "Creating the OSD disks"
-  ansible.builtin.command: "pveceph osd create {{ item.name }} --crush-device-class {{ item.type }}"
+  ansible.builtin.command: >-
+    pveceph osd create {{ item.name }}
+    --crush-device-class {{ item.type }}
+    {{ (item.db is not defined) | ternary('', ' -db_dev ' + item.db) }}
   throttle: 1
   register: "osd_output"
   changed_when: osd_output.rc == 0
