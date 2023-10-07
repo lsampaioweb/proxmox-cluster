@@ -1,4 +1,8 @@
 ---
+- name: "Waiting 10 seconds"
+  ansible.builtin.pause:
+    seconds: 10
+
 - name: "Updating Postfix table management"
   ansible.builtin.command: "postmap /etc/postfix/sasl_passwd"
   register: "output"
