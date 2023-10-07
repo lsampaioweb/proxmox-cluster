@@ -46,7 +46,7 @@ ceph_pools:
   - {name: "Ceph_Bronze", crush_rule: "hdd"}
 
 ceph_default_pools_crush_rule:
-  - {name: "device_health_metrics", crush_rule: "hdd"}
+  - {name: ".mgr", crush_rule: "hdd"}
   - {name: "CephFS_Bronze_data", crush_rule: "hdd"}
   - {name: "CephFS_Bronze_metadata", crush_rule: "hdd"}
 
