@@ -1,18 +1,18 @@
 ---
 - name: "Adding the ceph repository into sources list"
-  ansible.builtin.apt_repository:
-    repo: "{{ item.repo }}"
-    filename: "{{ item.filename }}"
-    state: "{{ item.state }}"
-  loop:
-    - { repo: "deb https://enterprise.proxmox.com/debian/ceph-quincy bookworm enterprise", filename: "ceph", state: "absent" }
-    - { repo: "deb http://download.proxmox.com/debian/ceph-quincy bookworm main", filename: "ceph", state: "present" }
+ansible.builtin.apt_repository:
+repo: "{{ item.repo }}"
+filename: "{{ item.filename }}"
+state: "{{ item.state }}"
+loop:
+- { repo: "deb https://enterprise.proxmox.com/debian/ceph-quincy bookworm enterprise", filename: "ceph", state: "absent" }
+- { repo: "deb http://download.proxmox.com/debian/ceph-quincy bookworm main", filename: "ceph", state: "present" }
 
 - name: "Installing the ceph packages"
-  ansible.builtin.include_tasks: "{{ path_packages_apt }}"
-  vars:
-    packages:
-      - {name: "ceph"}
+ansible.builtin.include_tasks: "{{ path_packages_apt }}"
+vars:
+packages:
+- {name: "ceph"}
 
 - name: "Checking Ceph status"
   run_once: true
@@ -89,7 +89,7 @@
   ansible.builtin.command: >-
     pveceph osd create {{ item.name }}
     --crush-device-class {{ item.type }}
-    {{ (item.db is not defined) | ternary('', ' --db_dev ' + item.db) }}
+    {{ (item.db is defined) | ternary(' --db_dev ' + (item.db | default('')), '') }}
   throttle: 1
   register: "osd_output"
   changed_when: osd_output.rc == 0
