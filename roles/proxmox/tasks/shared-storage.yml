@@ -5,8 +5,8 @@
     filename: "{{ item.filename }}"
     state: "{{ item.state }}"
   loop:
-    - { repo: "deb https://enterprise.proxmox.com/debian/ceph-quincy bookworm enterprise", filename: "ceph", state: "absent" }
-    - { repo: "deb http://download.proxmox.com/debian/ceph-quincy bookworm main", filename: "ceph", state: "present" }
+    - { repo: "deb https://enterprise.proxmox.com/debian/ceph-reef bookworm enterprise", filename: "ceph", state: "absent" }
+    - { repo: "deb http://download.proxmox.com/debian/ceph-reef bookworm no-subscription", filename: "ceph", state: "present" }
 
 - name: "Installing the ceph packages"
   ansible.builtin.include_tasks: "{{ path_packages_apt }}"
