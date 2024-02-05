@@ -4,7 +4,7 @@ The playbook can setup one or more servers running Proxmox Virtual Environment (
 
 Run the command in the terminal:
 ```bash
-  ansible-playbook site.yml
+  ansible-playbook site.yml -K
 ```
 
 # Roles you can execute:
@@ -20,6 +20,6 @@ Run the command in the terminal:
 
 [MIT](LICENSE "MIT License")
 
-# Created by: 
+# Created by:
 
 1. Luciano Sampaio.
