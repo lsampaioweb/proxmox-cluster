@@ -1,7 +1,4 @@
 ---
-- name: "Setting up DNS"
-  ansible.builtin.import_tasks: "dns.yml"
-
 - name: "Setting up Brazilian timezone"
   ansible.builtin.import_tasks: "roles/common/tasks/debian/os/timezone.yml"
 
@@ -20,11 +17,11 @@
 - name: "Disabling IPV6 on the server"
   ansible.builtin.import_tasks: "roles/common/tasks/debian/network/ipv6-disable.yml"
 
-- name: "Setting up the network interfaces"
-  ansible.builtin.import_tasks: "network.yml"
-
 - name: "Removing unnecessary packages"
   ansible.builtin.import_tasks: "removing-packages.yml"
+
+- name: "Setting up the network interfaces"
+  ansible.builtin.import_tasks: "network.yml"
 
 - name: "Checking if a reboot is required"
   ansible.builtin.import_tasks: "roles/common/tasks/debian/os/reboot-if-required.yml"

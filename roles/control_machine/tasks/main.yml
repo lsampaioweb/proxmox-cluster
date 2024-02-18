@@ -1,3 +1,6 @@
 ---
+- name: "Setting up DNS"
+  ansible.builtin.import_tasks: "dns.yml"
+
 - name: "Installing required packages"
   ansible.builtin.import_tasks: "packages.yml"

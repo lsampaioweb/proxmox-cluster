@@ -34,18 +34,18 @@ iface bond0 inet manual
         bond-min-links 1
 #PVE Bond Interface.
 
-auto vmbr0.{{ wan_management_vlan }}
-iface vmbr0.{{ wan_management_vlan }} inet dhcp
-#Management Interface.
-
 auto vmbr0
-iface vmbr0 inet static
+iface vmbr0 inet manual
         bridge-ports {{ wan_management_nic }}
         bridge-stp off
         bridge-fd 0
         bridge-vlan-aware yes
         bridge-vids 2-4094
 #VMs Interface - VLAN[2-4094].
+
+auto vmbr0.{{ wan_management_vlan }}
+iface vmbr0.{{ wan_management_vlan }} inet dhcp
+#Management Interface.
 
 auto vmbr1
 iface vmbr1 inet static
@@ -54,3 +54,13 @@ iface vmbr1 inet static
         bridge-stp off
         bridge-fd 0
 #Cluster Interface.
+
+auto vmbr2
+iface vmbr2 inet manual
+        bridge-ports {{ wan_management_nic }}.20
+        bridge-stp off
+        bridge-fd 0
+        bridge-vlan-aware yes
+        bridge-vids 2-4094
+#Staging JumpServer.
+

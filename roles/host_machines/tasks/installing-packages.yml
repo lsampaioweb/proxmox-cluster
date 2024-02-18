@@ -49,11 +49,5 @@
       - {name: "intel-microcode"} # To fix the intel microcode bug.
   when: ansible_processor is search('Intel')
 
-- name: "Checking if a reboot is needed"
-  ansible.builtin.stat:
-    path: "/var/run/reboot-required"
-    get_md5: "no"
-  register: "reboot_required"
-  changed_when: reboot_required.stat.exists
-  notify:
-    - "Reboot host"
+- name: "Checking if a reboot is required"
+  ansible.builtin.import_tasks: "roles/common/tasks/debian/os/reboot-if-required.yml"

@@ -12,7 +12,7 @@ proxmox_root_password_id: "proxmox-root-password"
 proxmox_smtp_password_id: "proxmox-smtp-password"
 
 # The id that will be used to retrieve the Ansible user's password saved in the Secret Manager. It will be the same for all hosts.
-ansible_password_id: "ansible-password"
+ansible_password_id: "ansible-password-{{ inventory_file | basename }}"
 
 # Import Paths.
 path_roles_common: "roles/common"

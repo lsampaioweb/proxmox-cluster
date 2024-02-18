@@ -1,0 +1,11 @@
+[ControlMachine]
+localhost ansible_connection=local
+
+[ControlMachine:vars]
+ansible_python_interpreter=/usr/bin/python3.10
+
+[hosts]
+pve-[01:07]
+
+[hosts:vars]
+ansible_python_interpreter=/usr/bin/python3.11

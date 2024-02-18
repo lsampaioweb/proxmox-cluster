@@ -1,6 +1,6 @@
 ---
 - name: "Updating all nodes of the Cluster"
-  hosts: "Nodes"
+  hosts: "hosts"
   gather_facts: false
   become: true
 

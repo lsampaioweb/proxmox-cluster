@@ -4,14 +4,8 @@ localhost ansible_connection=local
 [ControlMachine:vars]
 ansible_python_interpreter=/usr/bin/python3.10
 
-[Nodes]
-pve-01
-pve-02
-pve-03
-pve-04
-pve-05
-pve-06
-pve-07
+[hosts]
+edge-pve-[01:02]
 
-[Nodes:vars]
+[hosts:vars]
 ansible_python_interpreter=/usr/bin/python3.11

@@ -4,7 +4,11 @@ The playbook can setup one or more servers running Proxmox Virtual Environment (
 
 Run the command in the terminal:
 ```bash
+  # (-K is the same as --ask-become-pass)
+  # The default inventory is "home".
   ansible-playbook site.yml -K
+  ansible-playbook site.yml -K -i "inventory/home"
+  ansible-playbook site.yml -K -i "inventory/homelab"
 ```
 
 # Roles you can execute:

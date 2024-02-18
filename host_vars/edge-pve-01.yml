@@ -1,0 +1,26 @@
+---
+mac_bind:
+  - {mac_address: "60:be:b4:08:f7:66", nic_name: "enp2lacp0"}
+  - {mac_address: "60:be:b4:08:f7:67", nic_name: "enp2lacp1"}
+  - {mac_address: "60:be:b4:08:f7:68", nic_name: "enp2lacp2"}
+  - {mac_address: "60:be:b4:08:f7:69", nic_name: "enp2lacp3"}
+
+bond0_nic: "enp2lacp0 enp2lacp1 enp2lacp2 enp2lacp3"
+
+wan_management_nic: "bond0"
+wan_management_vlan: "3"
+
+cluster_vlan: "4"
+
+lvm: []
+
+is_ceph_server: true
+
+ceph_devices:
+  - {name: "/dev/nvme0n1", type: "nvme"}
+
+ceph_crush_rules:
+  - {name: "nvme", type: "nvme"}
+
+ceph_pools:
+  - {name: "Ceph_Gold", crush_rule: "nvme", size: 2, min_size: 1}

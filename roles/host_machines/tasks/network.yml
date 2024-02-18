@@ -19,7 +19,7 @@
 
 - name: "Copying the network config file"
   ansible.builtin.template:
-    src: "interfaces.j2"
+    src: "interfaces-{{ inventory_file | basename }}.j2"
     dest: "/etc/network/interfaces"
     mode: "preserve"
   notify:

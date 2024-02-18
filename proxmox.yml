@@ -1,6 +1,6 @@
 ---
 - name: "Setting up the Proxmox"
-  hosts: "Nodes"
+  hosts: "hosts"
   become: true
 
   roles:

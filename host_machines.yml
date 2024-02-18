@@ -1,10 +1,10 @@
 ---
 - name: "Setting up the host machines"
-  hosts: "Nodes"
+  hosts: "hosts"
   gather_facts: false
 
   pre_tasks:
-    - name: "Ensure the fingerprint is present in the known_hosts file"
+    - name: "Ensure the fingerprint of the Proxmox hosts is present in the known_hosts file"
       ansible.builtin.include_tasks: "{{ path_debian_known_hosts_add_current }}"
 
     - name: "Gettings facts using the setup module"
