@@ -16,12 +16,6 @@ smtp_port: "587"
 smtp_email: "bHNhbXBhaW93ZWJAZ21haWwuY29t"
 smtp_password: "{{ lookup('pipe', 'secret-tool lookup password ' + proxmox_smtp_password_id) }}"
 
-# The name of the HomeLab Cluster.
-cluster_name: "HomeLab"
-cluster_master_node: "{{ groups['hosts'][0] }}"
-# migration_network: "172.16.11.0/28"
-# migration_network: "192.168.4.0/28"
-
 resource_pools:
   - {name: "Production", comment: "Pool for the Production Virtual Machines."}
   - {name: "Staging", comment: "Pool for the Staging Virtual Machines."}

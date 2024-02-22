@@ -1,4 +1,8 @@
 ---
+- name: "Creating variables"
+  ansible.builtin.set_fact:
+    cluster_master_node: "{{ groups['hosts'][0] }}"
+
 - name: "Checking if the cluster already exists (on each and every node)"
   ansible.builtin.stat:
     path: "/etc/pve/corosync.conf"

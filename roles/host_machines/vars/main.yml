@@ -20,4 +20,5 @@ timezone: "America/Maceio"
 # This is a DNS for the Fortigate NTP server.
 ntp_service: "chrony"
 ntp_servers:
-  - "pool ntp-pool.homelab iburst"
+  - {line: "pool 2.debian.pool.ntp.org iburst", state: "absent"}
+  - {line: "pool ntp-pool.homelab iburst", state: "present"}

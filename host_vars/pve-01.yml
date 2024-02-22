@@ -17,10 +17,13 @@ wan_management_netmask: "28"
 wan_management_ip_and_netmask: "{{ wan_management_ip }}/{{ wan_management_netmask }}"
 wan_management_gateway: "172.16.10.1"
 
+cluster_name: "HomeLab"
 cluster_nic: "enp3sync1"
 cluster_ip: "172.16.11.3"
 cluster_netmask: "28"
 cluster_ip_and_netmask: "{{ cluster_ip }}/{{ cluster_netmask }}"
+
+migration_network: "172.16.11.0/28"
 
 lvm: []
 
