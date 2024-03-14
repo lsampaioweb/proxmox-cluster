@@ -33,5 +33,3 @@ path_packages_pip: "{{ path_debian_packages }}/pip.yml"
 path_debian_passwords: "{{ path_tasks_debian }}/passwords"
 path_debian_passwords_add: "{{ path_debian_passwords }}/add.yml"
 path_debian_passwords_get: "{{ path_debian_passwords }}/get.yml"
-
-ceph_master_node: "pve-04"

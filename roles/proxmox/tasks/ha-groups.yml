@@ -5,4 +5,4 @@
   register: "create_ha_groups"
   changed_when: create_ha_groups.rc == 0
   failed_when: (create_ha_groups.rc != 0) and ' already defined' not in create_ha_groups.stderr
-  loop: "{{ ha_groups }}"
+  loop: "{{ ha_groups | default([]) }}"

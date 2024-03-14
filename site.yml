@@ -1,9 +1,12 @@
 ---
-- name: "Run the control machine role"
+- name: "Run the control machine playbook"
   ansible.builtin.import_playbook: "control_machine.yml"
 
-- name: "Run the host machines role"
+- name: "Run the host machines playbook"
   ansible.builtin.import_playbook: "host_machines.yml"
 
-- name: "Run the proxmox role"
+- name: "Run the proxmox playbook"
   ansible.builtin.import_playbook: "proxmox.yml"
+
+- name: "Run the update playbook"
+  ansible.builtin.import_playbook: "update.yml"

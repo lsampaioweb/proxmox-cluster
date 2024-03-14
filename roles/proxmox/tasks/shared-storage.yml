@@ -1,4 +1,8 @@
 ---
+- name: "Creating variables"
+  ansible.builtin.set_fact:
+    ceph_master_node: "{{ ceph_master_node | default(groups['hosts'][0]) }}"
+
 - name: "Adding the ceph repository into sources list"
   ansible.builtin.apt_repository:
     repo: "{{ item.repo }}"
@@ -103,7 +107,7 @@
   changed_when: (filesystem_output.rc == 0)
   failed_when: (filesystem_output.rc != 0) and ' already exist' not in filesystem_output.stderr
   loop: "{{ ceph_file_systems }}"
-  when: ansible_hostname == ceph_master_node
+  when: (ansible_hostname == ceph_master_node) and (ceph_file_systems is defined)
 
 - name: "Checking if the CRUSH rules already exists"
   run_once: true

@@ -22,6 +22,7 @@ migration_network: "192.168.4.0/28"
 
 lvm: []
 
+ceph_master_node: "{{ ansible_hostname }}"
 is_ceph_server: true
 
 ceph_devices:
@@ -32,3 +33,6 @@ ceph_crush_rules:
 
 ceph_pools:
   - {name: "Ceph_Gold", crush_rule: "nvme", size: 2, min_size: 1}
+
+ha_groups:
+  - {name: "default", nodes: "pve-01,pve-02", comment: "The default HA group, all Proxmox hosts can run the VM."}

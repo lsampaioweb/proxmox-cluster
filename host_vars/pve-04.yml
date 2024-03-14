@@ -24,6 +24,7 @@ cluster_ip_and_netmask: "{{ cluster_ip }}/{{ cluster_netmask }}"
 
 lvm: []
 
+ceph_master_node: "{{ ansible_hostname }}"
 is_ceph_server: true
 
 ceph_devices:
@@ -51,3 +52,6 @@ ceph_default_pools_crush_rule:
 
 ceph_file_systems:
   - {name: "CephFS_Bronze", pg_num: "128"}
+
+ha_groups:
+  - {name: "default", nodes: "pve-01,pve-02,pve-03,pve-04,pve-05,pve-06,pve-07", comment: "The default HA group, all Proxmox hosts can run the VM."}

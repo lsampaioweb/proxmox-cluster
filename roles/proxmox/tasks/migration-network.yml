@@ -1,9 +1,14 @@
 ---
+- name: "Creating variables"
+  ansible.builtin.set_fact:
+    cluster_master_node: "{{ groups['hosts'][0] }}"
+
 - name: "Checking if the /etc/pve/datacenter.cfg file already exists"
   run_once: true
   ansible.builtin.stat:
     path: "/etc/pve/datacenter.cfg"
   register: "datacenter"
+  when: ansible_hostname == cluster_master_node
 
 - name: "Setting up the network for all migrations in the cluster"
   run_once: true
@@ -12,3 +17,4 @@
     dest: "/etc/pve/datacenter.cfg"
     mode: "0640"
     force: "{{ (datacenter.stat.exists) | ternary('yes', 'no') }}"
+  when: ansible_hostname == cluster_master_node
