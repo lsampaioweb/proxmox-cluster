@@ -5,7 +5,9 @@ mac_bind:
   - {mac_address: "60:be:b4:08:f7:68", nic_name: "enp2lacp2"}
   - {mac_address: "60:be:b4:08:f7:69", nic_name: "enp2lacp3"}
 
-bond0_nic: "enp2lacp0 enp2lacp1 enp2lacp2 enp2lacp3"
+bond0_nic: "enp2lacp0"
+bond1_nic: "enp2lacp1"
+bond2_nic: "enp2lacp2 enp2lacp3"
 
 wan_management_nic: "bond0"
 wan_management_vlan: "3"
@@ -13,12 +15,15 @@ wan_management_vlan: "3"
 wan_management_ip: "192.168.3.2"
 
 cluster_name: "Home"
+cluster_nic: "bond1"
 cluster_vlan: "4"
 cluster_ip: "192.168.4.2"
 cluster_netmask: "28"
 cluster_ip_and_netmask: "{{ cluster_ip }}/{{ cluster_netmask }}"
-
 migration_network: "192.168.4.0/28"
+
+storage_nic: "bond2"
+storage_vlan: "5"
 
 lvm: []
 
@@ -33,6 +38,13 @@ ceph_crush_rules:
 
 ceph_pools:
   - {name: "Ceph_Gold", crush_rule: "nvme", size: 2, min_size: 1}
+
+ceph_default_pools_crush_rule:
+  - {name: "CephFS_data", crush_rule: "nvme"}
+  - {name: "CephFS_metadata", crush_rule: "nvme"}
+
+ceph_file_systems:
+  - {name: "CephFS", pg_num: "128"}
 
 ha_groups:
   - {name: "default", nodes: "pve-01,pve-02", comment: "The default HA group, all Proxmox hosts can run the VM."}

@@ -30,7 +30,23 @@ iface bond0 inet manual
         bond-mode 802.3ad
         bond-xmit-hash-policy layer2+3
         bond-min-links 1
-#PVE Bond Interface.
+#Management and VMs.
+
+iface bond1 inet manual
+        bond-slaves {{ bond1_nic }}
+        bond-miimon 100
+        bond-mode 802.3ad
+        bond-xmit-hash-policy layer2+3
+        bond-min-links 1
+#Cluster.
+
+iface bond2 inet manual
+        bond-slaves {{ bond2_nic }}
+        bond-miimon 100
+        bond-mode 802.3ad
+        bond-xmit-hash-policy layer2+3
+        bond-min-links 1
+#Ceph.
 
 auto vmbr0
 iface vmbr0 inet manual
@@ -38,23 +54,53 @@ iface vmbr0 inet manual
         bridge-stp off
         bridge-fd 0
         bridge-vlan-aware yes
-        bridge-vids 2-4094
-#VMs Interface - VLAN[2-4094].
+        bridge-vids {{ wan_management_vlan }}-4094
+#VMs - VLAN[{{ wan_management_vlan }}-4094].
 
-auto vmbr0.{{ wan_management_vlan }}
-iface vmbr0.{{ wan_management_vlan }} inet dhcp
-#Management Interface.
-
-auto vmbr0.{{ cluster_vlan }}
-iface vmbr0.{{ cluster_vlan }} inet dhcp
-#Cluster Interface.
-
-auto vmbr2
-iface vmbr2 inet manual
-        bridge-ports vmbr0.6
+auto vmbr{{ cluster_vlan }}
+iface vmbr{{ cluster_vlan }} inet manual
+        bridge-ports {{ cluster_nic }}
         bridge-stp off
         bridge-fd 0
         bridge-vlan-aware yes
-        bridge-vids 2-4094
-#JumpServer.
+        bridge-vids {{ cluster_vlan }}
+#Cluster - VLAN[{{ cluster_vlan }}].
 
+auto vmbr{{ storage_vlan }}
+iface vmbr{{ storage_vlan }} inet manual
+        bridge-ports {{ storage_nic }}
+        bridge-stp off
+        bridge-fd 0
+        bridge-vlan-aware yes
+        bridge-vids {{ storage_vlan }}
+#Ceph - VLAN[{{ storage_vlan }}].
+
+auto vmbr0.{{ wan_management_vlan }}
+iface vmbr0.{{ wan_management_vlan }} inet dhcp
+#Management - VLAN[{{ wan_management_vlan }}].
+
+auto vmbr101
+iface vmbr101 inet manual
+        bridge-ports vmbr0.101
+        bridge-stp off
+        bridge-fd 0
+        bridge-vlan-aware yes
+        bridge-vids 101
+#JumpServer - VLAN[101].
+
+auto vmbr102
+iface vmbr102 inet manual
+        bridge-ports vmbr0.102
+        bridge-stp off
+        bridge-fd 0
+        bridge-vlan-aware yes
+        bridge-vids 102
+#Crypto - VLAN[102].
+
+auto vmbr4.{{ cluster_vlan }}
+iface vmbr4.{{ cluster_vlan }} inet dhcp
+#Cluster - VLAN[{{ cluster_vlan }}].
+
+auto vmbr5.{{ storage_vlan }}
+iface vmbr5.{{ storage_vlan }} inet dhcp
+#Ceph - VLAN[{{ storage_vlan }}].
