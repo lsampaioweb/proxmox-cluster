@@ -17,11 +17,12 @@ wan_management_ip: "192.168.3.3"
 cluster_nic: "bond1"
 cluster_vlan: "4"
 cluster_ip: "192.168.4.3"
-cluster_netmask: "28"
-cluster_ip_and_netmask: "{{ cluster_ip }}/{{ cluster_netmask }}"
 
 storage_nic: "bond2"
 storage_vlan: "5"
+storage_ip: "192.168.5.3"
+storage_netmask: "28"
+storage_ip_and_netmask: "{{ storage_ip }}/{{ storage_netmask }}"
 
 lvm: []
 

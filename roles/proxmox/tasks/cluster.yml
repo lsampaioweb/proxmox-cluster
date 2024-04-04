@@ -10,7 +10,7 @@
 
 - name: "Creating cluster (only on {{ cluster_master_node }})"
   run_once: true
-  ansible.builtin.command: "pvecm create {{ cluster_name }} -link0 address={{ cluster_ip }},priority=0 -link1 address={{ wan_management_ip }},priority=1"
+  ansible.builtin.command: "pvecm create {{ cluster_name }} -link0 address={{ cluster_ip }},priority=0 -link1 address={{ storage_ip }},priority=1"
   register: "create_cluster"
   changed_when: create_cluster.rc == 0
   notify: "Waiting 10 seconds"
@@ -25,7 +25,7 @@
     command: >-
       pvecm add {{ cluster_master_node }}
       -link0 address={{ cluster_ip }},priority=0
-      -link1 address={{ wan_management_ip }},priority=1
+      -link1 address={{ storage_ip }},priority=1
       -force
     responses:
       "Please enter": "{{ proxmox_root_password }}"
