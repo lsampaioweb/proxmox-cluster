@@ -24,8 +24,8 @@
   ansible.builtin.expect:
     command: >-
       pvecm add {{ cluster_master_node }}
-      -link0 address={{ cluster_ip }},priority=0
-      -link1 address={{ storage_ip }},priority=1
+      -link0 address={{ cluster_ip }},priority=100
+      -link1 address={{ storage_ip }},priority=50
       -force
     responses:
       "Please enter": "{{ proxmox_root_password }}"
