@@ -6,8 +6,7 @@ mac_bind:
   - {mac_address: "00:d0:b4:01:77:7d", nic_name: "enp2lacp3"}
 
 bond0_nic: "enp2lacp0"
-bond1_nic: "enp2lacp1"
-bond2_nic: "enp2lacp2 enp2lacp3"
+bond1_nic: "enp2lacp1 enp2lacp2 enp2lacp3"
 
 wan_management_nic: "bond0"
 wan_management_vlan: "3"
@@ -18,7 +17,6 @@ cluster_nic: "bond1"
 cluster_vlan: "4"
 cluster_ip: "192.168.4.3"
 
-storage_nic: "bond2"
 storage_vlan: "5"
 storage_ip: "192.168.5.3"
 storage_netmask: "28"

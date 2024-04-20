@@ -38,15 +38,7 @@ iface bond1 inet manual
         bond-mode 802.3ad
         bond-xmit-hash-policy layer2+3
         bond-min-links 1
-#Cluster.
-
-iface bond2 inet manual
-        bond-slaves {{ bond2_nic }}
-        bond-miimon 100
-        bond-mode 802.3ad
-        bond-xmit-hash-policy layer2+3
-        bond-min-links 1
-#Ceph.
+#Cluster and Ceph.
 
 auto vmbr0
 iface vmbr0 inet manual
@@ -57,27 +49,26 @@ iface vmbr0 inet manual
         bridge-vids {{ wan_management_vlan }}-4094
 #VMs - VLAN[{{ wan_management_vlan }}-4094].
 
-auto vmbr{{ cluster_vlan }}
-iface vmbr{{ cluster_vlan }} inet manual
+auto vmbr0.{{ wan_management_vlan }}
+iface vmbr0.{{ wan_management_vlan }} inet dhcp
+#Management - VLAN[{{ wan_management_vlan }}].
+
+auto vmbr1
+iface vmbr1 inet manual
         bridge-ports {{ cluster_nic }}
         bridge-stp off
         bridge-fd 0
         bridge-vlan-aware yes
-        bridge-vids {{ cluster_vlan }}
+        bridge-vids {{ cluster_vlan }}-{{ storage_vlan }}
+#Cluster and Ceph - VLAN[{{ cluster_vlan }}-{{ storage_vlan }}].
+
+auto vmbr1.{{ cluster_vlan }}
+iface vmbr1.{{ cluster_vlan }} inet dhcp
 #Cluster - VLAN[{{ cluster_vlan }}].
 
-auto vmbr{{ storage_vlan }}
-iface vmbr{{ storage_vlan }} inet manual
-        bridge-ports {{ storage_nic }}
-        bridge-stp off
-        bridge-fd 0
-        bridge-vlan-aware yes
-        bridge-vids {{ storage_vlan }}
+auto vmbr1.{{ storage_vlan }}
+iface vmbr1.{{ storage_vlan }} inet dhcp
 #Ceph - VLAN[{{ storage_vlan }}].
-
-auto vmbr0.{{ wan_management_vlan }}
-iface vmbr0.{{ wan_management_vlan }} inet dhcp
-#Management - VLAN[{{ wan_management_vlan }}].
 
 auto vmbr101
 iface vmbr101 inet manual
@@ -96,11 +87,3 @@ iface vmbr102 inet manual
         bridge-vlan-aware yes
         bridge-vids 102
 #Crypto - VLAN[102].
-
-auto vmbr4.{{ cluster_vlan }}
-iface vmbr4.{{ cluster_vlan }} inet dhcp
-#Cluster - VLAN[{{ cluster_vlan }}].
-
-auto vmbr5.{{ storage_vlan }}
-iface vmbr5.{{ storage_vlan }} inet dhcp
-#Ceph - VLAN[{{ storage_vlan }}].
