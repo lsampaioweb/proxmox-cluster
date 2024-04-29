@@ -4,11 +4,26 @@ The playbook can setup one or more servers running Proxmox Virtual Environment (
 
 Run the command in the terminal:
 ```bash
-  # (-K is the same as --ask-become-pass)
-  # The default inventory is "home".
-  ansible-playbook site.yml -K
-  ansible-playbook site.yml -K -i "inventory/home"
-  ansible-playbook site.yml -K -i "inventory/homelab"
+# 01 - Save these passwords in the secret manager.
+# It will avoid the need to type -K (ask the become password).
+secret-tool store --label="local-user-password" password "local-user-password"
+# Verify the command worked.
+secret-tool lookup password "local-user-password"
+
+# It will be used to connect to the Proxmox nodes.
+secret-tool store --label="proxmox-root-password" password "proxmox-root-password"
+# Verify the command worked.
+secret-tool lookup password "proxmox-root-password"
+
+# It will be used to send emails.
+secret-tool store --label="proxmox-smtp-password" password "proxmox-smtp-password"
+# Verify the command worked.
+secret-tool lookup password "proxmox-smtp-password"
+
+# The default inventory is "inventory/home".
+ansible-playbook site.yml
+ansible-playbook site.yml -i "inventory/home"
+ansible-playbook site.yml -i "inventory/homelab"
 ```
 
 # Roles you can execute:

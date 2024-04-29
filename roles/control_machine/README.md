@@ -2,12 +2,10 @@
 
 Run the command in the terminal:
 ```bash
-  02 - Run the playbook.
-  # (-K is the same as --ask-become-pass)
-  # The default inventory is "home".
-  ansible-playbook control_machine.yml -K
-  ansible-playbook control_machine.yml -K -i "inventory/home"
-  ansible-playbook control_machine.yml -K -i "inventory/homelab"
+# The default inventory is "inventory/home".
+ansible-playbook control_machine.yml
+ansible-playbook control_machine.yml -i "inventory/home"
+ansible-playbook control_machine.yml -i "inventory/homelab"
 ```
 
 # Tasks:

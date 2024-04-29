@@ -1,0 +1,3 @@
+---
+# The password Ansible will use to run the scripts.
+ansible_password: "{{s lookup('pipe', 'secret-tool lookup password local-user-password') }}"

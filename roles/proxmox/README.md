@@ -2,10 +2,10 @@
 
 Run the command in the terminal:
 ```bash
-  # The default inventory is "home".
-  ansible-playbook proxmox.yml
-  ansible-playbook proxmox.yml -i "inventory/home"
-  ansible-playbook proxmox.yml -i "inventory/homelab"
+# The default inventory is "home".
+ansible-playbook proxmox.yml
+ansible-playbook proxmox.yml -i "inventory/home"
+ansible-playbook proxmox.yml -i "inventory/homelab"
 ```
 
 # Tasks:
