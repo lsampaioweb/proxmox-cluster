@@ -26,19 +26,23 @@ ansible-playbook site.yml -i "inventory/home"
 ansible-playbook site.yml -i "inventory/homelab"
 ```
 
-# Roles you can execute:
+#
+### Roles you can execute:
 1. [Setup](roles/control_machine/README.md) the control machine to run Ansible scripts.
 1. [Setup](roles/host_machines/README.md) the host machines.
 1. [Setup](roles/proxmox/README.md) Proxmox.
 
-# Links:
+#
+### Links:
 
 [Links](links.md "Links")
 
-# License:
+#
+### License:
 
 [MIT](LICENSE "MIT License")
 
-# Created by:
+#
+### Created by:
 
 1. Luciano Sampaio.
