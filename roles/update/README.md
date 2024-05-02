@@ -9,11 +9,13 @@ ansible-playbook update.yml -i "inventory/homelab"
 ansible-playbook update.yml -i "inventory/home" -i "inventory/homelab"
 ```
 
-# Tasks:
+#
+### Tasks:
 
-## 1. Update all the packages and remove unused ones.
+### 1. Update all the packages and remove unused ones.
   1. Run the commands update, upgrade and autoremove.
 
-# Created by:
+#
+### Created by:
 
 1. Luciano Sampaio.
