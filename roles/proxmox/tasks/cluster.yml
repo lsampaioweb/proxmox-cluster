@@ -45,4 +45,4 @@
     msg:
       - "create_cluster: {{ create_cluster | default('') }}"
       - "join_cluster: {{ join_cluster | default('') }}"
-  when: debug | bool
+  tags: "debug"

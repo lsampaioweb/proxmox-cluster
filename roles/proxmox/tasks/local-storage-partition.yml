@@ -83,4 +83,4 @@
       - "lvol_output: {{ lvol_output }}"
       - "filesystem_output: {{ filesystem_output | default('') }}"
       - "lvmthin_output: {{ lvmthin_output }}"
-  when: debug | bool
+  tags: "debug"

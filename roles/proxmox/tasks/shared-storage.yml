@@ -187,4 +187,4 @@
       - "ceph_pool_output: {{ ceph_pool_output }}"
       - "filesystem_output: {{ filesystem_output }}"
       - "ceph_default_pool_output: {{ ceph_default_pool_output }}"
-  when: debug | bool
+  tags: "debug"
