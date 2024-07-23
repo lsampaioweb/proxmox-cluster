@@ -5,22 +5,19 @@ mac_bind:
   - {mac_address: "00:d0:b4:01:77:7c", nic_name: "enp2lacp2"}
   - {mac_address: "00:d0:b4:01:77:7d", nic_name: "enp2lacp3"}
 
-bond0_nic: "enp2lacp0"
-bond1_nic: "enp2lacp1 enp2lacp2 enp2lacp3"
+bond0_nic: "enp2lacp0 enp2lacp1"
 
-wan_management_nic: "bond0"
-wan_management_vlan: "3"
-
-wan_management_ip: "192.168.3.3"
-
-cluster_nic: "bond1"
-cluster_vlan: "4"
-cluster_ip: "192.168.4.3"
-
-storage_vlan: "5"
-storage_ip: "192.168.5.3"
+storage_ip: "10.0.0.2"
 storage_netmask: "28"
 storage_ip_and_netmask: "{{ storage_ip }}/{{ storage_netmask }}"
+storage_nic: "bond0"
+
+wan_management_nic: "enp2lacp2"
+wan_management_vlan: "3"
+
+vms_management_nic: "enp2lacp3"
+
+migration_network: "{{ storage_ip_and_netmask }}"
 
 lvm: []
 

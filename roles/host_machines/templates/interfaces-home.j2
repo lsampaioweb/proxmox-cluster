@@ -30,60 +30,43 @@ iface bond0 inet manual
         bond-mode 802.3ad
         bond-xmit-hash-policy layer2+3
         bond-min-links 1
-#Management and VMs.
-
-iface bond1 inet manual
-        bond-slaves {{ bond1_nic }}
-        bond-miimon 100
-        bond-mode 802.3ad
-        bond-xmit-hash-policy layer2+3
-        bond-min-links 1
-#Cluster and Ceph.
+#Storage Bond.
 
 auto vmbr0
-iface vmbr0 inet manual
+iface vmbr0 inet static
+        address {{ storage_ip_and_netmask }}
+        bridge-ports {{ storage_nic }}
+        bridge-stp off
+        bridge-fd 0
+#Storage Interface.
+
+auto vmbr1
+iface vmbr1 inet manual
         bridge-ports {{ wan_management_nic }}
         bridge-stp off
         bridge-fd 0
         bridge-vlan-aware yes
-        bridge-vids {{ wan_management_vlan }}-4094
-#VMs - VLAN[{{ wan_management_vlan }}-4094].
+        bridge-vids {{ wan_management_vlan }}
+#Management Interface.
 
-auto vmbr0.{{ wan_management_vlan }}
-iface vmbr0.{{ wan_management_vlan }} inet dhcp
+auto vmbr1.{{ wan_management_vlan }}
+iface vmbr1.{{ wan_management_vlan }} inet dhcp
 #Management - VLAN[{{ wan_management_vlan }}].
 
-auto vmbr1
-iface vmbr1 inet manual
-        bridge-ports {{ cluster_nic }}
+auto vmbr2
+iface vmbr2 inet manual
+        bridge-ports {{ vms_management_nic }}
         bridge-stp off
         bridge-fd 0
         bridge-vlan-aware yes
-        bridge-vids {{ cluster_vlan }}-{{ storage_vlan }}
-#Cluster and Ceph - VLAN[{{ cluster_vlan }}-{{ storage_vlan }}].
-
-auto vmbr1.{{ cluster_vlan }}
-iface vmbr1.{{ cluster_vlan }} inet dhcp
-#Cluster - VLAN[{{ cluster_vlan }}].
-
-auto vmbr1.{{ storage_vlan }}
-iface vmbr1.{{ storage_vlan }} inet dhcp
-#Ceph - VLAN[{{ storage_vlan }}].
+        bridge-vids 4-4094
+#VMs Interface - VLAN[4-4094].
 
 auto vmbr101
 iface vmbr101 inet manual
-        bridge-ports vmbr0.101
+        bridge-ports vmbr2.101
         bridge-stp off
         bridge-fd 0
         bridge-vlan-aware yes
         bridge-vids 101
 #JumpServer - VLAN[101].
-
-auto vmbr102
-iface vmbr102 inet manual
-        bridge-ports vmbr0.102
-        bridge-stp off
-        bridge-fd 0
-        bridge-vlan-aware yes
-        bridge-vids 102
-#Crypto - VLAN[102].
