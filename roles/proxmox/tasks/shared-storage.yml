@@ -54,6 +54,20 @@
   failed_when: (init_output.rc != 0)
   when: should_setup_ceph
 
+- name: "Setting Ceph configuration for default size"
+  ansible.builtin.lineinfile:
+    path: "/etc/ceph/ceph.conf"
+    regexp: '^(\s*osd_pool_default_size\s*=\s*).*$'
+    line: "        osd_pool_default_size = 2"
+    state: "present"
+
+- name: "Setting Ceph configuration for min size"
+  ansible.builtin.lineinfile:
+    path: "/etc/ceph/ceph.conf"
+    regexp: '^(\s*osd_pool_default_min_size\s*=\s*).*$'
+    line: "        osd_pool_default_min_size = 1"
+    state: "present"
+
 - name: "Creating the monitor"
   ansible.builtin.command: "pveceph mon create"
   throttle: 1
@@ -101,14 +115,6 @@
   loop: "{{ ceph_devices | default([]) }}"
   when: "(item.name not in (osd_status_output.results | map(attribute='stdout')) | join(','))"
 
-- name: "Creating the Ceph file system"
-  ansible.builtin.command: "pveceph fs create --name {{ item.name }} --pg_num {{ item.pg_num }} --add-storage"
-  register: "filesystem_output"
-  changed_when: (filesystem_output.rc == 0)
-  failed_when: (filesystem_output.rc != 0) and ' already exist' not in filesystem_output.stderr
-  loop: "{{ ceph_file_systems }}"
-  when: (ansible_hostname == ceph_master_node) and (ceph_file_systems is defined)
-
 - name: "Checking if the CRUSH rules already exists"
   run_once: true
   delegate_to: "{{ ceph_master_node }}"
@@ -143,6 +149,20 @@
   changed_when: false
   failed_when: false
 
+- name: "Setting default crush rule to new pools"
+  ansible.builtin.command: >-
+    pveceph pool set {{ item.name }}
+    --size {{ item.size }}
+    --min_size {{ item.min_size }}
+    --crush_rule {{ item.crush_rule }}
+  register: "ceph_default_pool_output"
+  changed_when: (ceph_default_pool_output.rc == 0)
+  failed_when: (ceph_default_pool_output.rc != 0)
+  when:
+    - ansible_hostname == ceph_master_node
+    - (item.name not in pool_status_output.stdout | default('true')) | ternary(true, false)
+  loop: "{{ ceph_default_pools_crush_rule | default([]) }}"
+
 - name: "Creating the Ceph pools"
   ansible.builtin.command: >-
     pveceph pool create {{ item.name }}
@@ -159,15 +179,13 @@
     - (item.name not in pool_status_output.stdout | default('true')) | ternary(true, false)
   loop: "{{ ceph_pools | default([]) }}"
 
-- name: "Setting HDD crush rule to the default pools"
-  ansible.builtin.command: "pveceph pool set {{ item.name }} --crush_rule {{ item.crush_rule }}"
-  register: "ceph_default_pool_output"
-  changed_when: (ceph_default_pool_output.rc == 0)
-  failed_when: (ceph_default_pool_output.rc != 0)
-  when:
-    - ansible_hostname == ceph_master_node
-    - (item.name not in pool_status_output.stdout | default('true')) | ternary(true, false)
-  loop: "{{ ceph_default_pools_crush_rule | default([]) }}"
+- name: "Creating the Ceph file system"
+  ansible.builtin.command: "pveceph fs create --name {{ item.name }} --pg_num {{ item.pg_num }} --add-storage"
+  register: "filesystem_output"
+  changed_when: (filesystem_output.rc == 0)
+  failed_when: (filesystem_output.rc != 0) and ' already exist' not in filesystem_output.stderr
+  loop: "{{ ceph_file_systems }}"
+  when: (ansible_hostname == ceph_master_node) and (ceph_file_systems is defined)
 
 - name: "Printing variables"
   ansible.builtin.debug:

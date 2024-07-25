@@ -35,11 +35,11 @@ ceph_pools:
   - {name: "Ceph_Gold", crush_rule: "nvme", size: 2, min_size: 1}
 
 ceph_default_pools_crush_rule:
-  - {name: "CephFS_data", crush_rule: "nvme"}
-  - {name: "CephFS_metadata", crush_rule: "nvme"}
+  - {name: "CephFS_data", crush_rule: "nvme", size: 2, min_size: 1}
+  - {name: "CephFS_metadata", crush_rule: "nvme", size: 2, min_size: 1}
 
 ceph_file_systems:
-  - {name: "CephFS", pg_num: "128"}
+  - {name: "CephFS", pg_num: "32"}
 
 ha_groups:
   - {name: "default", nodes: "pve-01,pve-02", comment: "The default HA group, all Proxmox hosts can run the VM."}
