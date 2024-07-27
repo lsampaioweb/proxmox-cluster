@@ -55,18 +55,16 @@
   when: should_setup_ceph
 
 - name: "Setting Ceph configuration for default size"
+  run_once: true
+  delegate_to: "{{ ceph_master_node }}"
   ansible.builtin.lineinfile:
     path: "/etc/ceph/ceph.conf"
-    regexp: '^(\s*osd_pool_default_size\s*=\s*).*$'
-    line: "        osd_pool_default_size = 2"
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
     state: "present"
-
-- name: "Setting Ceph configuration for min size"
-  ansible.builtin.lineinfile:
-    path: "/etc/ceph/ceph.conf"
-    regexp: '^(\s*osd_pool_default_min_size\s*=\s*).*$'
-    line: "        osd_pool_default_min_size = 1"
-    state: "present"
+  loop:
+    - {regexp: '^(\s*osd_pool_default_size\s*=\s*).*$', line: "        osd_pool_default_size = 2"}
+    - {regexp: '^(\s*osd_pool_default_min_size\s*=\s*).*$', line: "        osd_pool_default_min_size = 1"}
 
 - name: "Creating the monitor"
   ansible.builtin.command: "pveceph mon create"
@@ -137,6 +135,14 @@
     - (item.name not in crush_status_output.stdout | default('true')) | ternary(true, false)
   loop: "{{ ceph_crush_rules | default([]) }}"
 
+- name: "Creating the Ceph file system"
+  ansible.builtin.command: "pveceph fs create --name {{ item.name }} --pg_num {{ item.pg_num }} --add-storage"
+  register: "filesystem_output"
+  changed_when: (filesystem_output.rc == 0)
+  failed_when: (filesystem_output.rc != 0) and ' already exist' not in filesystem_output.stderr
+  loop: "{{ ceph_file_systems }}"
+  when: (ansible_hostname == ceph_master_node) and (ceph_file_systems is defined)
+
 - name: "Checking if the pool already exists"
   run_once: true
   delegate_to: "{{ ceph_master_node }}"
@@ -149,28 +155,14 @@
   changed_when: false
   failed_when: false
 
-- name: "Setting default crush rule to new pools"
-  ansible.builtin.command: >-
-    pveceph pool set {{ item.name }}
-    --size {{ item.size }}
-    --min_size {{ item.min_size }}
-    --crush_rule {{ item.crush_rule }}
-  register: "ceph_default_pool_output"
-  changed_when: (ceph_default_pool_output.rc == 0)
-  failed_when: (ceph_default_pool_output.rc != 0)
-  when:
-    - ansible_hostname == ceph_master_node
-    - (item.name not in pool_status_output.stdout | default('true')) | ternary(true, false)
-  loop: "{{ ceph_default_pools_crush_rule | default([]) }}"
-
 - name: "Creating the Ceph pools"
   ansible.builtin.command: >-
     pveceph pool create {{ item.name }}
     --size {{ item.size }}
     --min_size {{ item.min_size }}
     --crush_rule {{ item.crush_rule }}
-    --pg_autoscale_mode on
-    --add_storages
+    --pg_autoscale_mode {{ item.pg_autoscale_mode }}
+    {{ (item.add_storages) | ternary('--add_storages', '') }}
   register: "ceph_pool_output"
   changed_when: (ceph_pool_output.rc == 0) and ' already defined' not in ceph_pool_output.stderr
   failed_when: (ceph_pool_output.rc != 0) and ' already defined' not in ceph_pool_output.stderr
@@ -179,13 +171,18 @@
     - (item.name not in pool_status_output.stdout | default('true')) | ternary(true, false)
   loop: "{{ ceph_pools | default([]) }}"
 
-- name: "Creating the Ceph file system"
-  ansible.builtin.command: "pveceph fs create --name {{ item.name }} --pg_num {{ item.pg_num }} --add-storage"
-  register: "filesystem_output"
-  changed_when: (filesystem_output.rc == 0)
-  failed_when: (filesystem_output.rc != 0) and ' already exist' not in filesystem_output.stderr
-  loop: "{{ ceph_file_systems }}"
-  when: (ansible_hostname == ceph_master_node) and (ceph_file_systems is defined)
+- name: "Set pg_num for the Ceph pools"
+  ansible.builtin.command: >-
+    ceph osd pool set {{ item.name }} pg_num {{ item.pg_num }}
+  register: "set_pg_num_output"
+  changed_when: set_pg_num_output.rc == 0
+  failed_when: set_pg_num_output.rc != 0
+  when:
+    - ansible_hostname == ceph_master_node
+    - (item.name not in pool_status_output.stdout | default('true')) | ternary(true, false)
+  loop: "{{ ceph_pools | default([]) }}"
+  loop_control:
+    label: "{{ item.name }}"
 
 - name: "Printing variables"
   ansible.builtin.debug:
@@ -204,5 +201,4 @@
       - "crush_output: {{ crush_output }}"
       - "ceph_pool_output: {{ ceph_pool_output }}"
       - "filesystem_output: {{ filesystem_output }}"
-      - "ceph_default_pool_output: {{ ceph_default_pool_output }}"
   tags: "debug"

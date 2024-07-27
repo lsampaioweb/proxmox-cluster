@@ -47,6 +47,40 @@ ansible-playbook proxmox.yml -i "inventory/homelab"
 ### 7. Create the Roles.
   1. Packer.
 
+### 8. Clear / Destroy the CEPH Storage.
+
+```bash
+systemctl stop ceph-mon.target
+systemctl stop ceph-mon@edge-pve-01.service
+systemctl stop ceph-mon@edge-pve-02.service
+systemctl stop ceph-mgr.target
+systemctl stop ceph-mgr@edge-pve-01.service
+systemctl stop ceph-mgr@edge-pve-02.service
+systemctl stop ceph-mds.target
+systemctl stop ceph-mds@edge-pve-01.service
+systemctl stop ceph-mds@edge-pve-02.service
+systemctl stop ceph-osd.target
+systemctl stop ceph-osd@0.service
+systemctl stop ceph-osd@1.service
+systemctl stop ceph.target
+systemctl stop ceph-crash.service
+rm -rf /etc/systemd/system/ceph*
+killall -9 ceph-mon ceph-mgr ceph-mds
+rm -rf /var/lib/ceph/*
+pveceph purge
+apt-get purge ceph-mon ceph-mgr ceph-mds ceph-osd -y
+apt-get purge ceph-base ceph-mgr-modules-core -y
+rm -rf /etc/ceph/* /etc/pve/ceph.conf /etc/pve/priv/ceph.*
+apt-get autoremove -y
+lvremove -y /dev/ceph*
+vgremove -y ceph- <tab>
+pvremove /dev/nvme0n1
+touch '/please-remove-proxmox-ve'
+apt remove -y proxmox-ve
+apt autoremove -y
+apt install -y proxmox-ve
+```
+
 #
 ### Created by:
 

@@ -32,11 +32,9 @@ ceph_crush_rules:
   - {name: "nvme", type: "nvme"}
 
 ceph_pools:
-  - {name: "Ceph_Gold", crush_rule: "nvme", size: 2, min_size: 1}
-
-ceph_default_pools_crush_rule:
-  - {name: "CephFS_data", crush_rule: "nvme", size: 2, min_size: 1}
-  - {name: "CephFS_metadata", crush_rule: "nvme", size: 2, min_size: 1}
+  - {name: "Ceph_Gold", crush_rule: "nvme", size: 2, min_size: 1, pg_autoscale_mode: "on", add_storages: true, pg_num: "32"}
+  - {name: "CephFS_data", crush_rule: "nvme", size: 2, min_size: 1, pg_autoscale_mode: "on", add_storages: false, pg_num: "32"}
+  - {name: "CephFS_metadata", crush_rule: "nvme", size: 2, min_size: 1, pg_autoscale_mode: "on", add_storages: false, pg_num: "32"}
 
 ceph_file_systems:
   - {name: "CephFS", pg_num: "32"}
