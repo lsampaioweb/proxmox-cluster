@@ -62,9 +62,18 @@ iface vmbr2 inet manual
         bridge-vids 4-4094
 #VMs Interface - VLAN[4-4094].
 
+auto vmbr100
+iface vmbr100 inet manual
+        bridge-ports {{ vms_management_nic }}.100
+        bridge-stp off
+        bridge-fd 0
+        bridge-vlan-aware yes
+        bridge-vids 100
+#VM Template - VLAN[100].
+
 auto vmbr101
 iface vmbr101 inet manual
-        bridge-ports vmbr2.101
+        bridge-ports {{ vms_management_nic }}.101
         bridge-stp off
         bridge-fd 0
         bridge-vlan-aware yes
