@@ -2,10 +2,10 @@
 localhost ansible_connection=local
 
 [ControlMachine:vars]
-ansible_python_interpreter=/usr/bin/python3.10
+ansible_python_interpreter=/usr/bin/python3
 
 [hosts]
 edge-pve-[01:02]
 
 [hosts:vars]
-ansible_python_interpreter=/usr/bin/python3.11
+ansible_python_interpreter=/usr/bin/python3
