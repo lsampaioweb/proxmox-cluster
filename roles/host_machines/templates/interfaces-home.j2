@@ -79,3 +79,12 @@ iface vmbr101 inet manual
         bridge-vlan-aware yes
         bridge-vids 101
 #JumpServer - VLAN[101].
+
+auto vmbr
+iface vmbr102 inet manual
+        bridge-ports {{ vms_management_nic }}.102
+        bridge-stp off
+        bridge-fd 0
+        bridge-vlan-aware yes
+        bridge-vids 102
+#Backup - VLAN[102].
