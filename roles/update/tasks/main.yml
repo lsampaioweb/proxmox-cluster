@@ -1,5 +1,5 @@
 ---
-- name: "Updating pachages"
+- name: "Updating packages"
   ansible.builtin.include_tasks: "{{ path_packages_apt }}"
   vars:
     update_cache: true
