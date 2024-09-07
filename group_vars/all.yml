@@ -27,7 +27,7 @@ path_debian_known_hosts_add: "{{ path_debian_known_hosts }}/add.yml"
 # Packages.
 path_debian_packages: "{{ path_tasks_debian }}/packages"
 path_packages_apt: "{{ path_debian_packages }}/apt.yml"
-path_packages_pip: "{{ path_debian_packages }}/pip.yml"
+path_packages_pipx: "{{ path_debian_packages }}/pipx.yml"
 
 # Passwords.
 path_debian_passwords: "{{ path_tasks_debian }}/passwords"

@@ -1,19 +1,30 @@
 ---
 - name: "Installing required packages"
-  ansible.builtin.include_tasks: "{{ path_packages_apt }}"
+  ansible.builtin.import_tasks: "roles/common/tasks/debian/packages/apt.yml"
   vars:
     update_cache: true
     upgrade: "safe"
     packages:
-      - {name: "pip"}
       - {name: "sshpass"}
       - {name: "libsecret-tools"}
       - {name: "python-is-python3"}
+      - {name: "pipx"} # A tool for installing and managing Python packages.
+      - {name: "python3-passlib"} # Required to use bcrypt.
+      - {name: "python3-jmespath"} # Required to use bcrypt.
+  notify: "Refresh ~/.bashrc"
 
-- name: "Installing pip packages"
-  ansible.builtin.include_tasks: "{{ path_packages_pip }}"
+- name: Force all notified handlers to run at this point, not waiting for normal sync points
+  ansible.builtin.meta: "flush_handlers"
+
+- name: "Installing pipx packages"
+  ansible.builtin.include_tasks: "{{ path_packages_pipx }}"
   vars:
     packages:
-      - {name: "passlib"}
-      - {name: "ansible"}
-      - {name: "ansible-lint"}
+      - {name: "ansible", install_deps: true}
+      - {name: "ansible-lint", install_deps: true}
+
+- name: "Injecting passlib in Ansible environment"
+  ansible.builtin.include_tasks: "{{ path_packages_pipx }}"
+  vars:
+    packages:
+      - {state: "inject", inject_packages: "passlib", name: "ansible"}

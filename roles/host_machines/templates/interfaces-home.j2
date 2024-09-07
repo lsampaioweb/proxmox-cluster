@@ -87,4 +87,13 @@ iface vmbr102 inet manual
         bridge-fd 0
         bridge-vlan-aware yes
         bridge-vids 102
-#Backup - VLAN[102].
+#LoadBalancer - VLAN[102].
+
+auto vmbr
+iface vmbr103 inet manual
+        bridge-ports {{ vms_management_nic }}.103
+        bridge-stp off
+        bridge-fd 0
+        bridge-vlan-aware yes
+        bridge-vids 103
+#Backup - VLAN[103].
