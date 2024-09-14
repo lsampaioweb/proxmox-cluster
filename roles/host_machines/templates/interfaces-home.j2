@@ -80,7 +80,7 @@ iface vmbr101 inet manual
         bridge-vids 101
 #JumpServer - VLAN[101].
 
-auto vmbr
+auto vmbr102
 iface vmbr102 inet manual
         bridge-ports {{ vms_management_nic }}.102
         bridge-stp off
@@ -89,7 +89,7 @@ iface vmbr102 inet manual
         bridge-vids 102
 #Backup - VLAN[102].
 
-auto vmbr
+auto vmbr103
 iface vmbr103 inet manual
         bridge-ports {{ vms_management_nic }}.103
         bridge-stp off
