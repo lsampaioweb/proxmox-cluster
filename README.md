@@ -31,6 +31,7 @@ ansible-playbook site.yml -i "inventory/homelab"
 1. [Setup](roles/control_machine/README.md) the control machine to run Ansible scripts.
 1. [Setup](roles/host_machines/README.md) the host machines.
 1. [Setup](roles/proxmox/README.md) Proxmox.
+1. [Update](roles/update/README.md) the nodes.
 
 #
 ### Links:
