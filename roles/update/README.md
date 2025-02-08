@@ -1,19 +1,35 @@
-# Update the Proxmox hosts
+# Update Proxmox Hosts
 
-Run the command in the terminal:
+This playbook updates all **Proxmox hosts**, ensuring they have the latest packages while removing unused ones.
+
+#
+### 1. Run the Update Playbook
+
+The default **inventory file** is `"inventory/home"`, but you can specify a different one if needed.
+
 ```bash
-# The default inventory is "home".
 ansible-playbook update.yml
+```
+
+Specify an inventory file:
+
+```bash
 ansible-playbook update.yml -i "inventory/home"
 ansible-playbook update.yml -i "inventory/homelab"
+```
+
+Run the playbook for **multiple inventories**:
+
+```bash
 ansible-playbook update.yml -i "inventory/home" -i "inventory/homelab"
 ```
 
 #
-### Tasks:
+### 2. Tasks Performed
 
-### 1. Update all the packages and remove unused ones.
-  1. Run the commands update, upgrade and autoremove.
+### System Updates
+- Updates **all installed packages**.
+- Removes **unused dependencies** to free up space.
 
 #
 ### Created by:

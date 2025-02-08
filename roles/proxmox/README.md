@@ -1,67 +1,59 @@
-# Setup Proxmox
+# Setup Proxmox Cluster
 
-Run the command in the terminal:
+This playbook automates the configuration of a **Proxmox cluster**, including **email notifications, cluster creation, network settings, storage management, and resource allocation**.
+
+#
+### 1. Run the Proxmox Playbook
+
+The default **inventory file** is `"inventory/home"`, but you can specify a different one if needed.
+
 ```bash
-# The default inventory is "home".
 ansible-playbook proxmox.yml
+```
+
+Specify an inventory file:
+
+```bash
 ansible-playbook proxmox.yml -i "inventory/home"
 ansible-playbook proxmox.yml -i "inventory/homelab"
 ```
 
-#
-### Tasks:
+### 2. Tasks Performed
 
-### 1. Setup email notification with Postfix.
-  1. Add the SMTP server, user name and password into the sasl_passwd file.
-  1. Add relayhost into the main.cf file.
-  1. Add SASL authentication into the main.cf file.
+### Email Notifications
+- Configures **Postfix** for email alerts.
+- Stores **SMTP credentials** in the `sasl_passwd` file.
+- Updates **relayhost** and **SASL authentication settings** in `main.cf`.
 
-### 2. Remove the no subscription popup.
-  1. Replace the verification with a if (false).
+### Remove No Subscription Popup
+- Disables the **Proxmox subscription warning**.
 
-### 3. Create the cluster and join the nodes into it.
-  1. Create the cluster.
-  1. Add nodes to the cluster.
-  1. Add the fingerprint of each host into the ~/.ssh/known_hosts file:
-  ```bash
-    pve-01.lan.homelab ecdsa-sha2-nistp256 ...
-    pve-02.lan.homelab ecdsa-sha2-nistp256 ...
-    pve-03.lan.homelab ecdsa-sha2-nistp256 ...
-    pve-04.lan.homelab ecdsa-sha2-nistp256 ...
-    pve-05.lan.homelab ecdsa-sha2-nistp256 ...
-    pve-06.lan.homelab ecdsa-sha2-nistp256 ...
-    pve-07.lan.homelab ecdsa-sha2-nistp256 ...
-  ```
+### Cluster Configuration
+- **Creates the Proxmox cluster** and joins additional nodes.
+- Adds **host fingerprints** to `~/.ssh/known_hosts` for secure communication.
 
-### 4. Set the network for all migrations in the cluster.
-  1. Add the ip address that should be used for all migrations into the /etc/pve/datacenter.cfg file.
+### Migration Network Setup
+- Defines **a dedicated network for Proxmox migrations** in `/etc/pve/datacenter.cfg`.
 
-### 5. Format the HDD, SSD and NVME disks.
-  1. Extend the data partition to 100% of the free space.
-  1. Remove partitions from disks.
-  1. Create new partitions, volume groups and logical volumes on the local disks.
+### Storage Management
+- Formats **HDD, SSD, and NVMe disks**:
+  - Extends the **data partition** to 100% of available space.
+  - Removes **old partitions**.
+  - Creates **new partitions, volume groups, and logical volumes**.
 
-### 6. Create the resource pools.
-  1. Template, Staging and Production.
+### Resource Management
+- Creates **resource pools** (`Template`, `Staging`, `Production`).
+- Defines **custom roles** (e.g., `Packer`).
+- Configures **High Availability (HA) groups**.
 
-### 7. Create the Roles.
-  1. Packer.
-
-### 8. Clear / Destroy the CEPH Storage.
+### Ceph Storage Cleanup
+If Ceph is installed and needs to be removed, the following commands **purge Ceph storage**:
 
 ```bash
 systemctl stop ceph-mon.target
-systemctl stop ceph-mon@edge-pve-01.service
-systemctl stop ceph-mon@edge-pve-02.service
 systemctl stop ceph-mgr.target
-systemctl stop ceph-mgr@edge-pve-01.service
-systemctl stop ceph-mgr@edge-pve-02.service
 systemctl stop ceph-mds.target
-systemctl stop ceph-mds@edge-pve-01.service
-systemctl stop ceph-mds@edge-pve-02.service
 systemctl stop ceph-osd.target
-systemctl stop ceph-osd@0.service
-systemctl stop ceph-osd@1.service
 systemctl stop ceph.target
 systemctl stop ceph-crash.service
 rm -rf /etc/systemd/system/ceph*
