@@ -4,3 +4,8 @@
   vars:
     update_cache: true
     upgrade: "safe"
+
+- name: "Removing the no subscription popup"
+  ansible.builtin.import_role:
+    name: "proxmox"
+    tasks_from: "subscription-popup.yml"
