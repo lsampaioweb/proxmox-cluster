@@ -36,7 +36,6 @@
       - {name: "numactl"} # Control NUMA policy for processes or shared memory.
       - {name: "libegl1"} # To enable virtio-gl.
       - {name: "libgl1"} # To enable virtio-gl.
-      - {name: "mesa-utils"} # To check GPU OpenGL support for virtio-gl.
       # New way on Proxmox to install pip applications.
       - {name: "python3-pip"} # To install other python applications.
       - {name: "python3-proxmoxer"} # To enable ansible scripts.
