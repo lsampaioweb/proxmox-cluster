@@ -22,9 +22,4 @@
     packages:
       - {name: "ansible", install_deps: true}
       - {name: "ansible-lint", install_deps: true}
-
-- name: "Injecting passlib in Ansible environment"
-  ansible.builtin.include_tasks: "{{ path_packages_pipx }}"
-  vars:
-    packages:
-      - {state: "inject", inject_packages: "passlib", name: "ansible"}
+      - {name: "ansible", state: "inject", include_injected: true, inject_packages: ["cryptography", "jmespath", "hvac", "certifi", "passlib"]}
