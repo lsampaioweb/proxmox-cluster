@@ -5,15 +5,19 @@ This playbook automates the configuration of a **Proxmox cluster**, including **
 #
 ### 1. Run the Proxmox Playbook
 
+Run all commands from the `ansible/` directory.
+
 The default **inventory file** is `"inventory/home"`, but you can specify a different one if needed.
 
 ```bash
+cd ansible
 ansible-playbook proxmox.yml
 ```
 
 Specify an inventory file:
 
 ```bash
+cd ansible
 ansible-playbook proxmox.yml -i "inventory/home"
 ansible-playbook proxmox.yml -i "inventory/homelab"
 ```

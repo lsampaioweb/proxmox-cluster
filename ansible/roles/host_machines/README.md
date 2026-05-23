@@ -5,15 +5,19 @@ This playbook configures **Proxmox host machines** by setting system settings, i
 #
 ### 1. Run the Host Machines Playbook
 
+Run all commands from the `ansible/` directory.
+
 The default **inventory file** is `"inventory/home"`, but you can specify a different one if needed.
 
 ```bash
+cd ansible
 ansible-playbook host_machines.yml
 ```
 
 Specify an inventory file:
 
 ```bash
+cd ansible
 ansible-playbook host_machines.yml -i "inventory/home"
 ansible-playbook host_machines.yml -i "inventory/homelab"
 ```

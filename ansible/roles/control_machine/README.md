@@ -5,15 +5,19 @@ This playbook configures the **control machine** to run Ansible scripts by setti
 #
 ### 1. Run the Control Machine Playbook
 
+Run all commands from the `ansible/` directory.
+
 The default **inventory file** is `"inventory/home"`, but you can specify a different one if needed.
 
 ```bash
+cd ansible
 ansible-playbook control_machine.yml
 ```
 
 Specify an inventory file:
 
 ```bash
+cd ansible
 ansible-playbook control_machine.yml -i "inventory/home"
 ansible-playbook control_machine.yml -i "inventory/homelab"
 ```

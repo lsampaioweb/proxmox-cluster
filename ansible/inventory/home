@@ -1,0 +1,14 @@
+[ControlMachine]
+localhost
+
+[ControlMachine:vars]
+ansible_connection=local
+# Use the same Python interpreter that's running the Ansible playbook.
+# This automatically uses pipx's Python when Ansible is installed via pipx.
+ansible_python_interpreter={{ ansible_playbook_python }}
+
+[hosts]
+pve-[01:02].lan.home
+
+[hosts:vars]
+domain=lan.home

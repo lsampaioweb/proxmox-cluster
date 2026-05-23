@@ -42,25 +42,29 @@ secret-tool lookup password "proxmox-smtp-password"
 
 ### 2. Run the Proxmox Setup Playbook
 
+Run all commands from the `ansible/` directory.
+
 The default **inventory file** is `"inventory/home"`, but you can specify a different one if needed.
 
 ```bash
+cd ansible
 ansible-playbook site.yml
 ```
 
 Specify an inventory file:
 
 ```bash
+cd ansible
 ansible-playbook site.yml -i "inventory/home"
 ansible-playbook site.yml -i "inventory/homelab"
 ```
 
 ### 3. Roles You Can Execute
 
-1. [Setup](roles/control_machine/README.md) the **control machine** to run Ansible scripts.
-2. [Setup](roles/host_machines/README.md) each **Proxmox machine**.
-3. [Setup](roles/proxmox/README.md) **Proxmox** as a cluster.
-4. [Update](roles/update/README.md) the **Proxmox nodes**.
+1. [Setup](ansible/roles/control_machine/README.md) the **control machine** to run Ansible scripts.
+2. [Setup](ansible/roles/host_machines/README.md) each **Proxmox machine**.
+3. [Setup](ansible/roles/proxmox/README.md) **Proxmox** as a cluster.
+4. [Update](ansible/roles/update/README.md) the **Proxmox nodes**.
 
 ### 4. Additional Resources
 

@@ -5,15 +5,19 @@ This playbook updates all **Proxmox hosts**, ensuring they have the latest packa
 #
 ### 1. Run the Update Playbook
 
+Run all commands from the `ansible/` directory.
+
 The default **inventory file** is `"inventory/home"`, but you can specify a different one if needed.
 
 ```bash
+cd ansible
 ansible-playbook update.yml
 ```
 
 Specify an inventory file:
 
 ```bash
+cd ansible
 ansible-playbook update.yml -i "inventory/home"
 ansible-playbook update.yml -i "inventory/homelab"
 ```
@@ -21,6 +25,7 @@ ansible-playbook update.yml -i "inventory/homelab"
 Run the playbook for **multiple inventories**:
 
 ```bash
+cd ansible
 ansible-playbook update.yml -i "inventory/home" -i "inventory/homelab"
 ```
 
