@@ -11,15 +11,15 @@ The default **inventory file** is `"inventory/home"`, but you can specify a diff
 
 ```bash
 cd ansible
-ansible-playbook control_machine.yml
+ansible-playbook 01-control_machine.yml
 ```
 
 Specify an inventory file:
 
 ```bash
 cd ansible
-ansible-playbook control_machine.yml -i "inventory/home"
-ansible-playbook control_machine.yml -i "inventory/homelab"
+ansible-playbook 01-control_machine.yml -i "inventory/home"
+ansible-playbook 01-control_machine.yml -i "inventory/homelab"
 ```
 
 ### 2. Tasks Performed

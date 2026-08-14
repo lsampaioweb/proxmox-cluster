@@ -1,7 +1,7 @@
 nameserver 127.0.0.53
 options edns0 trust-ad
 {% if domain is defined %}
-search {{ domain }}
+search {{ domain | default('') }}
 {% else %}
 search .
 {% endif %}
