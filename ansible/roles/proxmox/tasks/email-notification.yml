@@ -1,5 +1,6 @@
 ---
 - name: "Adding SMTP server, user name and password into the sasl_passwd file"
+  no_log: "{{ not (debug | default(false)) }}"
   ansible.builtin.template:
     src: "sasl_passwd.j2"
     dest: "/etc/postfix/sasl_passwd"

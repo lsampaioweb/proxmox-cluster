@@ -1,8 +1,13 @@
 ---
 - name: "Creating the roles"
   run_once: true
+  # Use community.proxmox.proxmox_role module instead of pveum command.
   ansible.builtin.command: "pveum roleadd {{ item.name }} -privs '{{ item.privileges }}'"
   register: "create_role"
   changed_when: create_role.rc == 0
-  failed_when: (create_role.rc != 0) and ' already exists' not in create_role.stderr
-  loop: "{{ permissions_roles }}"
+  failed_when:
+    - create_role.rc != 0
+    - "' already exists' not in create_role.stderr"
+  loop: "{{ permissions_roles | default([]) }}"
+  loop_control:
+    label: "{{ item.name }}"

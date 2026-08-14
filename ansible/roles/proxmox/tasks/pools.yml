@@ -1,8 +1,13 @@
 ---
 - name: "Creating the pools"
   run_once: true
+  # Use community.proxmox.proxmox_pool module instead of pveum command.
   ansible.builtin.command: "pveum pool add {{ item.name }} --comment '{{ item.comment }}'"
   register: "create_pool"
   changed_when: create_pool.rc == 0
-  failed_when: (create_pool.rc != 0) and ' already exists' not in create_pool.stderr
-  loop: "{{ resource_pools }}"
+  failed_when:
+    - create_pool.rc != 0
+    - "' already exists' not in create_pool.stderr"
+  loop: "{{ resource_pools | default([]) }}"
+  loop_control:
+    label: "{{ item.name }}"

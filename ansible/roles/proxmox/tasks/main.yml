@@ -1,6 +1,6 @@
 ---
 - name: "Creating the cluster and join the nodes into it"
-  ansible.builtin.import_tasks: "cluster.yml"
+  ansible.builtin.import_tasks: "pve-cluster.yml"
 
 - name: "Removing the no subscription popup"
   ansible.builtin.import_tasks: "subscription-popup.yml"
@@ -15,7 +15,7 @@
   ansible.builtin.import_tasks: "local-storage.yml"
 
 - name: "Preparing Ceph OSDs"
-  ansible.builtin.include_tasks: "shared-storage.yml"
+  ansible.builtin.import_tasks: "shared-storage.yml"
 
 - name: "Creating the pools"
   ansible.builtin.import_tasks: "pools.yml"

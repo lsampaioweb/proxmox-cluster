@@ -1,0 +1,5 @@
+console: html5
+keyboard: pt-br
+email_from: {{ smtp_email | default('') | b64decode }}
+# Use dedicated migration network.
+migration: network={{ migration_network | default('') }},type=secure

@@ -10,18 +10,20 @@
   register: "corosync"
 
 - name: "Creating cluster (only on {{ cluster_master_node }})"
+  when: ansible_hostname == cluster_master_node and not corosync.stat.exists
   run_once: true
+  # Use community.proxmox.proxmox_cluster module instead of pvecm command.
   ansible.builtin.command: "pvecm create {{ cluster_name }} -link0 address={{ cluster_ip }},priority=100 -link1 address={{ storage_ip }},priority=50"
   register: "create_cluster"
   changed_when: create_cluster.rc == 0
   notify: "Waiting 10 seconds"
-  when: ansible_hostname == cluster_master_node and not corosync.stat.exists
 
-- name: Force all notified handlers to run at this point, not waiting for normal sync points
+- name: "Flushing all notified handlers at this point"
   ansible.builtin.meta: "flush_handlers"
 
 - name: "Adding nodes to cluster"
-  throttle: 1
+  when: ansible_hostname != cluster_master_node and not corosync.stat.exists
+  no_log: "{{ not (debug | default(false)) }}"
   ansible.builtin.expect:
     command: >-
       pvecm add {{ cluster_master_node }}
@@ -33,17 +35,16 @@
       "Are you sure": "yes"
     echo: true
   timeout: 30
-  no_log: true
+  throttle: 1
   register: "join_cluster"
   changed_when:
     - "'successfully added node' in join_cluster.stdout"
   failed_when:
     - "'Cluster join aborted' in join_cluster.stdout"
-  when: ansible_hostname != cluster_master_node and not corosync.stat.exists
 
 - name: "Printing variables"
   ansible.builtin.debug:
     msg:
       - "create_cluster: {{ create_cluster | default('') }}"
       - "join_cluster: {{ join_cluster | default('') }}"
-  tags: "debug"
+  tags: ["never", "debug"]

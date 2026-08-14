@@ -4,6 +4,7 @@
     seconds: 10
 
 - name: "Updating Postfix table management"
+  # No native Ansible module exists for postmap.
   ansible.builtin.command: "postmap /etc/postfix/sasl_passwd"
   register: "output"
   changed_when: output.rc == 0
@@ -14,11 +15,13 @@
     state: "restarted"
 
 - name: "Rebuilding Aliases Database"
+  # No native Ansible module exists for newaliases.
   ansible.builtin.command: "newaliases"
   register: "output"
   changed_when: output.rc == 0
 
 - name: "Sending a test email"
+  # Use community.general.mail module instead of shell command piping to mail.
   ansible.builtin.shell: >-
     set -o pipefail && \
     echo "Just testing" | mail -s "Email from {{ inventory_hostname }}" {{ smtp_email | b64decode }}

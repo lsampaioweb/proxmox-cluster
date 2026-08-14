@@ -11,15 +11,15 @@ The default **inventory file** is `"inventory/home"`, but you can specify a diff
 
 ```bash
 cd ansible
-ansible-playbook proxmox.yml
+ansible-playbook 03-proxmox.yml
 ```
 
 Specify an inventory file:
 
 ```bash
 cd ansible
-ansible-playbook proxmox.yml -i "inventory/home"
-ansible-playbook proxmox.yml -i "inventory/homelab"
+ansible-playbook 03-proxmox.yml -i "inventory/home"
+ansible-playbook 03-proxmox.yml -i "inventory/homelab"
 ```
 
 ### 2. Tasks Performed

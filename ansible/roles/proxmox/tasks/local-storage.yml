@@ -7,5 +7,8 @@
     resizefs: true
 
 - name: "Creating new partitions, volume groups and logical volumes on the local disks"
+  # Loop requires runtime re-evaluation of task file per lvm item.
   ansible.builtin.include_tasks: "local-storage-partition.yml"
-  loop: "{{ lvm }}"
+  loop: "{{ lvm | default([]) }}"
+  loop_control:
+    label: "{{ item.name }}"

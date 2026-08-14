@@ -7,7 +7,7 @@
     flags: ["lvm"]
     state: "present"
   register: "parted_output"
-  loop: "{{ item.devices }}"
+  loop: "{{ item.devices | default([]) }}"
   loop_control:
     loop_var: "device"
 
@@ -18,17 +18,18 @@
   args:
     executable: "/usr/bin/bash"
   register: "disk_partitions"
-  loop: "{{ item.devices }}"
+  loop: "{{ item.devices | default([]) }}"
   loop_control:
     loop_var: "device"
-  failed_when: disk_partitions.rc != 0 or disk_partitions.stdout == ''
+  failed_when:
+    - disk_partitions.rc != 0 or disk_partitions.stdout == ''
   changed_when: false
 
 - name: "Concatenating each partition with the '/dev/???' prefix"
   ansible.builtin.set_fact:
     partition_name: "/dev/{{ partition.1 }}"
   register: "partition_list"
-  loop: "{{ disk_partitions.results | subelements('stdout_lines') }}"
+  loop: "{{ disk_partitions.results | default([]) | subelements('stdout_lines') }}"
   loop_control:
     loop_var: "partition"
     label: "{{ partition_name }}"
@@ -54,11 +55,11 @@
   register: "lvol_output"
 
 - name: "Creating an {{ item.filesystem_type }} filesystem on the LVM /dev/mapper/{{ item.volume_group }}-{{ item.logical_volume }}"
+  when: parted_output.changed or lvg_output.changed or lvol_output.changed
   community.general.filesystem:
     fstype: "{{ item.filesystem_type }}"
     dev: "/dev/mapper/{{ item.volume_group }}-{{ item.logical_volume }}"
   register: "filesystem_output"
-  when: parted_output.changed or lvg_output.changed or lvol_output.changed
 
 - name: "Adding a LVM-Thin to the cluster"
   ansible.builtin.shell: >
@@ -68,7 +69,9 @@
     executable: "/usr/bin/bash"
   register: "lvmthin_output"
   changed_when: lvmthin_output.rc == 0
-  failed_when: (lvmthin_output.rc != 0) and ' already defined' not in lvmthin_output.stderr
+  failed_when:
+    - lvmthin_output.rc != 0
+    - "' already defined' not in lvmthin_output.stderr"
 
 - name: "Printing variables"
   ansible.builtin.debug:
@@ -83,4 +86,4 @@
       - "lvol_output: {{ lvol_output }}"
       - "filesystem_output: {{ filesystem_output | default('') }}"
       - "lvmthin_output: {{ lvmthin_output }}"
-  tags: "debug"
+  tags: ["never", "debug"]
