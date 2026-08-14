@@ -59,6 +59,27 @@ ansible-playbook site.yml -i "inventory/home"
 ansible-playbook site.yml -i "inventory/homelab"
 ```
 
+### 2.1 Run Individual Playbooks
+
+You can also run each playbook independently in sequence:
+
+```bash
+cd ansible
+ansible-playbook 01-control_machine.yml -i "inventory/home"
+ansible-playbook 02-host_machines.yml -i "inventory/home"
+ansible-playbook 03-proxmox.yml -i "inventory/home"
+ansible-playbook 04-update.yml -i "inventory/home"
+```
+
+Or run a specific playbook standalone:
+
+```bash
+cd ansible
+ansible-playbook 03-proxmox.yml -i "inventory/home"
+```
+
+**Note:** `site.yml` orchestrates all four playbooks in sequence. Use `site.yml` for full end-to-end setup, or run individual playbooks if you need to re-run a specific configuration step.
+
 ### 3. Roles You Can Execute
 
 1. [Setup](ansible/roles/control_machine/README.md) the **control machine** to run Ansible scripts.
