@@ -1,6 +1,6 @@
 [Match]
-PermanentMACAddress={{ mac_address }}
+PermanentMACAddress={{ mac_address | default('') }}
 Type=ether
 
 [Link]
-Name={{ nic_name }}
+Name={{ nic_name | default('') }}

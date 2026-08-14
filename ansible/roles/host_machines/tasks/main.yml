@@ -1,21 +1,29 @@
 ---
 - name: "Setting up Brazilian timezone"
-  ansible.builtin.import_tasks: "roles/common/tasks/debian/os/timezone.yml"
+  ansible.builtin.import_role:
+    name: "common"
+    tasks_from: "debian/os/timezone"
 
 - name: "Setting up the UTF-8 locale"
-  ansible.builtin.import_tasks: "roles/common/tasks/debian/os/locale.yml"
+  ansible.builtin.import_role:
+    name: "common"
+    tasks_from: "debian/os/locale"
 
 - name: "Installing required packages"
   ansible.builtin.import_tasks: "installing-packages.yml"
 
 - name: "Setting up NTP Servers"
-  ansible.builtin.import_tasks: "roles/common/tasks/debian/os/ntp-servers.yml"
+  ansible.builtin.import_role:
+    name: "common"
+    tasks_from: "debian/os/ntp-servers"
 
 - name: "Creating the Ansible user account"
   ansible.builtin.import_tasks: "users.yml"
 
 - name: "Disabling IPV6 on the server"
-  ansible.builtin.import_tasks: "roles/common/tasks/debian/network/ipv6-disable.yml"
+  ansible.builtin.import_role:
+    name: "common"
+    tasks_from: "debian/network/ipv6-disable"
 
 - name: "Setting up the network interfaces"
   ansible.builtin.import_tasks: "network.yml"
@@ -24,4 +32,6 @@
   ansible.builtin.import_tasks: "removing-packages.yml"
 
 - name: "Checking if a reboot is required"
-  ansible.builtin.import_tasks: "roles/common/tasks/debian/os/reboot-if-required.yml"
+  ansible.builtin.import_role:
+    name: "common"
+    tasks_from: "debian/os/reboot-if-required"

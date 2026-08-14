@@ -13,9 +13,11 @@
   vars:
     mac_address: "{{ item.mac_address }}"
     nic_name: "{{ item.nic_name }}"
-  loop: "{{ mac_bind }}"
+  loop: "{{ mac_bind | default([]) }}"
+  loop_control:
+    label: "{{ item.nic_name }}"
   notify:
-    - "Reboot host"
+    - "Rebooting host"
 
 - name: "Copying the network config file"
   ansible.builtin.template:
@@ -23,8 +25,8 @@
     dest: "/etc/network/interfaces"
     mode: "preserve"
   notify:
-    - "Reload network"
-    - "Wait for the network device to reload"
+    - "Reloading network"
+    - "Waiting for the network device to reload"
 
-- name: "Force all notified handlers to run at this point, not waiting for normal sync points"
+- name: "Flushing all notified handlers at this point"
   ansible.builtin.meta: "flush_handlers"

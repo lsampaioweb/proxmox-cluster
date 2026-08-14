@@ -11,15 +11,15 @@ The default **inventory file** is `"inventory/home"`, but you can specify a diff
 
 ```bash
 cd ansible
-ansible-playbook host_machines.yml
+ansible-playbook 02-host_machines.yml
 ```
 
 Specify an inventory file:
 
 ```bash
 cd ansible
-ansible-playbook host_machines.yml -i "inventory/home"
-ansible-playbook host_machines.yml -i "inventory/homelab"
+ansible-playbook 02-host_machines.yml -i "inventory/home"
+ansible-playbook 02-host_machines.yml -i "inventory/homelab"
 ```
 
 ### 2. Tasks Performed

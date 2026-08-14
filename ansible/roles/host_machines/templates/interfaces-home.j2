@@ -25,7 +25,7 @@ auto enp2lacp3
 iface enp2lacp3 inet manual
 
 iface bond0 inet manual
-        bond-slaves {{ bond0_nic }}
+        bond-slaves {{ bond0_nic | default('') }}
         bond-miimon 100
         bond-mode 802.3ad
         bond-xmit-hash-policy layer2+3
@@ -34,28 +34,28 @@ iface bond0 inet manual
 
 auto vmbr0
 iface vmbr0 inet static
-        address {{ storage_ip_and_netmask }}
-        bridge-ports {{ storage_nic }}
+        address {{ storage_ip_and_netmask | default('') }}
+        bridge-ports {{ storage_nic | default('') }}
         bridge-stp off
         bridge-fd 0
 #Storage Interface.
 
 auto vmbr1
 iface vmbr1 inet manual
-        bridge-ports {{ wan_management_nic }}
+        bridge-ports {{ wan_management_nic | default('') }}
         bridge-stp off
         bridge-fd 0
         bridge-vlan-aware yes
-        bridge-vids {{ wan_management_vlan }}
+        bridge-vids {{ wan_management_vlan | default('') }}
 #Management Interface.
 
-auto vmbr1.{{ wan_management_vlan }}
-iface vmbr1.{{ wan_management_vlan }} inet dhcp
-#Management - VLAN[{{ wan_management_vlan }}].
+auto vmbr1.{{ wan_management_vlan | default('') }}
+iface vmbr1.{{ wan_management_vlan | default('') }} inet dhcp
+#Management - VLAN[{{ wan_management_vlan | default('') }}].
 
 auto vmbr2
 iface vmbr2 inet manual
-        bridge-ports {{ vms_management_nic }}
+        bridge-ports {{ vms_management_nic | default('') }}
         bridge-stp off
         bridge-fd 0
         bridge-vlan-aware yes
@@ -64,7 +64,7 @@ iface vmbr2 inet manual
 
 auto vmbr100
 iface vmbr100 inet manual
-        bridge-ports {{ vms_management_nic }}.100
+        bridge-ports {{ vms_management_nic | default('') }}.100
         bridge-stp off
         bridge-fd 0
         bridge-vlan-aware yes
@@ -73,7 +73,7 @@ iface vmbr100 inet manual
 
 auto vmbr101
 iface vmbr101 inet manual
-        bridge-ports {{ vms_management_nic }}.101
+        bridge-ports {{ vms_management_nic | default('') }}.101
         bridge-stp off
         bridge-fd 0
         bridge-vlan-aware yes
@@ -82,7 +82,7 @@ iface vmbr101 inet manual
 
 auto vmbr102
 iface vmbr102 inet manual
-        bridge-ports {{ vms_management_nic }}.102
+        bridge-ports {{ vms_management_nic | default('') }}.102
         bridge-stp off
         bridge-fd 0
         bridge-vlan-aware yes
@@ -91,7 +91,7 @@ iface vmbr102 inet manual
 
 auto vmbr103
 iface vmbr103 inet manual
-        bridge-ports {{ vms_management_nic }}.103
+        bridge-ports {{ vms_management_nic | default('') }}.103
         bridge-stp off
         bridge-fd 0
         bridge-vlan-aware yes

@@ -1,6 +1,8 @@
 ---
 - name: "Removing dependencies that are no longer required and unnecessary packages from the cache"
-  ansible.builtin.import_tasks: "roles/common/tasks/debian/packages/apt.yml"
+  ansible.builtin.import_role:
+    name: "common"
+    tasks_from: "debian/packages/apt"
   vars:
     autoremove: true
     autoclean: true

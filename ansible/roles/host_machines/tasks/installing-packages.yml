@@ -1,18 +1,27 @@
 ---
 - name: "Removing the pve-enterprise repositories from sources list"
-  ansible.builtin.apt_repository:
-    repo: "{{ item.repo }}"
-    update_cache: false
+  ansible.builtin.lineinfile:
+    path: "{{ item.path }}"
+    regexp: "{{ item.regexp }}"
     state: "absent"
+    create: false
   loop:
-    - {repo: "deb https://enterprise.proxmox.com/debian/ceph-quincy bookworm enterprise"}
-    - {repo: "deb https://enterprise.proxmox.com/debian/pve bookworm pve-enterprise"}
+    - path: "/etc/apt/sources.list.d/ceph.list"
+      regexp: "^deb https://enterprise\\.proxmox\\.com/debian/ceph-quincy bookworm enterprise$"
+    - path: "/etc/apt/sources.list.d/pve-enterprise.list"
+      regexp: "^deb https://enterprise\\.proxmox\\.com/debian/pve bookworm pve-enterprise$"
+  loop_control:
+    label: "{{ item.path }}"
 
 - name: "Adding the pve-no-subscription repository into sources list"
-  ansible.builtin.apt_repository:
-    repo: "deb http://download.proxmox.com/debian/pve bookworm pve-no-subscription"
-    filename: "pve-no-subscription"
+  ansible.builtin.deb822_repository:
+    name: "pve-no-subscription"
     state: "present"
+    uris: "http://download.proxmox.com/debian/pve"
+    suites:
+      - "bookworm"
+    components:
+      - "pve-no-subscription"
 
 - name: "Adding non-free repositories into sources list"
   ansible.builtin.replace:
@@ -21,33 +30,39 @@
     replace: "main contrib non-free non-free-firmware"
 
 - name: "Installing required packages"
-  ansible.builtin.include_tasks: "{{ path_packages_apt }}"
+  ansible.builtin.import_role:
+    name: "common"
+    tasks_from: "debian/packages/apt"
   vars:
     update_cache: true
     upgrade: "safe"
     packages:
-      - {name: "sudo"} # For elevated privileges.
-      - {name: "chrony"} # To enable time synchronization.
-      - {name: "ethtool"} # To enable Wake-on-Lan.
-      - {name: "libsasl2-modules"} # Necessary to Postfix.
-      - {name: "ifupdown2"} # For network config changes without reboot.
-      - {name: "parted"} # To format hard disks (HDD, SSD and NVME).
-      - {name: "qrencode"} # To enable two-factor authentication (2FA).
-      - {name: "numactl"} # Control NUMA policy for processes or shared memory.
-      - {name: "libegl1"} # To enable virtio-gl.
-      - {name: "libgl1"} # To enable virtio-gl.
+      - { name: "sudo" } # For elevated privileges.
+      - { name: "chrony" } # To enable time synchronization.
+      - { name: "ethtool" } # To enable Wake-on-Lan.
+      - { name: "libsasl2-modules" } # Necessary to Postfix.
+      - { name: "ifupdown2" } # For network config changes without reboot.
+      - { name: "parted" } # To format hard disks (HDD, SSD and NVME).
+      - { name: "qrencode" } # To enable two-factor authentication (2FA).
+      - { name: "numactl" } # Control NUMA policy for processes or shared memory.
+      - { name: "libegl1" } # To enable virtio-gl.
+      - { name: "libgl1" } # To enable virtio-gl.
       # New way on Proxmox to install pip applications.
-      - {name: "python3-pip"} # To install other python applications.
-      - {name: "python3-proxmoxer"} # To enable ansible scripts.
-      - {name: "python3-requests"} # To enable ansible scripts.
-      - {name: "python3-pexpect"} # To enable ansible scripts that use the expect module.
+      - { name: "python3-pip" } # To install other python applications.
+      - { name: "python3-proxmoxer" } # To enable ansible scripts.
+      - { name: "python3-requests" } # To enable ansible scripts.
+      - { name: "python3-pexpect" } # To enable ansible scripts that use the expect module.
 
 - name: "Installing the intel-microcode package to fix the CPU bug"
-  ansible.builtin.include_tasks: "{{ path_packages_apt }}"
+  when: ansible_processor is search('Intel')
+  ansible.builtin.include_role:
+    name: "common"
+    tasks_from: "debian/packages/apt"
   vars:
     packages:
-      - {name: "intel-microcode"} # To fix the intel microcode bug.
-  when: ansible_processor is search('Intel')
+      - { name: "intel-microcode" } # To fix the intel microcode bug.
 
 - name: "Checking if a reboot is required"
-  ansible.builtin.import_tasks: "roles/common/tasks/debian/os/reboot-if-required.yml"
+  ansible.builtin.import_role:
+    name: "common"
+    tasks_from: "debian/os/reboot-if-required"
