@@ -6,10 +6,10 @@
     label: "gpt"
     flags: ["lvm"]
     state: "present"
-  register: "parted_output"
   loop: "{{ item.devices | default([]) }}"
   loop_control:
     loop_var: "device"
+  register: "parted_output"
 
 - name: "Getting the name of the primary partition of the disk"
   ansible.builtin.shell: >
@@ -17,22 +17,22 @@
     lsblk -nr {{ device }} | grep part | cut -d' ' -f1
   args:
     executable: "/usr/bin/bash"
-  register: "disk_partitions"
   loop: "{{ item.devices | default([]) }}"
   loop_control:
     loop_var: "device"
+  register: "disk_partitions"
+  changed_when: false
   failed_when:
     - disk_partitions.rc != 0 or disk_partitions.stdout == ''
-  changed_when: false
 
 - name: "Concatenating each partition with the '/dev/???' prefix"
   ansible.builtin.set_fact:
     partition_name: "/dev/{{ partition.1 }}"
-  register: "partition_list"
   loop: "{{ disk_partitions.results | default([]) | subelements('stdout_lines') }}"
   loop_control:
     loop_var: "partition"
     label: "{{ partition_name }}"
+  register: "partition_list"
 
 - name: "Converting the array to a string so it can be used to create volume groups"
   ansible.builtin.set_fact:
