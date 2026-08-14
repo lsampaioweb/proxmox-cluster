@@ -1,6 +1,8 @@
 ---
 - name: "Updating packages"
-  ansible.builtin.include_tasks: "{{ path_packages_apt }}"
+  ansible.builtin.import_role:
+    name: "common"
+    tasks_from: "debian/packages/apt"
   vars:
     update_cache: true
     upgrade: "safe"

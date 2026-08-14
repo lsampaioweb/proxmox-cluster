@@ -11,22 +11,22 @@ The default **inventory file** is `"inventory/home"`, but you can specify a diff
 
 ```bash
 cd ansible
-ansible-playbook update.yml
+ansible-playbook 04-update.yml
 ```
 
 Specify an inventory file:
 
 ```bash
 cd ansible
-ansible-playbook update.yml -i "inventory/home"
-ansible-playbook update.yml -i "inventory/homelab"
+ansible-playbook 04-update.yml -i "inventory/home"
+ansible-playbook 04-update.yml -i "inventory/homelab"
 ```
 
 Run the playbook for **multiple inventories**:
 
 ```bash
 cd ansible
-ansible-playbook update.yml -i "inventory/home" -i "inventory/homelab"
+ansible-playbook 04-update.yml -i "inventory/home" -i "inventory/homelab"
 ```
 
 #
