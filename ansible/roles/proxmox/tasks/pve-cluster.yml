@@ -12,7 +12,7 @@
 - name: "Creating cluster (only on {{ cluster_master_node }})"
   when: ansible_hostname == cluster_master_node and not corosync.stat.exists
   run_once: true
-  # Use community.proxmox.proxmox_cluster module instead of pvecm command.
+  # community.proxmox.proxmox_cluster not yet installed; deferring to pvecm command.
   ansible.builtin.command: "pvecm create {{ cluster_name }} -link0 address={{ cluster_ip }},priority=100 -link1 address={{ storage_ip }},priority=50"
   register: "create_cluster"
   changed_when: create_cluster.rc == 0

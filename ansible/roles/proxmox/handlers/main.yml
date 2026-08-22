@@ -6,8 +6,8 @@
 - name: "Updating Postfix table management"
   # No native Ansible module exists for postmap.
   ansible.builtin.command: "postmap /etc/postfix/sasl_passwd"
-  register: "output"
-  changed_when: output.rc == 0
+  register: "postmap_output"
+  changed_when: postmap_output.rc == 0
 
 - name: "Restarting Postfix"
   ansible.builtin.service:
@@ -17,18 +17,21 @@
 - name: "Rebuilding Aliases Database"
   # No native Ansible module exists for newaliases.
   ansible.builtin.command: "newaliases"
-  register: "output"
-  changed_when: output.rc == 0
+  register: "newaliases_output"
+  changed_when: newaliases_output.rc == 0
 
 - name: "Sending a test email"
-  # Use community.general.mail module instead of shell command piping to mail.
-  ansible.builtin.shell: >-
-    set -o pipefail && \
-    echo "Just testing" | mail -s "Email from {{ inventory_hostname }}" {{ smtp_email | b64decode }}
-  args:
-    executable: "/usr/bin/bash"
-  register: "output"
-  changed_when: output.rc == 0
+  no_log: "{{ not (debug | default(false)) }}"
+  community.general.mail:
+    host: "{{ smtp_server }}"
+    port: "{{ smtp_port }}"
+    secure: "starttls"
+    username: "{{ smtp_email | b64decode }}"
+    password: "{{ smtp_password }}"
+    from: "{{ smtp_email | b64decode }}"
+    to: "{{ smtp_email | b64decode }}"
+    subject: "Email from {{ inventory_hostname }}"
+    body: "Just testing"
 
 - name: "Restarting PVEProxy"
   ansible.builtin.service:

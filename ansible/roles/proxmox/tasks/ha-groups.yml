@@ -1,7 +1,7 @@
 ---
 - name: "Creating the HA groups"
   run_once: true
-  # Use community.proxmox.proxmox_cluster_ha_groups module instead of ha-manager command.
+  # community.proxmox.proxmox_cluster_ha_groups not yet installed; deferring to ha-manager command.
   ansible.builtin.command: "ha-manager groupadd '{{ item.name }}' --nodes '{{ item.nodes }}' --comment '{{ item.comment }}'"
   register: "create_ha_groups"
   changed_when: create_ha_groups.rc == 0

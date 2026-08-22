@@ -1,7 +1,7 @@
 ---
 - name: "Creating the pools"
   run_once: true
-  # Use community.proxmox.proxmox_pool module instead of pveum command.
+  # community.proxmox.proxmox_pool not yet installed; deferring to pveum command.
   ansible.builtin.command: "pveum pool add {{ item.name }} --comment '{{ item.comment }}'"
   register: "create_pool"
   changed_when: create_pool.rc == 0

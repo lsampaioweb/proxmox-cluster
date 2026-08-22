@@ -12,6 +12,7 @@
   register: "parted_output"
 
 - name: "Getting the name of the primary partition of the disk"
+  # No native Ansible module exists for lsblk.
   ansible.builtin.shell: >
     set -o pipefail && \
     lsblk -nr {{ device }} | grep part | cut -d' ' -f1
@@ -62,6 +63,7 @@
   register: "filesystem_output"
 
 - name: "Adding a LVM-Thin to the cluster"
+  # No native Ansible module exists for pvesm.
   ansible.builtin.shell: >
     set -o pipefail && \
     pvesm add lvmthin {{ item.name }} --vgname {{ item.volume_group }} --thinpool {{ item.logical_volume }} --nodes {{ ansible_hostname }}

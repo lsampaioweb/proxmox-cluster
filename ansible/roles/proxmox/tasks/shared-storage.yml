@@ -29,16 +29,18 @@
       - { name: "ceph" }
 
 - name: "Checking Ceph status"
-  run_once: true
+  # No native Ansible module exists for pveceph.
   delegate_to: "{{ ceph_master_node }}"
+  run_once: true
   ansible.builtin.command: "pveceph status"
   register: "status_output"
   changed_when: false
   failed_when: false
 
 - name: "Checking Metadata Server (MDS)"
-  run_once: true
+  # No native Ansible module exists for reading ceph.conf.
   delegate_to: "{{ ceph_master_node }}"
+  run_once: true
   ansible.builtin.shell: >-
     set -o pipefail && \
     cat /etc/pve/ceph.conf | grep 'mds\.'
@@ -57,16 +59,17 @@
 
 - name: "Initializing Ceph"
   when: should_setup_ceph
-  run_once: true
+  # No native Ansible module exists for pveceph.
   delegate_to: "{{ ceph_master_node }}"
+  run_once: true
   ansible.builtin.command: "pveceph init --network {{ storage_ip_and_netmask }}"
   register: "init_output"
   changed_when: init_output.rc == 0
   failed_when: (init_output.rc != 0)
 
 - name: "Setting Ceph configuration for default size"
-  run_once: true
   delegate_to: "{{ ceph_master_node }}"
+  run_once: true
   ansible.builtin.lineinfile:
     path: "/etc/ceph/ceph.conf"
     regexp: "{{ item.regexp }}"
@@ -82,6 +85,7 @@
 
 - name: "Creating the monitor"
   when: should_create_mon
+  # No native Ansible module exists for pveceph.
   ansible.builtin.command: "pveceph mon create"
   throttle: 1
   register: "monitor_output"
@@ -92,6 +96,7 @@
 
 - name: "Creating the manager"
   when: should_create_mgr
+  # No native Ansible module exists for pveceph.
   ansible.builtin.command: "pveceph mgr create"
   throttle: 1
   register: "manager_output"
@@ -102,6 +107,7 @@
 
 - name: "Creating the Metadata Server (MDS)"
   when: should_create_mds
+  # No native Ansible module exists for pveceph.
   ansible.builtin.command: "pveceph mds create"
   throttle: 1
   register: "mds_output"
@@ -111,6 +117,7 @@
     - "' already referenced in ceph config' not in mds_output.stderr"
 
 - name: "Checking if the OSDs already exists"
+  # No native Ansible module exists for ceph-volume.
   ansible.builtin.shell: >-
     set -o pipefail && \
     ceph-volume lvm list | grep {{ item.name }}
@@ -125,6 +132,7 @@
 
 - name: "Creating the OSD disks"
   when: "(item.name not in (osd_status_output.results | map(attribute='stdout')) | join(','))"
+  # No native Ansible module exists for pveceph osd create.
   ansible.builtin.command: >-
     pveceph osd create {{ item.name }}
     --crush-device-class {{ item.type }}
@@ -140,8 +148,9 @@
     - "' already in use' not in osd_output.stderr"
 
 - name: "Checking if the CRUSH rules already exists"
-  run_once: true
+  # No native Ansible module exists for ceph osd crush rule ls.
   delegate_to: "{{ ceph_master_node }}"
+  run_once: true
   ansible.builtin.shell: >-
     set -o pipefail && \
     ceph osd crush rule ls
@@ -155,6 +164,7 @@
   when:
     - ansible_hostname == ceph_master_node
     - (item.name not in crush_status_output.stdout | default('true')) | ternary(true, false)
+  # No native Ansible module exists for ceph osd crush rule create-replicated.
   ansible.builtin.command: "ceph osd crush rule create-replicated {{ item.name }} default host {{ item.type }}"
   register: "crush_output"
   changed_when: (crush_output.rc == 0) and ' already exists' not in crush_output.stderr
@@ -179,8 +189,9 @@
     label: "{{ item.name }}"
 
 - name: "Checking if the pool already exists"
-  run_once: true
+  # No native Ansible module exists for ceph osd pool ls.
   delegate_to: "{{ ceph_master_node }}"
+  run_once: true
   ansible.builtin.shell: >-
     set -o pipefail && \
     ceph osd pool ls
@@ -194,6 +205,7 @@
   when:
     - ansible_hostname == ceph_master_node
     - (item.name not in pool_status_output.stdout | default('true')) | ternary(true, false)
+  # No native Ansible module exists for pveceph pool create.
   ansible.builtin.command: >-
     pveceph pool create {{ item.name }}
     --size {{ item.size }}
@@ -214,6 +226,7 @@
   when:
     - ansible_hostname == ceph_master_node
     - (item.name not in pool_status_output.stdout | default('true')) | ternary(true, false)
+  # No native Ansible module exists for ceph osd pool set.
   ansible.builtin.command: >-
     ceph osd pool set {{ item.name }} pg_num {{ item.pg_num }}
   register: "set_pg_num_output"

@@ -1,7 +1,7 @@
 ---
 - name: "Creating the roles"
   run_once: true
-  # Use community.proxmox.proxmox_role module instead of pveum command.
+  # community.proxmox.proxmox_role not yet installed; deferring to pveum command.
   ansible.builtin.command: "pveum roleadd {{ item.name }} -privs '{{ item.privileges }}'"
   register: "create_role"
   changed_when: create_role.rc == 0
