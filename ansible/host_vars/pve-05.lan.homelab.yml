@@ -1,12 +1,19 @@
 ---
 mac_bind:
-  - {mac_address: "00:e0:4c:56:a1:3d", nic_name: "enp1board0"}
-  - {mac_address: "88:c9:b3:c0:18:99", nic_name: "enp2lacp0"}
-  - {mac_address: "88:c9:b3:c0:18:9a", nic_name: "enp2lacp1"}
-  - {mac_address: "88:c9:b3:c0:18:9b", nic_name: "enp2lacp2"}
-  - {mac_address: "88:c9:b3:c0:18:9c", nic_name: "enp2lacp3"}
-  - {mac_address: "a0:36:9f:40:3d:58", nic_name: "enp3sync0"}
-  - {mac_address: "a0:36:9f:40:3d:5a", nic_name: "enp3sync1"}
+  - mac_address: "00:e0:4c:56:a1:3d"
+    nic_name: "enp1board0"
+  - mac_address: "88:c9:b3:c0:18:99"
+    nic_name: "enp2lacp0"
+  - mac_address: "88:c9:b3:c0:18:9a"
+    nic_name: "enp2lacp1"
+  - mac_address: "88:c9:b3:c0:18:9b"
+    nic_name: "enp2lacp2"
+  - mac_address: "88:c9:b3:c0:18:9c"
+    nic_name: "enp2lacp3"
+  - mac_address: "a0:36:9f:40:3d:58"
+    nic_name: "enp3sync0"
+  - mac_address: "a0:36:9f:40:3d:5a"
+    nic_name: "enp3sync1"
 
 bond0_nic: "enp2lacp0 enp2lacp1 enp2lacp2 enp2lacp3"
 wan_management_nic: "bond0"
@@ -27,10 +34,17 @@ lvm: []
 is_ceph_server: true
 
 ceph_devices:
-  - {name: "/dev/nvme0n1", type: "nvme"}
-  - {name: "/dev/nvme1n1", type: "nvme"}
-  - {name: "/dev/nvme2n1", type: "nvme"}
-  - {name: "/dev/nvme3n1", type: "nvme"}
-  - {name: "/dev/sdb", type: "ssd"}
-  - {name: "/dev/sdc", type: "ssd"}
-  - {name: "/dev/sdd", type: "hdd"}
+  - name: "/dev/nvme0n1"
+    type: "nvme"
+  - name: "/dev/nvme1n1"
+    type: "nvme"
+  - name: "/dev/nvme2n1"
+    type: "nvme"
+  - name: "/dev/nvme3n1"
+    type: "nvme"
+  - name: "/dev/sdb"
+    type: "ssd"
+  - name: "/dev/sdc"
+    type: "ssd"
+  - name: "/dev/sdd"
+    type: "hdd"

@@ -1,12 +1,19 @@
 ---
 mac_bind:
-  - {mac_address: "00:e0:4c:49:fb:b7", nic_name: "enp1board0"}
-  - {mac_address: "00:e0:4c:68:03:b3", nic_name: "enp2lacp0"}
-  - {mac_address: "50:e5:49:ac:39:a4", nic_name: "enp2lacp1"}
-  - {mac_address: "00:00:00:00:00:05", nic_name: "enp2lacp2"}
-  - {mac_address: "94:de:80:8e:ef:45", nic_name: "enp2lacp3"}
-  - {mac_address: "a0:36:9f:40:3d:60", nic_name: "enp3sync0"}
-  - {mac_address: "a0:36:9f:40:3d:62", nic_name: "enp3sync1"}
+  - mac_address: "00:e0:4c:49:fb:b7"
+    nic_name: "enp1board0"
+  - mac_address: "00:e0:4c:68:03:b3"
+    nic_name: "enp2lacp0"
+  - mac_address: "50:e5:49:ac:39:a4"
+    nic_name: "enp2lacp1"
+  - mac_address: "00:00:00:00:00:05"
+    nic_name: "enp2lacp2"
+  - mac_address: "94:de:80:8e:ef:45"
+    nic_name: "enp2lacp3"
+  - mac_address: "a0:36:9f:40:3d:60"
+    nic_name: "enp3sync0"
+  - mac_address: "a0:36:9f:40:3d:62"
+    nic_name: "enp3sync1"
 
 bond0_nic: "enp2lacp0 enp2lacp1 enp2lacp2 enp2lacp3"
 wan_management_nic: "bond0"
@@ -28,30 +35,52 @@ ceph_master_node: "{{ ansible_hostname }}"
 is_ceph_server: true
 
 ceph_devices:
-  - {name: "/dev/nvme0n1", type: "nvme"}
-  - {name: "/dev/nvme1n1", type: "nvme"}
-  - {name: "/dev/nvme2n1", type: "nvme"}
-  - {name: "/dev/nvme3n1", type: "nvme"}
-  - {name: "/dev/sdb", type: "ssd"}
-  - {name: "/dev/sdc", type: "ssd"}
-  - {name: "/dev/sdd", type: "hdd"}
+  - name: "/dev/nvme0n1"
+    type: "nvme"
+  - name: "/dev/nvme1n1"
+    type: "nvme"
+  - name: "/dev/nvme2n1"
+    type: "nvme"
+  - name: "/dev/nvme3n1"
+    type: "nvme"
+  - name: "/dev/sdb"
+    type: "ssd"
+  - name: "/dev/sdc"
+    type: "ssd"
+  - name: "/dev/sdd"
+    type: "hdd"
 
 ceph_crush_rules:
-  - {name: "nvme", type: "nvme"}
-  - {name: "ssd", type: "ssd"}
-  - {name: "hdd", type: "hdd"}
+  - name: "nvme"
+    type: "nvme"
+  - name: "ssd"
+    type: "ssd"
+  - name: "hdd"
+    type: "hdd"
 
 ceph_pools:
-  - {name: "Ceph_Gold", crush_rule: "nvme", size: 2, min_size: 1}
-  - {name: "Ceph_Silver", crush_rule: "ssd", size: 2, min_size: 1}
+  - name: "Ceph_Gold"
+    crush_rule: "nvme"
+    size: 2
+    min_size: 1
+  - name: "Ceph_Silver"
+    crush_rule: "ssd"
+    size: 2
+    min_size: 1
 
 ceph_default_pools_crush_rule:
-  - {name: ".mgr", crush_rule: "hdd"}
-  - {name: "CephFS_Bronze_data", crush_rule: "hdd"}
-  - {name: "CephFS_Bronze_metadata", crush_rule: "hdd"}
+  - name: ".mgr"
+    crush_rule: "hdd"
+  - name: "CephFS_Bronze_data"
+    crush_rule: "hdd"
+  - name: "CephFS_Bronze_metadata"
+    crush_rule: "hdd"
 
 ceph_file_systems:
-  - {name: "CephFS_Bronze", pg_num: "128"}
+  - name: "CephFS_Bronze"
+    pg_num: "128"
 
 ha_groups:
-  - {name: "default", nodes: "pve-01,pve-02,pve-03,pve-04,pve-05,pve-06,pve-07", comment: "The default HA group, all Proxmox hosts can run the VM."}
+  - name: "default"
+    nodes: "pve-01,pve-02,pve-03,pve-04,pve-05,pve-06,pve-07"
+    comment: "The default HA group, all Proxmox hosts can run the VM."
