@@ -1,5 +1,7 @@
 ---
 galaxy_info:
+  role_name: proxmox
+  namespace: local-proxmox
   company: thecodemaster.net
   author: Luciano Sampaio
   description: Setup the proxmox application.
