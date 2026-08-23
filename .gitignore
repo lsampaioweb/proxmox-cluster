@@ -4,6 +4,5 @@
 .AppleDouble
 .LSOverride
 
-.ansible
-.vscode
-.github
+.ansible/
+.vscode/
