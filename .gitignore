@@ -6,3 +6,6 @@
 
 .ansible/
 .vscode/
+
+# The AI custom files should be ignored.
+.github/
