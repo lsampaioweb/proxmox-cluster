@@ -1,7 +1,7 @@
 ---
 galaxy_info:
   role_name: host_machines
-  namespace: local-proxmox
+  namespace: lsampaioweb
   company: thecodemaster.net
   author: Luciano Sampaio
   description: Setup the proxmox host machine.
