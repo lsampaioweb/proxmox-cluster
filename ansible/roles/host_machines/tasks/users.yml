@@ -1,5 +1,5 @@
 ---
-- name: "Trying to retrieve the password in order to verify if already exists - '{{ ansible_password_id }}'"
+- name: "Trying to retrieve the password in order to verify if already exists"
   no_log: "{{ not (debug | default(false)) }}"
   delegate_to: "{{ control_machine_host | default(groups['ControlMachine'][0]) }}"
   run_once: true
