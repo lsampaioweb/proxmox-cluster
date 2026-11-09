@@ -12,3 +12,4 @@ pve-[01:07].lan.homelab
 
 [hosts:vars]
 domain=lan.homelab
+ansible_python_interpreter=/usr/bin/python3
