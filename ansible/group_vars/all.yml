@@ -1,9 +1,6 @@
 ---
 # Specify if more messages should be displayed during the executions.
-debug: true
-
-# The domain name of the HomeLab.
-# domain: "lan.homelab"
+debug: false
 
 # The id that will be used to retrieve the proxmox's root password saved in the Secret Manager. It will be the same for all hosts.
 proxmox_root_password_id: "proxmox-root-password"
