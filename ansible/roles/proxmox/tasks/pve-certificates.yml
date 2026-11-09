@@ -1,0 +1,88 @@
+---
+- name: "Creating certificate path variables"
+  ansible.builtin.set_fact:
+    certificate_source_path: "{{ certificate_base_path }}/pve.{{ domain }}.crt"
+    key_source_path: "{{ certificate_base_path }}/pve.{{ domain }}.key"
+    installed_certificate_path: "{{ local_certificate_path }}/{{ temp_certificate_name }}"
+    installed_key_path: "{{ local_certificate_path }}/{{ temp_key_name }}"
+    certificate_name: "{{ temp_certificate_name }}"
+    key_name: "{{ temp_key_name }}"
+  vars:
+    certificate_base_path: "{{ role_path }}/files/certificates/{{ domain }}"
+    local_certificate_path: "/etc/pve/local"
+    temp_certificate_name: "pveproxy-ssl.pem"
+    temp_key_name: "pveproxy-ssl.key"
+
+- name: "Checking the source certificate"
+  delegate_to: "localhost"
+  become: false
+  ansible.builtin.stat:
+    path: "{{ certificate_source_path }}"
+  register: "source_certificate"
+
+- name: "Checking the source private key"
+  no_log: true
+  delegate_to: "localhost"
+  become: false
+  ansible.builtin.stat:
+    path: "{{ key_source_path }}"
+  register: "source_key"
+
+- name: "Checking the installed certificate"
+  ansible.builtin.stat:
+    path: "{{ installed_certificate_path }}"
+  register: "installed_certificate"
+
+- name: "Checking the installed private key"
+  no_log: true
+  ansible.builtin.stat:
+    path: "{{ installed_key_path }}"
+  register: "installed_key"
+
+- name: "Installing the certificate when either file changes"
+  when: >-
+    not installed_certificate.stat.exists
+    or installed_certificate.stat.checksum != source_certificate.stat.checksum
+    or not installed_key.stat.exists
+    or installed_key.stat.checksum != source_key.stat.checksum
+  block:
+    - name: "Creating a private temporary directory for certificate files"
+      ansible.builtin.tempfile:
+        state: "directory"
+        path: "/run"
+        prefix: "pve-certificate-"
+      register: "certificate"
+
+    - name: "Copying the certificate chain"
+      ansible.builtin.copy:
+        src: "{{ certificate_source_path }}"
+        dest: "{{ certificate.path }}/{{ certificate_name }}"
+        mode: "0644"
+
+    - name: "Copying the private key"
+      no_log: true
+      ansible.builtin.copy:
+        src: "{{ key_source_path }}"
+        dest: "{{ certificate.path }}/{{ key_name }}"
+        mode: "0600"
+
+    - name: "Installing the certificate and restarting PVEProxy"
+      no_log: true
+      throttle: 1
+      ansible.builtin.command:
+        argv:
+          - "pvenode"
+          - "cert"
+          - "set"
+          - "{{ certificate.path }}/{{ certificate_name }}"
+          - "{{ certificate.path }}/{{ key_name }}"
+          - "--force"
+          - "--restart"
+      changed_when: true
+
+  always:
+    - name: "Removing temporary certificate files"
+      when: certificate.path is defined
+      ansible.builtin.file:
+        path: "{{ certificate.path }}"
+        state: "absent"

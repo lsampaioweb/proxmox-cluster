@@ -76,9 +76,10 @@ Or run a specific playbook standalone:
 ```bash
 cd ansible
 ansible-playbook 03-proxmox.yml -i "inventory/home"
+ansible-playbook 05-proxmox-certificates.yml -i "inventory/home"
 ```
 
-**Note:** `site.yml` orchestrates all four playbooks in sequence. Use `site.yml` for full end-to-end setup, or run individual playbooks if you need to re-run a specific configuration step.
+**Note:** `03-proxmox.yml` installs the certificate after cluster setup. Run `05-proxmox-certificates.yml` to deploy a renewed certificate. `site.yml` orchestrates the four setup and update playbooks in sequence.
 
 ### 3. Roles You Can Execute
 

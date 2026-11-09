@@ -1,0 +1,10 @@
+---
+- name: "Deploying the Proxmox certificate"
+  hosts: "hosts"
+  become: true
+
+  tasks:
+    - name: "Installing the cluster WebUI certificate"
+      ansible.builtin.import_role:
+        name: "proxmox"
+        tasks_from: "pve-certificates.yml"

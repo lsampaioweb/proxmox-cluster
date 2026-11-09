@@ -9,3 +9,7 @@
 
 # The AI custom files should be ignored.
 .github/
+
+# Proxmox custom certificate and private key for the Home cluster.
+*.crt
+*.key

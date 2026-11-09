@@ -2,6 +2,9 @@
 - name: "Creating the cluster and join the nodes into it"
   ansible.builtin.import_tasks: "pve-cluster.yml"
 
+- name: "Installing the cluster WebUI certificate"
+  ansible.builtin.import_tasks: "pve-certificates.yml"
+
 - name: "Removing the no subscription popup"
   ansible.builtin.import_tasks: "subscription-popup.yml"
 

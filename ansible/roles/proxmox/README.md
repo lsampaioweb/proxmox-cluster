@@ -36,6 +36,16 @@ ansible-playbook 03-proxmox.yml -i "inventory/homelab"
 - **Creates the Proxmox cluster** and joins additional nodes.
 - Adds **host fingerprints** to `~/.ssh/known_hosts` for secure communication.
 
+### WebUI Certificate
+- Store each inventory domain's `pve.<domain>.crt` and matching unencrypted `pve.<domain>.key` under `roles/proxmox/files/certificates/<domain>/`.
+- The certificate is installed on each node after cluster setup. Re-run `05-proxmox-certificates.yml` with the selected inventory after renewing it.
+
+```bash
+cd ansible
+ansible-playbook 05-proxmox-certificates.yml -i inventory/home
+ansible-playbook 05-proxmox-certificates.yml -i inventory/homelab
+```
+
 ### Migration Network Setup
 - Defines **a dedicated network for Proxmox migrations** in `/etc/pve/datacenter.cfg`.
 
