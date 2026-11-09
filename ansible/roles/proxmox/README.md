@@ -45,10 +45,14 @@ ansible-playbook 03-proxmox.yml -i "inventory/homelab"
   - Removes **old partitions**.
   - Creates **new partitions, volume groups, and logical volumes**.
 
+### Ceph Storage
+- Adds the **Ceph Tentacle no-subscription repository** for the host's Debian release, signed with the Proxmox archive keyring.
+- Initializes Ceph on the configured **cluster network** and configures storage from the declared Ceph variables.
+
 ### Resource Management
 - Creates **resource pools** (`Template`, `Staging`, `Production`).
 - Defines **custom roles** (e.g., `Packer`).
-- Configures **High Availability (HA) groups**.
+- HA resource and affinity rule configuration is deferred until VM/CT IDs and placement requirements are defined.
 
 ### Ceph Storage Cleanup
 If Ceph is installed and needs to be removed, the following commands **purge Ceph storage**:

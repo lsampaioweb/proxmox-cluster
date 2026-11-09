@@ -23,5 +23,7 @@
 - name: "Creating the roles"
   ansible.builtin.import_tasks: "roles.yml"
 
-- name: "Creating the HA groups"
-  ansible.builtin.import_tasks: "ha-groups.yml"
+# TODO: Configure HA resources and affinity rules after VM/CT IDs are defined.
+# PVE 9 no longer supports the legacy HA group creation command.
+# - name: "Creating the HA groups"
+#   ansible.builtin.import_tasks: "ha-groups.yml"

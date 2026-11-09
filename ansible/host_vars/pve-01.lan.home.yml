@@ -27,7 +27,7 @@ migration_network: "172.16.11.0/28"
 lvm: []
 
 is_ceph_server: true
-ceph_master_node: "{{ ansible_hostname }}"
+ceph_master_node: "{{ inventory_hostname }}"
 
 ceph_devices:
   - name: "/dev/nvme0n1"
@@ -64,7 +64,8 @@ ceph_file_systems:
   - name: "CephFS"
     pg_num: "32"
 
-ha_groups:
-  - name: "default"
-    nodes: "pve-01,pve-02"
-    comment: "The default HA group, all Proxmox hosts can run the VM."
+# TODO: Replace this legacy all-node group with HA resources and affinity rules once guests are defined.
+# ha_groups:
+#   - name: "default"
+#     nodes: "pve-01,pve-02"
+#     comment: "The default HA group, all Proxmox hosts can run the VM."

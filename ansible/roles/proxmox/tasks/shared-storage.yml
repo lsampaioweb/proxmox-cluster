@@ -3,28 +3,24 @@
   ansible.builtin.set_fact:
     ceph_master_node: "{{ ceph_master_node | default(groups['hosts'][0]) }}"
 
-- name: "Removing the enterprise ceph repository from sources list"
-  ansible.builtin.lineinfile:
-    path: "/etc/apt/sources.list.d/ceph.list"
-    regexp: "^deb https://enterprise\\.proxmox\\.com/debian/ceph-reef bookworm enterprise$"
-    state: "absent"
-    create: false
-
 - name: "Adding the ceph repository into sources list"
   ansible.builtin.deb822_repository:
-    name: "ceph"
+    name: "ceph-no-subscription"
     state: "present"
-    uris: "http://download.proxmox.com/debian/ceph-reef"
+    uris: "http://download.proxmox.com/debian/ceph-tentacle"
     suites:
-      - "bookworm"
+      - "{{ ansible_facts['distribution_release'] }}"
     components:
       - "no-subscription"
+    signed_by: "/usr/share/keyrings/proxmox-archive-keyring.gpg"
+    mode: "0644"
 
 - name: "Installing the ceph packages"
   ansible.builtin.import_role:
     name: "common"
     tasks_from: "debian/packages/apt"
   vars:
+    update_cache: true
     packages:
       - { name: "ceph" }
 
@@ -53,16 +49,16 @@
 - name: "Setting Ceph setup flags"
   ansible.builtin.set_fact:
     should_setup_ceph: "{{ ('not initialized' in status_output.stderr) | ternary(true, false) }}"
-    should_create_mon: "{{ (is_ceph_server and (ansible_hostname not in status_output.stdout_lines[5] | default('true'))) | ternary(true, false) }}"
-    should_create_mgr: "{{ (is_ceph_server and (ansible_hostname not in status_output.stdout_lines[6] | default('true'))) | ternary(true, false) }}"
-    should_create_mds: "{{ (is_ceph_server and (ansible_hostname not in mds_status_output.stdout | default('true'))) | ternary(true, false) }}"
+    should_create_mon: "{{ (is_ceph_server and (ansible_facts['hostname'] not in status_output.stdout_lines[5] | default('true'))) | ternary(true, false) }}"
+    should_create_mgr: "{{ (is_ceph_server and (ansible_facts['hostname'] not in status_output.stdout_lines[6] | default('true'))) | ternary(true, false) }}"
+    should_create_mds: "{{ (is_ceph_server and (ansible_facts['hostname'] not in mds_status_output.stdout | default('true'))) | ternary(true, false) }}"
 
 - name: "Initializing Ceph"
   when: should_setup_ceph
   # No native Ansible module exists for pveceph.
   delegate_to: "{{ ceph_master_node }}"
   run_once: true
-  ansible.builtin.command: "pveceph init --network {{ storage_ip_and_netmask }}"
+  ansible.builtin.command: "pveceph init --network {{ cluster_ip_and_netmask }}"
   register: "init_output"
   changed_when: init_output.rc == 0
   failed_when: (init_output.rc != 0)
@@ -123,12 +119,12 @@
     ceph-volume lvm list | grep {{ item.name }}
   args:
     executable: "/usr/bin/bash"
-  register: "osd_status_output"
-  changed_when: false
-  failed_when: false
   loop: "{{ ceph_devices | default([]) }}"
   loop_control:
     label: "{{ item.name }}"
+  register: "osd_status_output"
+  changed_when: false
+  failed_when: false
 
 - name: "Creating the OSD disks"
   when: "(item.name not in (osd_status_output.results | map(attribute='stdout')) | join(','))"
@@ -162,31 +158,31 @@
 
 - name: "Creating the CRUSH rule"
   when:
-    - ansible_hostname == ceph_master_node
+    - inventory_hostname == ceph_master_node
     - (item.name not in crush_status_output.stdout | default('true')) | ternary(true, false)
   # No native Ansible module exists for ceph osd crush rule create-replicated.
   ansible.builtin.command: "ceph osd crush rule create-replicated {{ item.name }} default host {{ item.type }}"
+  loop: "{{ ceph_crush_rules | default([]) }}"
+  loop_control:
+    label: "{{ item.name }}"
   register: "crush_output"
   changed_when: (crush_output.rc == 0) and ' already exists' not in crush_output.stderr
   failed_when:
     - crush_output.rc != 0
     - "' already exists' not in crush_output.stderr"
-  loop: "{{ ceph_crush_rules | default([]) }}"
-  loop_control:
-    label: "{{ item.name }}"
 
 - name: "Creating the Ceph file system"
-  when: (ansible_hostname == ceph_master_node) and (ceph_file_systems is defined)
+  when: (inventory_hostname == ceph_master_node) and (ceph_file_systems is defined)
   # No native Ansible module exists for pveceph fs.
   ansible.builtin.command: "pveceph fs create --name {{ item.name }} --pg_num {{ item.pg_num }} --add-storage"
+  loop: "{{ ceph_file_systems | default([]) }}"
+  loop_control:
+    label: "{{ item.name }}"
   register: "filesystem_output"
   changed_when: (filesystem_output.rc == 0)
   failed_when:
     - filesystem_output.rc != 0
     - "' already exist' not in filesystem_output.stderr"
-  loop: "{{ ceph_file_systems | default([]) }}"
-  loop_control:
-    label: "{{ item.name }}"
 
 - name: "Checking if the pool already exists"
   # No native Ansible module exists for ceph osd pool ls.
@@ -203,7 +199,7 @@
 
 - name: "Creating the Ceph pools"
   when:
-    - ansible_hostname == ceph_master_node
+    - inventory_hostname == ceph_master_node
     - (item.name not in pool_status_output.stdout | default('true')) | ternary(true, false)
   # No native Ansible module exists for pveceph pool create.
   ansible.builtin.command: >-
@@ -213,28 +209,28 @@
     --crush_rule {{ item.crush_rule }}
     --pg_autoscale_mode {{ item.pg_autoscale_mode }}
     {{ (item.add_storages) | ternary('--add_storages', '') }}
+  loop: "{{ ceph_pools | default([]) }}"
+  loop_control:
+    label: "{{ item.name }}"
   register: "ceph_pool_output"
   changed_when: (ceph_pool_output.rc == 0) and ' already defined' not in ceph_pool_output.stderr
   failed_when:
     - ceph_pool_output.rc != 0
     - "' already defined' not in ceph_pool_output.stderr"
-  loop: "{{ ceph_pools | default([]) }}"
-  loop_control:
-    label: "{{ item.name }}"
 
 - name: "Setting pg_num for the Ceph pools"
   when:
-    - ansible_hostname == ceph_master_node
+    - inventory_hostname == ceph_master_node
     - (item.name not in pool_status_output.stdout | default('true')) | ternary(true, false)
   # No native Ansible module exists for ceph osd pool set.
   ansible.builtin.command: >-
     ceph osd pool set {{ item.name }} pg_num {{ item.pg_num }}
-  register: "set_pg_num_output"
-  changed_when: set_pg_num_output.rc == 0
-  failed_when: set_pg_num_output.rc != 0
   loop: "{{ ceph_pools | default([]) }}"
   loop_control:
     label: "{{ item.name }}"
+  register: "set_pg_num_output"
+  changed_when: set_pg_num_output.rc == 0
+  failed_when: set_pg_num_output.rc != 0
 
 - name: "Printing variables"
   ansible.builtin.debug:

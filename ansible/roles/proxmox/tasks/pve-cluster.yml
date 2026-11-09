@@ -2,7 +2,6 @@
 - name: "Creating variables"
   ansible.builtin.set_fact:
     cluster_master_node: "{{ groups['hosts'][0] }}"
-    cluster_ip: "{{ ansible_default_ipv4.address }}"
 
 - name: "Checking if the cluster already exists (on each and every node)"
   ansible.builtin.stat:
@@ -10,10 +9,10 @@
   register: "corosync"
 
 - name: "Creating cluster (only on {{ cluster_master_node }})"
-  when: ansible_hostname == cluster_master_node and not corosync.stat.exists
+  when: inventory_hostname == cluster_master_node and not corosync.stat.exists
   run_once: true
   # community.proxmox.proxmox_cluster not yet installed; deferring to pvecm command.
-  ansible.builtin.command: "pvecm create {{ cluster_name }} -link0 address={{ cluster_ip }},priority=100 -link1 address={{ storage_ip }},priority=50"
+  ansible.builtin.command: "pvecm create {{ cluster_name }} -link0 address={{ cluster_ip }},priority=100 -link1 address={{ wan_management_ip }},priority=50"
   register: "create_cluster"
   changed_when: create_cluster.rc == 0
   notify: "Waiting 10 seconds"
@@ -22,13 +21,13 @@
   ansible.builtin.meta: "flush_handlers"
 
 - name: "Adding nodes to cluster"
-  when: ansible_hostname != cluster_master_node and not corosync.stat.exists
+  when: inventory_hostname != cluster_master_node and not corosync.stat.exists
   no_log: "{{ not (debug | default(false)) }}"
   ansible.builtin.expect:
     command: >-
       pvecm add {{ cluster_master_node }}
       -link0 address={{ cluster_ip }},priority=100
-      -link1 address={{ storage_ip }},priority=50
+      -link1 address={{ wan_management_ip }},priority=50
       -force
     responses:
       "Please enter": "{{ proxmox_root_password }}"

@@ -4,7 +4,7 @@
     cluster_master_node: "{{ groups['hosts'][0] }}"
 
 - name: "Configuring datacenter.cfg on the master node"
-  when: ansible_hostname == cluster_master_node
+  when: inventory_hostname == cluster_master_node
   run_once: true
   block:
     - name: "Checking if the /etc/pve/datacenter.cfg file already exists"

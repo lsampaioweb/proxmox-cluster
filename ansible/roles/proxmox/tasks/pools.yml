@@ -3,11 +3,11 @@
   run_once: true
   # community.proxmox.proxmox_pool not yet installed; deferring to pveum command.
   ansible.builtin.command: "pveum pool add {{ item.name }} --comment '{{ item.comment }}'"
+  loop: "{{ resource_pools | default([]) }}"
+  loop_control:
+    label: "{{ item.name }}"
   register: "create_pool"
   changed_when: create_pool.rc == 0
   failed_when:
     - create_pool.rc != 0
     - "' already exists' not in create_pool.stderr"
-  loop: "{{ resource_pools | default([]) }}"
-  loop_control:
-    label: "{{ item.name }}"

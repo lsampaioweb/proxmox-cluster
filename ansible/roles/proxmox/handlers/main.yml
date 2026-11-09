@@ -13,6 +13,8 @@
   ansible.builtin.service:
     name: "postfix"
     state: "restarted"
+  poll: 0
+  async: 60
 
 - name: "Rebuilding Aliases Database"
   # No native Ansible module exists for newaliases.
@@ -37,3 +39,5 @@
   ansible.builtin.service:
     name: "pveproxy"
     state: "restarted"
+  poll: 0
+  async: 60
