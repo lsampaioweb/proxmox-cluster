@@ -8,7 +8,7 @@
     - name: "Ensuring the fingerprint of the Proxmox hosts is present in the known_hosts file"
       ansible.builtin.import_role:
         name: "common"
-        tasks_from: "debian/known_hosts/add_current"
+        tasks_from: "debian/known_hosts/add-current"
 
     - name: "Getting facts using the setup module"
       ansible.builtin.setup:

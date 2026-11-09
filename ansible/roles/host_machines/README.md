@@ -11,22 +11,22 @@ The default **inventory file** is `"inventory/home"`, but you can specify a diff
 
 ```bash
 cd ansible
-ansible-playbook 02-host_machines.yml
+ansible-playbook 02-host-machines.yml
 ```
 
 Specify an inventory file:
 
 ```bash
 cd ansible
-ansible-playbook 02-host_machines.yml -i "inventory/home"
-ansible-playbook 02-host_machines.yml -i "inventory/homelab"
+ansible-playbook 02-host-machines.yml -i "inventory/home"
+ansible-playbook 02-host-machines.yml -i "inventory/homelab"
 ```
 
 ### 2. Tasks Performed
 
 ### System Configuration
 - **Sets Brazilian timezone** to `America/Maceio`.
-- **Sets up Brazilian NTP servers** for time synchronization.
+- **Configures an inventory-specific NTP pool** (`ntp-pool.<domain>`) for time synchronization.
 - **Configures UTF-8 locale** as the system default.
 - **Disables IPv6** via GRUB settings.
 
@@ -38,7 +38,7 @@ ansible-playbook 02-host_machines.yml -i "inventory/homelab"
   - **parted** (disk partitioning)
   - **qrencode** (two-factor authentication)
   - **intel-microcode** (fixes CPU vulnerabilities, if applicable)
-- Adds **Proxmox non-subscription repositories**.
+- Adds the **Proxmox no-subscription repository** for the host's Debian release, signed with the Proxmox archive keyring.
 - Removes **Proxmox enterprise repositories**.
 
 ### User Management
@@ -47,7 +47,7 @@ ansible-playbook 02-host_machines.yml -i "inventory/homelab"
 
 ### Network Configuration
 - Ensures **consistent NIC naming** by binding interfaces to MAC addresses.
-- Applies **custom network configuration files** to the hosts.
+- Renders **inventory-specific management, cluster, and VM bridge configuration** from host variables.
 
 ### Cleanup and Reboot
 - Removes unnecessary packages.

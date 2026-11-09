@@ -1,6 +1,6 @@
 # Setup a Proxmox HomeLab using Ansible
 
-This playbook automates the setup of **one or more servers running Proxmox Virtual Environment (PVE) 8.X**.
+This playbook automates the setup of **one or more servers running Proxmox Virtual Environment (PVE)**.
 
 #
 ### 1. Store Required Passwords
@@ -65,8 +65,8 @@ You can also run each playbook independently in sequence:
 
 ```bash
 cd ansible
-ansible-playbook 01-control_machine.yml -i "inventory/home"
-ansible-playbook 02-host_machines.yml -i "inventory/home"
+ansible-playbook 01-control-machine.yml -i "inventory/home"
+ansible-playbook 02-host-machines.yml -i "inventory/home"
 ansible-playbook 03-proxmox.yml -i "inventory/home"
 ansible-playbook 04-update.yml -i "inventory/home"
 ```

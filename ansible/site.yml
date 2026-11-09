@@ -1,9 +1,9 @@
 ---
 - name: "Running the control machine playbook"
-  ansible.builtin.import_playbook: "01-control_machine.yml"
+  ansible.builtin.import_playbook: "01-control-machine.yml"
 
 - name: "Running the host machines playbook"
-  ansible.builtin.import_playbook: "02-host_machines.yml"
+  ansible.builtin.import_playbook: "02-host-machines.yml"
 
 - name: "Running the proxmox playbook"
   ansible.builtin.import_playbook: "03-proxmox.yml"
