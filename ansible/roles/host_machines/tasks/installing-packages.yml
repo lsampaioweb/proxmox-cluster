@@ -1,17 +1,11 @@
 ---
-- name: "Removing the pve-enterprise repositories from sources list"
-  ansible.builtin.lineinfile:
-    path: "{{ item.path }}"
-    regexp: "{{ item.regexp }}"
+- name: "Removing the Proxmox enterprise deb822 repositories"
+  ansible.builtin.deb822_repository:
+    name: "{{ item }}"
     state: "absent"
-    create: false
   loop:
-    - path: "/etc/apt/sources.list.d/ceph.list"
-      regexp: "^deb https://enterprise\\.proxmox\\.com/debian/ceph-quincy bookworm enterprise$"
-    - path: "/etc/apt/sources.list.d/pve-enterprise.list"
-      regexp: "^deb https://enterprise\\.proxmox\\.com/debian/pve bookworm pve-enterprise$"
-  loop_control:
-    label: "{{ item.path }}"
+    - "ceph"
+    - "pve-enterprise"
 
 - name: "Adding the pve-no-subscription repository into sources list"
   ansible.builtin.deb822_repository:
@@ -19,15 +13,11 @@
     state: "present"
     uris: "http://download.proxmox.com/debian/pve"
     suites:
-      - "bookworm"
+      - "{{ ansible_facts['distribution_release'] }}"
     components:
       - "pve-no-subscription"
-
-- name: "Adding non-free repositories into sources list"
-  ansible.builtin.replace:
-    path: "/etc/apt/sources.list"
-    regexp: "main contrib$"
-    replace: "main contrib non-free non-free-firmware"
+    signed_by: "/usr/share/keyrings/proxmox-archive-keyring.gpg"
+    mode: "0644"
 
 - name: "Installing required packages"
   ansible.builtin.import_role:
@@ -54,8 +44,8 @@
       - { name: "python3-pexpect" } # To enable ansible scripts that use the expect module.
 
 - name: "Installing the intel-microcode package to fix the CPU bug"
-  when: ansible_processor is search('Intel')
-  ansible.builtin.include_role:
+  when: ansible_facts['processor'] is search('Intel')
+  ansible.builtin.import_role:
     name: "common"
     tasks_from: "debian/packages/apt"
   vars:
