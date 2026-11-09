@@ -22,5 +22,5 @@ ntp_service: "chrony"
 ntp_servers:
   - line: "pool 2.debian.pool.ntp.org iburst"
     state: "absent"
-  - line: "pool ntp-pool.lan.homelab iburst"
+  - line: "pool ntp-pool.{{ domain }} iburst"
     state: "present"
