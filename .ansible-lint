@@ -8,3 +8,5 @@
 skip_list:
   - "var-naming"
   - "name[template]"
+
+warn_list: []
