@@ -1,0 +1,10 @@
+---
+- name: "Updating the Proxmox host network configuration"
+  hosts: "hosts"
+  become: true
+
+  tasks:
+    - name: "Configuring the host network interfaces"
+      ansible.builtin.import_role:
+        name: "host_machines"
+        tasks_from: "network.yml"

@@ -77,9 +77,12 @@ Or run a specific playbook standalone:
 cd ansible
 ansible-playbook 03-proxmox.yml -i "inventory/home"
 ansible-playbook 05-proxmox-certificates.yml -i "inventory/home"
+ansible-playbook 06-host-network.yml -i "inventory/home"
 ```
 
 **Note:** `03-proxmox.yml` installs the certificate after cluster setup. Run `05-proxmox-certificates.yml` to deploy a renewed certificate. `site.yml` orchestrates the four setup and update playbooks in sequence.
+
+Run `06-host-network.yml` to apply network changes to existing nodes without rerunning the full host setup. It is not included in `site.yml`. See the [network-only workflow](ansible/roles/host_machines/README.md#11-update-network-configuration-only) for prerequisites, host targeting, and reload/reboot risks.
 
 ### 3. Roles You Can Execute
 

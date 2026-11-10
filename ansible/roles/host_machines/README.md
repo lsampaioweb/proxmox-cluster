@@ -22,6 +22,29 @@ ansible-playbook 02-host-machines.yml -i "inventory/home"
 ansible-playbook 02-host-machines.yml -i "inventory/homelab"
 ```
 
+### 1.1 Update Network Configuration Only
+
+For already provisioned nodes, run `06-host-network.yml` to apply network changes without rerunning package installation, user management, or other host setup tasks. It imports only `host_machines/tasks/network.yml`, retaining the role variables, templates, and handlers from the `common` dependency.
+
+The nodes must already have the required packages, including `ifupdown2`, installed. SSH access, host fingerprints in the control machine's `known_hosts`, and the configured secret-manager credentials must already be available.
+
+From the `ansible/` directory, select the inventory matching the network template and host variables:
+
+```bash
+ansible-playbook 06-host-network.yml -i "inventory/home"
+ansible-playbook 06-host-network.yml -i "inventory/homelab"
+```
+
+To update only one node:
+
+```bash
+ansible-playbook 06-host-network.yml -i "inventory/homelab" --limit "pve-01.lan.homelab"
+```
+
+Update the inventory-specific interface template or relevant host variables before running the playbook. Changes to `/etc/network/interfaces` trigger `ifreload -a` and a connection wait; changes to NIC naming rules can trigger a reboot. Management-network changes can interrupt access.
+
+The playbook does not set `serial`, so it does not enforce one-node-at-a-time updates. Use `--limit` and separate runs when applying changes node by node. This standalone playbook is not included in `site.yml`.
+
 ### 2. Tasks Performed
 
 ### System Configuration
