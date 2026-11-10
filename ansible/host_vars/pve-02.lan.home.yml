@@ -9,20 +9,24 @@ mac_bind:
   - mac_address: "00:d0:b4:01:77:7d"
     nic_name: "enp2lacp3"
 
-wan_management_nic: "enp2lacp3"
-wan_management_vlan: "1110"
-wan_management_ip: "10.1.10.2"
-
-bond0_nic: "enp2lacp0 enp2lacp1"
 cluster_name: "Home"
-cluster_nic: "bond0"
+cluster_nic: "enp2lacp0"
 cluster_ip: "172.16.11.2"
 cluster_netmask: "28"
 cluster_ip_and_netmask: "{{ cluster_ip }}/{{ cluster_netmask }}"
 
+ceph_nic: "enp2lacp1"
+ceph_ip: "172.16.12.2"
+ceph_netmask: "28"
+ceph_ip_and_netmask: "{{ ceph_ip }}/{{ ceph_netmask }}"
+
+migration_network: "172.16.12.0/{{ ceph_netmask }}"
+
 vms_management_nic: "enp2lacp2"
 
-migration_network: "172.16.11.0/28"
+wan_management_nic: "enp2lacp3"
+wan_management_vlan: "1110"
+wan_management_ip: "10.1.10.2"
 
 lvm: []
 

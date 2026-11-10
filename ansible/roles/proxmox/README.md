@@ -34,6 +34,8 @@ ansible-playbook 03-proxmox.yml -i "inventory/homelab"
 
 ### Cluster Configuration
 - **Creates the Proxmox cluster** and joins additional nodes.
+- For the Home inventory, Corosync Link 0 uses `172.16.11.0/28`; Link 1 uses the management addresses on VLAN 1110 (`10.1.10.0/28`).
+- Cluster creation is skipped when `/etc/pve/corosync.conf` already exists. Rerunning `03-proxmox.yml` does not change Corosync link addresses on an existing cluster.
 - Adds **host fingerprints** to `~/.ssh/known_hosts` for secure communication.
 
 ### WebUI Certificate
@@ -47,7 +49,8 @@ ansible-playbook 05-proxmox-certificates.yml -i inventory/homelab
 ```
 
 ### Migration Network Setup
-- Defines **a dedicated network for Proxmox migrations** in `/etc/pve/datacenter.cfg`.
+- Defines **the migration network** in `/etc/pve/datacenter.cfg`. In the Home inventory this is `172.16.12.0/28`, the same subnet used by Ceph.
+- The datacenter configuration is rendered from `datacenter.cfg.j2` on each run. Keep settings that must persist in that template and its inventory variables; settings added only through the WebUI can be replaced.
 
 ### Storage Management
 - Formats **HDD, SSD, and NVMe disks**:
@@ -57,7 +60,9 @@ ansible-playbook 05-proxmox-certificates.yml -i inventory/homelab
 
 ### Ceph Storage
 - Adds the **Ceph Tentacle no-subscription repository** for the host's Debian release, signed with the Proxmox archive keyring.
-- Initializes Ceph on the configured **cluster network** and configures storage from the declared Ceph variables.
+- Initializes Ceph on the configured **Ceph network**. For Home, that is `172.16.12.0/28`; the host network playbook assigns this subnet to `enp2lacp1` at MTU 9000.
+- Creates monitors, managers, MDSs, OSDs, CRUSH rules, CephFS, and pools from the inventory variables. Home uses `pve-01.lan.home` as the Ceph master; homelab uses `pve-04.lan.homelab`.
+- The Home pools use replica size 2 and `min_size` 1. This keeps I/O available after one OSD is lost but leaves data without redundancy until the OSD is restored.
 
 ### Resource Management
 - Creates **resource pools** (`Template`, `Staging`, `Production`).

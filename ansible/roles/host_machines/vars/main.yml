@@ -24,3 +24,31 @@ ntp_servers:
     state: "absent"
   - line: "pool ntp-pool.{{ domain }} iburst"
     state: "present"
+
+vlan_catalog:
+  - id: 1115
+    description: "VS-CORE - DHCP, DNS, NTP"
+  - id: 1120
+    description: "VS-LDAP - OpenLDAP"
+  - id: 1125
+    description: "VS-PROXY - Proxy"
+  - id: 1130
+    description: "VS-BACKUP - MinIO (Backup)"
+  - id: 1135
+    description: "VS-REPOSITORY - Nexus (Repository)"
+  - id: 1140
+    description: "VS-TEMPLATE - Template Building"
+  - id: 1145
+    description: "VS-JUMPSERVER - Guacamole (Jumpserver)"
+  - id: 1150
+    description: "VS-LOADBALANCER - Traefik (Load Balancer)"
+  - id: 1155
+    description: "VS-MONITOR - Prometheus, Grafana, Loki, Tempo"
+  - id: 1160
+    description: "VS-SECURITY - Vault, Wazuh, Authentik"
+  - id: 1165
+    description: "VS-DATABASE - PostgreSQL, SQL Server"
+  - id: 1170
+    description: "VS-CICD - Gitea, Jenkins"
+  - id: 1175
+    description: "VS-KUBERNETES - K8s Masters + Workers"

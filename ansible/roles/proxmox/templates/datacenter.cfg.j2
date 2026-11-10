@@ -1,5 +1,11 @@
 console: html5
+{% if datacenter_crs | default('') %}
+crs: {{ datacenter_crs | default('') }}
+{% endif %}
 keyboard: pt-br
 email_from: {{ smtp_email | default('') | b64decode }}
+{% if datacenter_mac_prefix | default('') %}
+mac_prefix: {{ datacenter_mac_prefix | default('') }}
+{% endif %}
 # Use dedicated migration network.
 migration: network={{ migration_network | default('') }},type=secure

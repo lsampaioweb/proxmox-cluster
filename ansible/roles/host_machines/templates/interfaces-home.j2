@@ -12,23 +12,20 @@
 auto lo
 iface lo inet loopback
 
-auto enp2lacp0
-iface enp2lacp0 inet manual
+auto {{ cluster_nic }}
+iface {{ cluster_nic }} inet static
+        address {{ cluster_ip_and_netmask }}
+#Corosync cluster network.
 
-auto enp2lacp1
-iface enp2lacp1 inet manual
+auto {{ ceph_nic }}
+iface {{ ceph_nic }} inet static
+        address {{ ceph_ip_and_netmask }}
+        mtu 9000
+#Ceph storage network - MTU 9000.
 
 iface enp2lacp2 inet manual
 
 iface enp2lacp3 inet manual
-
-iface bond0 inet manual
-        bond-slaves {{ bond0_nic }}
-        bond-miimon 100
-        bond-mode 802.3ad
-        bond-xmit-hash-policy layer2+3
-        bond-min-links 1
-#Cluster Bond Interface.
 
 auto vmbr0
 iface vmbr0 inet manual
@@ -36,37 +33,20 @@ iface vmbr0 inet manual
         bridge-stp off
         bridge-fd 0
         bridge-vlan-aware yes
-        bridge-vids {{ wan_management_vlan }}
-#Management Interface.
+        bridge-vids 2-4094
+#Management VLAN and optional VLAN-tagged VM traffic.
 
 auto vmbr0.{{ wan_management_vlan }}
 iface vmbr0.{{ wan_management_vlan }} inet dhcp
 #Management - VLAN[{{ wan_management_vlan }}].
 
-auto vmbr1
-iface vmbr1 inet static
-        address {{ cluster_ip_and_netmask }}
-        bridge-ports {{ cluster_nic }}
+{% for vlan in vlan_catalog | default([]) %}
+auto vmbr{{ vlan.id }}
+iface vmbr{{ vlan.id }} inet manual
+        bridge-ports {{ vms_management_nic }}.{{ vlan.id }}
         bridge-stp off
         bridge-fd 0
-#Cluster Interface.
+#{{ vlan.description }} - VLAN[{{ vlan.id }}].
 
-auto vmbr1115
-iface vmbr1115 inet manual
-        bridge-ports {{ vms_management_nic }}.1115
-        bridge-stp off
-        bridge-fd 0
-        bridge-vlan-aware yes
-        bridge-vids 1115
-#VMs Cores - VLAN[1115].
-
-auto vmbr1120
-iface vmbr1120 inet manual
-        bridge-ports {{ vms_management_nic }}.1120
-        bridge-stp off
-        bridge-fd 0
-        bridge-vlan-aware yes
-        bridge-vids 1120
-#VMs LDAP - VLAN[1120].
-
+{% endfor %}
 source /etc/network/interfaces.d/*

@@ -71,6 +71,9 @@ The playbook does not set `serial`, so it does not enforce one-node-at-a-time up
 ### Network Configuration
 - Ensures **consistent NIC naming** by binding interfaces to MAC addresses.
 - Renders **inventory-specific management, cluster, and VM bridge configuration** from host variables.
+- In the Home inventory, `enp2lacp0` carries Corosync on `172.16.11.0/28`; `enp2lacp1` carries Ceph on `172.16.12.0/28` with MTU 9000.
+- The Home management bridge uses `enp2lacp3` and VLAN 1110. VM VLAN bridges are generated from `vlan_catalog` on `enp2lacp2`.
+- Corosync also has a management-network fallback link on VLAN 1110, configured by the Proxmox cluster setup playbook.
 
 ### Cleanup and Reboot
 - Removes unnecessary packages.

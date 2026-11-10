@@ -13,3 +13,4 @@ pve-[01:02].lan.home
 [hosts:vars]
 domain=lan.home
 ansible_python_interpreter=/usr/bin/python3
+ceph_master_node=pve-01.lan.home

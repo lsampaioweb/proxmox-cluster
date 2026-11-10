@@ -31,7 +31,6 @@ cluster_ip_and_netmask: "{{ cluster_ip }}/{{ cluster_netmask }}"
 
 lvm: []
 
-ceph_master_node: "{{ inventory_hostname }}"
 is_ceph_server: true
 
 ceph_devices:

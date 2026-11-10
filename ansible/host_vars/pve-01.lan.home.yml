@@ -9,25 +9,30 @@ mac_bind:
   - mac_address: "60:be:b4:08:f7:69"
     nic_name: "enp2lacp3"
 
+cluster_name: "Home"
+cluster_nic: "enp2lacp0"
+cluster_ip: "172.16.11.1"
+cluster_netmask: "28"
+cluster_ip_and_netmask: "{{ cluster_ip }}/{{ cluster_netmask }}"
+datacenter_crs: "ha-auto-rebalance=1,ha-rebalance-on-start=1,ha=dynamic"
+datacenter_mac_prefix: "BC:17:22"
+
+ceph_nic: "enp2lacp1"
+ceph_ip: "172.16.12.1"
+ceph_netmask: "28"
+ceph_ip_and_netmask: "{{ ceph_ip }}/{{ ceph_netmask }}"
+
+migration_network: "172.16.12.0/{{ ceph_netmask }}"
+
+vms_management_nic: "enp2lacp2"
+
 wan_management_nic: "enp2lacp3"
 wan_management_vlan: "1110"
 wan_management_ip: "10.1.10.1"
 
-bond0_nic: "enp2lacp0 enp2lacp1"
-cluster_name: "Home"
-cluster_nic: "bond0"
-cluster_ip: "172.16.11.1"
-cluster_netmask: "28"
-cluster_ip_and_netmask: "{{ cluster_ip }}/{{ cluster_netmask }}"
-
-vms_management_nic: "enp2lacp2"
-
-migration_network: "172.16.11.0/28"
-
 lvm: []
 
 is_ceph_server: true
-ceph_master_node: "{{ inventory_hostname }}"
 
 ceph_devices:
   - name: "/dev/nvme0n1"
