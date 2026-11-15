@@ -1,4 +1,22 @@
 ---
+- name: "Validating the VLAN bridge names"
+  ansible.builtin.assert:
+    that:
+      - item.bridge is defined
+      - (item.bridge | default('')) is match('^[a-zA-Z][a-zA-Z0-9]{0,9}$')
+      - >-
+        item.bridge not in [cluster_nic | default(''), ceph_nic | default(''),
+        vms_management_nic | default(''), wan_management_nic | default(''), 'lo', 'vmbr0']
+  loop: "{{ vlan_catalog | default([]) }}"
+  loop_control:
+    label: "{{ item.id }}"
+
+- name: "Validating unique VLAN bridge names and IDs"
+  ansible.builtin.assert:
+    that:
+      - (vlan_catalog | default([]) | map(attribute='bridge') | unique | list | length) == (vlan_catalog | default([]) | length)
+      - (vlan_catalog | default([]) | map(attribute='id') | unique | list | length) == (vlan_catalog | default([]) | length)
+
 - name: "Copying the empty 99-default.link file to override the default configuration"
   ansible.builtin.copy:
     src: "99-default.link"

@@ -38,15 +38,15 @@ iface vmbr0 inet manual
 
 auto vmbr0.{{ wan_management_vlan }}
 iface vmbr0.{{ wan_management_vlan }} inet dhcp
-#Management - VLAN[{{ wan_management_vlan }}].
+#[{{ wan_management_vlan }}] - Management.
 
 {% for vlan in vlan_catalog | default([]) %}
-auto vmbr{{ vlan.id }}
-iface vmbr{{ vlan.id }} inet manual
+auto {{ vlan.bridge }}
+iface {{ vlan.bridge }} inet manual
         bridge-ports {{ vms_management_nic }}.{{ vlan.id }}
         bridge-stp off
         bridge-fd 0
-#{{ vlan.description }} - VLAN[{{ vlan.id }}].
+#[{{ vlan.id }}] - {{ vlan.description }}.
 
 {% endfor %}
 source /etc/network/interfaces.d/*

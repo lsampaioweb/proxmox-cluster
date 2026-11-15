@@ -43,6 +43,27 @@ ansible-playbook 06-host-network.yml -i "inventory/homelab" --limit "pve-01.lan.
 
 Update the inventory-specific interface template or relevant host variables before running the playbook. Changes to `/etc/network/interfaces` trigger `ifreload -a` and a connection wait; changes to NIC naming rules can trigger a reboot. Management-network changes can interrupt access.
 
+For the Home inventory, VLAN bridge names are defined in `vlan_catalog`. Each name must start with a letter, contain only letters and numbers, and be no longer than 10 characters. Names and VLAN IDs must be unique. VLAN subinterfaces carry the tags; the dedicated VM bridges are not VLAN-aware. The VLAN-aware management bridge `vmbr0` is separate and remains unchanged.
+
+| VLAN | Bridge | VLAN | Bridge |
+| --- | --- | --- | --- |
+| 1115 | `core` | 1120 | `ldap` |
+| 1125 | `proxy` | 1130 | `backup` |
+| 1135 | `repository` | 1140 | `template` |
+| 1145 | `jumpserver` | 1150 | `ldbalancer` |
+| 1155 | `monitor` | 1160 | `security` |
+| 1165 | `database` | 1170 | `cicd` |
+| 1175 | `kubernetes` | | |
+
+Run the network playbook for one node at a time, checking the result before continuing:
+
+```bash
+ansible-playbook 06-host-network.yml -i inventory/home --limit pve-01.lan.home
+ansible-playbook 06-host-network.yml -i inventory/home --limit pve-02.lan.home
+```
+
+On each node, check `ip -br link`, `bridge link`, `pvecm status`, and `ceph -s` when applicable. After updating guest bindings, test traffic on each VLAN and a test VM migration. A successful reload or syntax check alone does not establish connectivity. If recovery is needed, use the independent console to restore the backed-up interfaces file and previous guest bindings, then reload the network; guests may require reconnection or restart.
+
 The playbook does not set `serial`, so it does not enforce one-node-at-a-time updates. Use `--limit` and separate runs when applying changes node by node. This standalone playbook is not included in `site.yml`.
 
 ### 2. Tasks Performed
