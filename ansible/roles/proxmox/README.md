@@ -53,10 +53,8 @@ ansible-playbook 05-proxmox-certificates.yml -i inventory/homelab
 - The datacenter configuration is rendered from `datacenter.cfg.j2` on each run. Keep settings that must persist in that template and its inventory variables; settings added only through the WebUI can be replaced.
 
 ### Storage Management
-- Formats **HDD, SSD, and NVMe disks**:
-  - Extends the **data partition** to 100% of available space.
-  - Removes **old partitions**.
-  - Creates **new partitions, volume groups, and logical volumes**.
+- Extends the `pve/data` logical volume to use available free space.
+- For configured `lvm` entries, creates a partition, volume group, thin pool, filesystem, and Proxmox storage entry.
 
 ### Ceph Storage
 - Adds the **Ceph Tentacle no-subscription repository** for the host's Debian release, signed with the Proxmox archive keyring.
