@@ -1,6 +1,6 @@
 # Update Proxmox Hosts
 
-This playbook updates all **Proxmox hosts**, ensuring they have the latest packages while removing unused ones.
+This playbook updates packages on all **Proxmox hosts** and removes the no-subscription popup.
 
 #
 ### 1. Run the Update Playbook
@@ -34,7 +34,7 @@ ansible-playbook 04-update.yml -i "inventory/home" -i "inventory/homelab"
 
 ### System Updates
 - Updates **all installed packages**.
-- Removes **unused dependencies** to free up space.
+- Removes the **Proxmox no-subscription popup**.
 
 #
 ### Created by:
